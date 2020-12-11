@@ -21,14 +21,14 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 ## Başlarken
 
-Udentify_bot'a başlamak için sadece [bu repository'i](git@github.com:delandcaglar/udentify.git) kopyala.
+Udentify_bot'a başlamak için sadece [bu repository'i](https://github.com/delandcaglar/udentify.git) kopyala.
 
 
 
 
 ## Açıklama için youtube videosu
 
-Windows üzrinden nasıl yükleneceğini gösteren videoya ulaşmak için [Buraya tıkla](https://www.youtube.com/channel/UCehC9DKqVdyP_SAJB7beJ1A?view_as=subscriber).
+Windows üzrinden nasıl yükleneceğini gösteren videoya ulaşmak için [buraya tıkla](https://www.youtube.com/channel/UCehC9DKqVdyP_SAJB7beJ1A?view_as=subscriber).
 
 
 
@@ -82,21 +82,29 @@ Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl
 
 https://github.com/rajbot/kivy_pyinstaller_linux_example/blob/master/bootstrap.sh
 
-## 2. Face Detection
-Tracks multiple user faces in view of the camera, recording the positions and size fo the face in reference to the camera. Currently, focuses on size as the heuritic to focus. A virtual pan and tilt motion imitates the movement of the neck module as it steers the camera in the world view, as a red dot.
+## 2. Nasil Kullanılır
 
-### 2.1 First create you environment, I'm using conda:
+### 2.1 Mağza adlarını doldur:
 ```
-conda create --name opencv-env python=3.6
-conda activate opencv-env
+Kullanmak için s_admin.py scriptine gidilip aşağıdaki örnekteki gibi "magaza_adi_listesi" adlı liste doldurulmalıdır.
+- Örnek --> magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya"],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center"]
+- 1. mağaza ismi, 2. mağaza konumu, 3. api kodu, 4. mağaza adı + mağaza konumu 
+
 ```
-### 2.2 install the following libraries using the commands:
+
+### 2.3 Script'i çalıştır:
 ```
-pip install numpy scipy matplotlib scikit-learn jupyter
-pip install opencv-contrib-python
-pip install dlib
-pip install numpy
-pip install cv2
+cd {dosyanin konumu}
+python s_admin.py 
+
+```
+
+### 2.3 Dosyalari toplama:
+```
+word dosyalarının her biri firms/{firma ismi}/{firma ismi + konumu}.docx olarak dosyalanmıştır.
+Dosyaları kopyalanmaya hazır haldedir.
+firms/{firma ismi}/ statik {firma ismi + konumu} konumunda mağazaların statik dosyaları bulunkamtadır.
+
 ```
 ## Yazarlar
 
