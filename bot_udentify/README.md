@@ -28,13 +28,13 @@ Udentify_bot'a başlamak için sadece [bu repository'i](git@github.com:delandcag
 
 ## Açıklama için youtube videosu
 
-[Buraya tıkla](https://www.youtube.com/channel/UCehC9DKqVdyP_SAJB7beJ1A?view_as=subscriber)
+Windows üzrinden nasıl yükleneceğini gösteren videoya ulaşmak için [Buraya tıkla](https://www.youtube.com/channel/UCehC9DKqVdyP_SAJB7beJ1A?view_as=subscriber).
 
 
 
 ## 1. Udentify_bot nasıl yüklenir:
 
- pyhthon 3.7+ environment kullanılmalıdır.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırabilir)
+ pyhthon 3.7+ environment kullanılmalıdır.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırır)
 
 To install the necessary kinba libraries for mac OS X:
 
