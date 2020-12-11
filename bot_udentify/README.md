@@ -32,34 +32,19 @@ Udentify_bot'a başlamak için sadece [bu repository'i](https://github.com/delan
 
 
 
+### 1.1 Anaconda Python indir:
 
 
-Anaconda Python indir:
 
 ```
 https://docs.anaconda.com/anaconda/install/
 ```
-
-Gerekli library'leri indir:
+### 1.2 Gerekli library'leri indir:
 ```
 İndirdiğiniz dosyalaarın directory'sine gidin
 python -m pip install -r requirements.txt
 ```
 
-
-
-
-### Executable yapmak için:
-
-pip install pyinstaller
-```
-pyinstaller --onefile --add-binary='/System/Library/Frameworks/
-Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' s_admin.py
-```
-
-### Linux kullanılacaksa methodology burada var:
-
-https://github.com/rajbot/kivy_pyinstaller_linux_example/blob/master/bootstrap.sh
 
 ## 2. Nasil Kullanılır
 
@@ -85,6 +70,19 @@ Dosyaları kopyalanmaya hazır haldedir.
 firms/{firma ismi}/ statik {firma ismi + konumu} konumunda mağazaların statik dosyaları bulunkamtadır.
 
 ```
+
+### Executable yapmak istiyorsan:
+
+pip install pyinstaller
+```
+pyinstaller --onefile --add-binary='/System/Library/Frameworks/
+Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' s_admin.py
+```
+
+### Linux ile Executable yapmak istiyorsan:
+
+https://github.com/rajbot/kivy_pyinstaller_linux_example/blob/master/bootstrap.sh
+
 ## Yazarlar
 
  **TeamUdentify**
