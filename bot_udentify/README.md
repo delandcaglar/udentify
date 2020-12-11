@@ -46,8 +46,6 @@ Gerekli library'leri indir:
 python -m pip install -r requirements.txt
 ```
 
-Then run 
-`python3 s_admin.py`
 
 
 
@@ -73,7 +71,7 @@ Kullanmak için s_admin.py scriptine gidilip aşağıdaki örnekteki gibi "magaz
 
 ```
 
-### 2.3 Script'i çalıştır:
+### 2.2 Script'i çalıştır:
 ```
 cd {dosyanin konumu}
 python s_admin.py 
