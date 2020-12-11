@@ -70,18 +70,23 @@ Dosyaları kopyalanmaya hazır haldedir.
 firms/{firma ismi}/ statik {firma ismi + konumu} konumunda mağazaların statik dosyaları bulunkamtadır.
 
 ```
+## 3. Executable yapmak istiyorsan
 
-### Executable yapmak istiyorsan:
+### 3.1 Executable yap:
 
+```
 pip install pyinstaller
+```
 ```
 pyinstaller --onefile --add-binary='/System/Library/Frameworks/
 Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' s_admin.py
 ```
 
-### Linux ile Executable yapmak istiyorsan:
+### 3.2 Linux ile Executable yapmak için buraya bakılabilinir:
 
+```
 https://github.com/rajbot/kivy_pyinstaller_linux_example/blob/master/bootstrap.sh
+```
 
 ## Yazarlar
 
