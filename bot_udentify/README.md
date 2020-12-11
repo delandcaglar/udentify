@@ -12,9 +12,11 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 ## Yazılım ana mantığı ve dosyaların işlevleri
 
-s_admin---> selenium botudur. İçerisindeki "magaza_adi_listesi" listesindeki bilgilere göre mağaza resim datalarını toplar, "create_folders.py" ile klasifiye ettiği dosya hiyerarşisindeki uygun yerlere resimleri koyar. Aynı zamanda "haftalık_rapor.py" ve "aylik_rapor.py" scriptlerini başlatır.
-haftalık_rapor.py ve aylik_rapor.py ---> "createfolders.py" ile yaratılmış word dosyalarının içine s_admin ile toplanmış resimleri koyar, ek olarak "request1.py" aracılığı ile mağaza bilgilerini toplar ve word dosyalarına yazar.
-request1.py --> Udentify API'ından data toplar.
+- s_admin---> selenium botudur. İçerisindeki "magaza_adi_listesi" listesindeki bilgilere göre mağaza resim datalarını toplar, "create_folders.py" ile klasifiye ettiği dosya hiyerarşisindeki uygun yerlere resimleri koyar. Aynı zamanda "haftalık_rapor.py" ve "aylik_rapor.py" scriptlerini başlatır.
+- haftalık_rapor.py ve aylik_rapor.py ---> "createfolders.py" ile yaratılmış word dosyalarının içine s_admin ile toplanmış resimleri koyar, ek olarak "request1.py" aracılığı ile mağaza bilgilerini toplar ve word dosyalarına yazar.
+- request1.py --> Udentify API'ından data toplar.
+
+
 
 
 ## Başlarken
@@ -96,7 +98,7 @@ pip install dlib
 pip install numpy
 pip install cv2
 ```
-## Authors
+## Yazarlar
 
  **TeamUdentify**
 
