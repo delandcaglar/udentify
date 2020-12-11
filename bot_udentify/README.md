@@ -19,51 +19,32 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 
 
-## Başlarken
+## 1. Udentify_bot nasıl yüklenir:
+
+pyhthon 3.7+ environment kullanılmalıdır.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırır)
+
+
+
 
 Udentify_bot'a başlamak için sadece [bu repository'i](https://github.com/delandcaglar/udentify.git) kopyala.
 
 
 
 
-## Açıklama için youtube videosu
-
-Windows üzrinden nasıl yükleneceğini gösteren videoya ulaşmak için [buraya tıkla](https://www.youtube.com/channel/UCehC9DKqVdyP_SAJB7beJ1A?view_as=subscriber).
 
 
 
-## 1. Udentify_bot nasıl yüklenir:
+Anaconda Python indir:
 
- pyhthon 3.7+ environment kullanılmalıdır.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırır)
-
-To install the necessary kinba libraries for mac OS X:
-
-Download espeak on mac: http://macappstore.org/espeak/
-
-Download pyaudio:
 ```
-xcode-select --install
-brew remove portaudio
-brew install portaudio
-pip3 install pyaudio
+https://docs.anaconda.com/anaconda/install/
 ```
-Download ffmpeg:
 
-`brew install ffmpeg`
-
-Download wkhtmltopdf: https://wkhtmltopdf.org/downloads.html
-
-Then run
-`cd Jarvis-master`
-then run
-`./test.sh`
-
-if it does not work run __main__.py in installer file
-
-`python installer/__main__.py`
-
-Selenium'u indir
-`python3 -m pip install kivy`
+Gerekli library'leri indir:
+```
+İndirdiğiniz dosyalaarın directory'sine gidin
+python -m pip install -r requirements.txt
+```
 
 Then run 
 `python3 s_admin.py`
@@ -99,7 +80,7 @@ python s_admin.py
 
 ```
 
-### 2.3 Dosyalari toplama:
+### 2.3 Dosyalari topla:
 ```
 word dosyalarının her biri firms/{firma ismi}/{firma ismi + konumu}.docx olarak dosyalanmıştır.
 Dosyaları kopyalanmaya hazır haldedir.
