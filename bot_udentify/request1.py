@@ -1,6 +1,28 @@
 import requests
 import json
 import time
+from decimal import *
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(BASE_DIR)
+dosya_yolu =( BASE_DIR + f"/bot_udentify/test.log" )
+print(dosya_yolu)
+
+
+
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
+logFile = dosya_yolu
+my_handler = RotatingFileHandler(logFile,mode='a',maxBytes=5*1024*1024,backupCount=2,encoding=None,delay=0)
+my_handler.setFormatter(log_formatter)
+my_handler.setLevel(logging.INFO)
+app_log = logging.getLogger('root')
+app_log.setLevel(logging.INFO)
+app_log.addHandler(my_handler)
+
+
 
 
 APIURL = "https://api.udentify.co"
@@ -11,8 +33,8 @@ APITOKEN = ""
 
 
 magaza_id = 240
-tarih_ilk = '15/10/2020'
-tarih_son = '30/10/2020'
+tarih_ilk = "30/10/2020"
+tarih_son = "13/11/2020"
 
 
 url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
@@ -27,6 +49,8 @@ deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=2
 deneme2_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}0&stime=10:00&etime=22:00&tzoffset=0&layer=1"
 
 devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+
+magaza_bazli = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
 
 
 
@@ -210,21 +234,26 @@ def cal_average_density_arrray(num): ##sadece deegeri verilen sayilari topluyor
             sum_num = sum_num + t[1]
         else:
             cikarilacak_sayilar = 1 + cikarilacak_sayilar
-
-    avg = sum_num / (len(num) - cikarilacak_sayilar)
+    no_zero = len ( num )
+    if no_zero == 0:
+        no_zero = 1
+    avg = sum_num / (no_zero - cikarilacak_sayilar)
     return avg
 
 def bigger_than_average_arrray(num): ##sadece deegeri verilen sayilari topluyor
     sum_num = 0
     cikarilacak_sayilar = 0
     buyuk_olanlar_listesi = []
+
     for t in num:
         if t[1] != 0:
             sum_num = sum_num + t[1]
         else:
             cikarilacak_sayilar = 1 + cikarilacak_sayilar
-
-    avg = sum_num / (len(num) - cikarilacak_sayilar)
+    no_zero = len(num)
+    if no_zero == 0:
+        no_zero =1
+    avg = sum_num / (no_zero - cikarilacak_sayilar)
     for t in num:
         if t[1] >= avg:
             buyuk_olanlar_listesi.append(t[0])
@@ -663,8 +692,146 @@ def main_2_5_yogunluk_haritasi_orani_top_5_orani(magaza_id, tarih_ilk , tarih_so
 
 
 
-def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son):
+def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugun yere round fonksiyonu at
     data = get_performancetable ( performas_tablosu,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    #print ( headersiz_data )
+    n = 0
+    print(len(headersiz_data)) # kac tane alan var
+    meterSquareTotal = float(0)
+    densityTotal = float(0)
+    densityPrevTotal = float(0)
+    saleQuantityTotal = float(0)
+    prevsaleQuantityTotal = float(0)
+    prevsaleAmountTotal = float(0)
+    saleAmountTotal = float(0)
+
+    for headers in headersiz_data:
+        #print(headersiz_data[n])
+        #print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
+        #print(headersiz_data[n]["Id"])
+        meterSquareTotal = meterSquareTotal + float(headersiz_data[n]["Metersquare"])
+        densityTotal = densityTotal + float ( headersiz_data[n]["Density"])
+        densityPrevTotal = densityPrevTotal + float ( headersiz_data[n]["DepartmentRectangles"][0]["Density"] )
+        try:
+            saleQuantityTotal = saleQuantityTotal + float ( headersiz_data[n]["AvgSaleQuantity"] ) #eksik data bunu sor
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            continue
+
+        try:
+            densityPrevTotal = densityPrevTotal + float ( headersiz_data[n]["DepartmentRectangles"][0]["AvgSaleAmount"] )
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            continue
+        print("nassiya")
+
+        try:
+            prevsaleAmountTotal = prevsaleAmountTotal + float (headersiz_data[n]["DepartmentRectangles"][0]["AvgSaleAmount"] )
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            continue
+        print("nassiya1")
+
+
+
+        saleAmountTotal = saleAmountTotal + float ( headersiz_data[n]["AvgSaleAmount"] )
+
+
+
+
+        n += 1
+
+
+    print(meterSquareTotal)
+    print(densityTotal)
+    print(densityPrevTotal)
+    print(saleQuantityTotal)
+    print(prevsaleQuantityTotal)
+    print(prevsaleAmountTotal)
+    print(saleAmountTotal)
+
+    En_cok_ziyaret_edilen_ad = ""
+    En_cok_ziyaret_edilen_id = ""
+    En_cok_ziyaret_edilen_sayi = float(0)
+    info_all = []
+
+    n = 0
+    for headers in headersiz_data:
+        print(headersiz_data[n])
+        print("header uzunlugu")
+        print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
+        print ( headersiz_data[n]["Name"] )
+        print(headersiz_data[n]["Id"])
+        print("department rectangles")
+        print ( headersiz_data[n]["DepartmentRectangles"][0]["Density"])
+
+        print("TotalCount")
+        TotalCount = float(headersiz_data[n]["TotalCount"])
+        print(TotalCount)
+        if En_cok_ziyaret_edilen_sayi < TotalCount :
+            En_cok_ziyaret_edilen_sayi = TotalCount
+            En_cok_ziyaret_edilen_ad = headersiz_data[n]["Name"]
+            En_cok_ziyaret_edilen_id = headersiz_data[n]["Id"]
+
+
+
+
+
+        print("Density")
+        Density = float((((headersiz_data[n]["Density"]))*(100))/(densityTotal))
+        print("DensityStoreChange")
+        DensityStoreChange = Density / (float((((headersiz_data[n]["DepartmentRectangles"][0]["Density"]))*(100))/(densityPrevTotal)))
+        print(DensityStoreChange)
+        print("DensityChange")
+        DensityChange = (((float(headersiz_data[n]["Count"]) * float(headersiz_data[n]["Dwell"])) - (float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]) * float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))) / (float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]) * float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))) * 100
+        print(DensityChange)
+
+        print("PrevCount")
+        PrevCount = ((float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))*100
+        print(PrevCount)
+        print("PrevDwell")
+        PrevDwell = ((float(headersiz_data[n]["Dwell"])-float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"])) / float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"])) * 100
+        print(PrevDwell)
+        print("SaleAmount")
+        #SaleAmount = float(headersiz_data[n]["AvgSaleAmount"]) # key error veriyor bunu hallet
+        #print(SaleAmount)
+        print("ConversionRate")
+        #ConversionRate = (float(headersiz_data[n]["AvgSaleAmount"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))/(float(headersiz_data[n]["AvgSaleAmount"]))*100
+        #print(ConversionRate) # key error veriyor bunu hallet
+        print("ConversionChange") #emin olamadim bak
+        print("Enterance_15s")
+        Enterance_15s = (float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"]))*100
+        print(Enterance_15s)
+        print("EntranceChange") #try except koydur hepsinde yok
+        #EntranceChange = ((float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/(float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15Sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"])))
+        #print(EntranceChange)
+
+        n += 1
+        print("/n 1")
+
+    #yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
+
+
+    info_all = [En_cok_ziyaret_edilen_ad,En_cok_ziyaret_edilen_id,En_cok_ziyaret_edilen_sayi]
+    print(headersiz_data)
+    #return headersiz_data
+    return info_all
+
+
+
+#print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
+
+
+def main_2_8_ozel_alan(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( magaza_bazli,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
     # print ( data )
 
     # list_data = json.loads ( data )
@@ -675,20 +842,50 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son):
 
     #yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
 
-    return (headersiz_data)
+    return headersiz_data
 
 
+def main_2_8_saatler_gunluk(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( magaza_bazli,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
 
+    # list_data = json.loads ( data )
 
+    headersiz_data = (data["Data"])
+    # print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[0]["Serial"]
 
+def main_2_8_kisi_sure_gunluk(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( magaza_bazli,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
 
-print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
+    # list_data = json.loads ( data )
+    print("_________")
+    headersiz_data = (data["Data"])
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[1]["Serial"]
 
+print(main_2_8_saatler_gunluk(4777,tarih_ilk , tarih_son))
+
+print(main_2_8_kisi_sure_gunluk(4777,tarih_ilk , tarih_son))
+
+#main_2_8_ozel_alan(4777,tarih_ilk , tarih_son)
 
 
 if __name__ == "__main__":
     #main ()
     print("s")
+
+
 
 
 

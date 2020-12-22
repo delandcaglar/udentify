@@ -4,7 +4,7 @@ from time import sleep
 # import secrets1
 from selenium.webdriver.support.ui import Select
 import secrets1
-import cv2
+#import cv2
 import urllib
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait

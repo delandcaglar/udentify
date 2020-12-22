@@ -5,15 +5,14 @@ from docx.oxml import OxmlElement, ns
 from docx2pdf import convert
 import os
 import io
-import image_corpingv1
+#import image_corpingv1
 import heatmap
 from datetime import date
 import calendar
-import pandas as pd
 import datetime
 import time
 import calendar
-import docx_svg
+#import docx_svg
 
 import request1
 
@@ -39,7 +38,6 @@ magza_statik_dosya_location_ismi = "Under Armour Akasya"
 gereken_dosya_ismi = "Under Armour Akasya"
 magaza_id_no = 240
 magaza_adi = "Kadikoy"
-baslik_adlari = "günlük kişi süre grafiği, saatlik kişi süre grafiği, yoğunluk haritası, mağaza içi yoğunluk dağılımı, metre kare başına düşen yoğunluk haritası, ısı haritası ,performans kıyaslaması, PTW, kategori karşılaştırması"
 
 ilk_tarih = "30/10/2020"
 son_tarih = "13/11/2020"
@@ -482,7 +480,7 @@ def refresh():
 
 
 
-def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,ilk_tarih,son_tarih,magaza_id_yogunluk):
+def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,ilk_tarih,son_tarih,magaza_id_yogunluk,performans_tablosu_id):
     global global_test
 
     ##starting function
@@ -600,6 +598,15 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     yogunlugu_1_in_altindakiler = request1.main_2_5_yogunluk_haritasi_orani_bottom_5_orani ( magaza_id_yogunluk, ilk_tarih, son_tarih )
     print ( "bot_5" )
     print ( yogunlugu_1_in_altindakiler )
+
+    # sayfa-2.7
+    performans_tablosu_listesi = request1.main_2_7_performans_tablosu ( performans_tablosu_id,ilk_tarih, son_tarih )
+    print ( "performans_tablosu_listesi" )
+    print ( performans_tablosu_listesi )
+
+    # sayfa-2.7
+
+
 
 
 
@@ -724,7 +731,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     p = document.add_paragraph(f"       2.5 Metre Kare Başına Düşen Yoğunluk Haritası")
     p = document.add_paragraph(f"       2.6 Isı Haritası")
     p = document.add_paragraph(f"       2.7 Performans Kıyaslaması")
-    p = document.add_paragraph(f"       2.8 PTW")
+    p = document.add_paragraph(f"       2.8 {performans_tablosu_listesi[0].title()}") #.capitilize da olur
     p = document.add_paragraph(f"       2.9 Kategori Karşılaştırması")
 
     p = document.add_paragraph(f"")
@@ -739,6 +746,9 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_heading('1.0 Giriş', 0)
 
     document.add_heading('1.1 Raporun Amacı', level=1)
+
+    baslik_adlari = f"günlük kişi süre grafiği, saatlik kişi süre grafiği, yoğunluk haritası, mağaza içi yoğunluk dağılımı, metre kare başına düşen yoğunluk haritası, ısı haritası ,performans kıyaslaması, {performans_tablosu_listesi[0].title()}, kategori karşılaştırması"
+
     p = document.add_paragraph(f"Bu raporun amacı {magaza_adi} mağazasının belirtilen {tarih} aralığındaki performans metrikleri ({baslik_adlari}) üzerinde yapılan analizler sonucu elde edilen bilgiyi sağlamaktır.")
     #magzalarinin
 
@@ -809,11 +819,11 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     )
 
     document.add_paragraph(
-        f'{ortalamanin_ustundeki_yogunluklar} tarihi yoğunluğun en çok arttığı tarihlerden biridir. Yoğunluktaki artışın sebebi, kişi sayısındaki artıştır.', style='List Bullet'
+        f'{ortalamanin_ustundeki_yogunluklar[0].title()} tarihi yoğunluğun en çok arttığı tarihlerden biridir. Yoğunluktaki artışın sebebi, kişi sayısındaki artıştır.', style='List Bullet'
     )
 
     document.add_paragraph(
-        f'Yoğunluğun en çok artış gösterdiği diğer bir tarih {ortalamanin_ustundeki_yogunluklar}’dir. O gün yoğunluğun artmasının sebebi, mağaza içerisinde geçirilen sürenin artış göstermesidir.', style='List Bullet'
+        f'Yoğunluğun en çok artış gösterdiği diğer bir tarih {ortalamanin_ustundeki_yogunluklar[0].title()}’dir. O gün yoğunluğun artmasının sebebi, mağaza içerisinde geçirilen sürenin artış göstermesidir.', style='List Bullet'
     )
 
 
@@ -873,11 +883,11 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
     document.add_paragraph(
-        f'Yukarıdaki yoğunluk haritası incelendiğinde, mağazanın en yoğun alanlarının {liste_yogunluk_top_5[0]}, {liste_yogunluk_top_5[1]} ve {liste_yogunluk_top_5[2]} alanları olduğu görülür.', style='List Bullet'
+        f'Yukarıdaki yoğunluk haritası incelendiğinde, mağazanın en yoğun alanlarının {liste_yogunluk_top_5[0].title()}, {liste_yogunluk_top_5[1].title()} ve {liste_yogunluk_top_5[2].title()} alanları olduğu görülür.', style='List Bullet'
     )
 
     document.add_paragraph(
-        f'Yoğunluğun en az olduğu alanlar ise; {liste_yogunluk_bottom_5[0]}, {liste_yogunluk_bottom_5[1]}, {liste_yogunluk_bottom_5[2]}, {liste_yogunluk_bottom_5[3]}, ve {liste_yogunluk_bottom_5[4]} alanlarıdır.', style='List Bullet'
+        f'Yoğunluğun en az olduğu alanlar ise; {liste_yogunluk_bottom_5[0].title()}, {liste_yogunluk_bottom_5[1].title()}, {liste_yogunluk_bottom_5[2].title()}, {liste_yogunluk_bottom_5[3].title()}, ve {liste_yogunluk_bottom_5[4].title()} alanlarıdır.', style='List Bullet'
     )
 
     document.add_paragraph(
@@ -936,7 +946,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
     document.add_paragraph(
-        f"Metre kare başına düşen yoğunluklar incelendiğinde, bazı alanlarda bu oranın 1’den küçük olduğu görülür. Bu, birim metre kare başına birim yoğunluktan daha az yoğunluk düştüğünü gösterir.  Birçok alanda metre kare başına düşen yoğunluk 1’in altında kalmıştır. Örneğin; {yogunlugu_1_in_ustundekiler} alanları en düşük metre kare başına düşen yoğunluk oranına sahiptir.", style='List Bullet'
+        f"Metre kare başına düşen yoğunluklar incelendiğinde, bazı alanlarda bu oranın 1’den küçük olduğu görülür. Bu, birim metre kare başına birim yoğunluktan daha az yoğunluk düştüğünü gösterir.  Birçok alanda metre kare başına düşen yoğunluk 1’in altında kalmıştır. Örneğin; {yogunlugu_1_in_ustundekiler[0].title()}, {yogunlugu_1_in_ustundekiler[1].title()}, {yogunlugu_1_in_ustundekiler[2].title()} alanları en düşük metre kare başına düşen yoğunluk oranına sahiptir.", style='List Bullet'
     )
 
     document.add_paragraph(
@@ -944,7 +954,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     )
 
     document.add_paragraph(
-        f"Bazı alanlarda ise bu oran 1’in üstündedir. Yani, birim metre kare başına birim yoğunluktan daha fazlası düşmüştür. Örneğin; {yogunlugu_1_in_altindakiler} alanı.", style='List Bullet'
+        f"Bazı alanlarda ise bu oran 1’in üstündedir. Yani, birim metre kare başına birim yoğunluktan daha fazlası düşmüştür. Örneğin; {yogunlugu_1_in_altindakiler[0].title()}, {yogunlugu_1_in_altindakiler[1].title()}, {yogunlugu_1_in_altindakiler[2].title()} alanları.", style='List Bullet'
     )
 
     document.add_paragraph(
@@ -1039,7 +1049,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         'En çok zaman geçirilen alan ortalama 16 saniye ile men’s run alanı,', style='List Bullet'
     )
     document.add_paragraph(
-        'En çok ziyaret edilen alan günde ortalama 1740 kişi ile FTW alanı olmuştur.', style='List Bullet'
+        f'En çok ziyaret edilen alan günde ortalama {performans_tablosu_listesi[2]} kişi ile {performans_tablosu_listesi[0].title()} alanı olmuştur.', style='List Bullet'
     )
 
 
@@ -1051,15 +1061,15 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     #document.add_page_break()
 
 
-    document.add_heading('2.8 PTW', level=1)
+    document.add_heading(f'2.8 {performans_tablosu_listesi[0].title()}', level=1)
 
 
-    p = document.add_paragraph(f"Mağaza içerisindeki en yoğun alan olan FTW alanının detayına inildiğinde;")
+    p = document.add_paragraph(f"Mağaza içerisindeki en yoğun alan olan {performans_tablosu_listesi[0].title()} alanının detayına inildiğinde;")
 
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/kisi_sure-1.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(PWT Alanı Toplam Kişi Ve Günlük Süre Grafiği)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Toplam Kişi Ve Günlük Süre Grafiği)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -1075,7 +1085,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/kisi_sure_grafigi.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(PWT Alanı Toplam Kişi Ve Saatlik Süre Grafiği)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Toplam Kişi Ve Saatlik Süre Grafiği)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -1098,7 +1108,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(PWT Alanı Yoğunluk Ve Yoğunluk Ortalaması Grafiği)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()}Alanı Yoğunluk Ve Yoğunluk Ortalaması Grafiği)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -1116,7 +1126,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/korelasyonlar.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(PWT Alanı Korelasyon Tablosu)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Korelasyon Tablosu)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -1127,7 +1137,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/ters_ucgen.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(PWT Edinme Hunisi)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Edinme Hunisi)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     document.add_paragraph(
@@ -1139,12 +1149,12 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
 
-    p = document.add_paragraph(f"FTW alanının performans değişimi incelendiğinde;")
+    p = document.add_paragraph(f"{performans_tablosu_listesi[0].title()} alanının performans değişimi incelendiğinde;")
 
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-5.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(PWT Alanı Yüzdelik Perrformans Değişimi Grafiği)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Yüzdelik Perrformans Değişimi Grafiği)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -1324,9 +1334,9 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 refresh()
 
-magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya"],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center"],["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]]
+magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",240],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",240],["Under Armour","İstinye Park",228,"Under Armour Istinye Park",240]]
 
-start_writing_on_docx(firma,magza_statik_dosya_location_ismi,240,ilk_tarih,son_tarih,161)  ##birincisi firma adi ile dosya konumunu bulmaya yariyor   ,ikincisi statik dosya locationlarini bulmaya yariyor
+start_writing_on_docx(firma,magza_statik_dosya_location_ismi,240,ilk_tarih,son_tarih,161,240)  ##birincisi firma adi ile dosya konumunu bulmaya yariyor   ,ikincisi statik dosya locationlarini bulmaya yariyor
 
 global_test =  True
 
@@ -1335,8 +1345,8 @@ global_test =  True
 
 #start_writing_on_docx("Under Armour","under atmour akasyya")
 
-start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,161)
-start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161)
+start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,161,240)
+start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240)
 
 
 

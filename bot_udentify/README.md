@@ -19,7 +19,7 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 
 
-## 1. Udentify_bot nasıl yüklenir:
+## 1. Udentify_bot nasıl yüklenir
 
 pyhthon 3.7+ environment kullanılmalıdır.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırır)
 
