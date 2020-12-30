@@ -923,7 +923,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/en_cok_ziyaret.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(En Çok Vakit Geçirilen Veya En Çok Ziyareet Edilenler Tablosu)")
+    p = document.add_paragraph(f"(En Çok Vakit Geçirilen Veya En Çok Ziyaret Edilenler Tablosu)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -941,7 +941,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk_haritasi.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(Yoğunlık Haritaları Ve Tabloları)")
+    p = document.add_paragraph(f"(Yoğunluk Haritaları Ve Tabloları)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/top5.png"), width=Inches(2) , height=Inches(2))

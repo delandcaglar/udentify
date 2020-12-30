@@ -41,6 +41,7 @@ https://docs.anaconda.com/anaconda/install/
 ```
 ### 1.2 Gerekli library'leri indir:
 ```
+cd {dosyanin konumu}
 İndirdiğiniz dosyalaarın directory'sine gidin
 python -m pip install -r requirements.txt
 ```
@@ -67,7 +68,7 @@ python s_admin.py
 ```
 word dosyalarının her biri firms/{firma ismi}/{firma ismi + konumu}.docx olarak dosyalanmıştır.
 Dosyaları kopyalanmaya hazır haldedir.
-firms/{firma ismi}/ statik {firma ismi + konumu} konumunda mağazaların statik dosyaları bulunkamtadır.
+firms/{firma ismi}/ statik {firma ismi + konumu} konumunda mağazaların statik dosyaları bulunmaktadır.
 
 ```
 ## 3. Executable yapmak istiyorsan
