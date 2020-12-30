@@ -481,7 +481,7 @@ def refresh():
 
 
 
-def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,ilk_tarih,son_tarih,magaza_id_yogunluk,performans_tablosu_id):
+def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,ilk_tarih,son_tarih,magaza_id_yogunluk,performans_tablosu_id,karsilastirilacak_isim_listesi):
     global global_test
 
     ##starting function
@@ -1264,124 +1264,85 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     p.add_run(f"Kategori Karşılaştırması").bold = True
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER"""
 
-
-
+    document.add_page_break ()
     document.add_heading('2.9 Kategori Karşılaştırması', level=1)
 
-    p = document.add_paragraph(f"")
-    p.add_run(f"Women's Run & Men's Run").bold = True
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    kategori_karsilasmasi_1 = "Women's Run"
+    kategori_karsilasmasi_2 = "Men's Run"
 
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-4.png"), width=Inches(6) , height=Inches(0.75))
-    last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
-    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(Women’s ve Men’s Run Alanlarının Yoğunlukları)")
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    def populate_karsilastirma(kategori_karsilasmasi_1, kategori_karsilasmasi_2):
 
+        p = document.add_paragraph(f"")
+        p.add_run(f"{kategori_karsilasmasi_1} & {kategori_karsilasmasi_2}").bold = True
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-
-    p = document.add_paragraph(f"")
-    p.add_run('Mağaza içerisindeki women’s ve men’s run alanlarının yoğunlukları, metre kareleri ve metre kare başına düşen yoğunluk yüzdeleri kıyaslanmıştır.').italic = True
-
-
-    document.add_paragraph(
-        'Mağaza içerisinde her iki alana ayrılan metre kareler yaklaşık olarak eşittir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Men’s run alanı, Women’s run alanının yaklaşık olarak 1.5 katı yoğunluğa sahiptir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Yoğunluk paylarının, satış paylarına paralel olması beklenir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Metre kare başına düşen yoğunluklar incelendiğinde, Men’s run alanının metre kare başına düşen yoğunluğu, Women’s run’dan daha büyüktür ve bu oran 1’in üzerindedir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Yani 1 birim metre kareye 1.15 birim yoğunluk düşmektedir. Alan yoğunluk bakımından verimli kullanılmıştır.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Men’s run alanında yoğunluk/metre kare oranı 1’den küçüktür. Buna göre bu alan, yoğunluk bazında verimli kullanılamamıştır. Alana ayrılan metre karenin büyük geldiği düşünülüyorsa alan kademeli olarak küçültülmeli, metre kare küçülürken satış azalmıyorsa alan küçültülmelidir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Her iki alanda da yoğunluğu ve dolayısıyla satışları arttırmak için alana gelen kişi sayısını ve geçirilen süreyi arttırmak için aksiyon alınmalıdır.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Yoğunluktaki artışın satışı da arttırması beklenir.', style='List Bullet'
-    )
+        document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-4.png"), width=Inches(6) , height=Inches(0.75))
+        last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
+        last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p = document.add_paragraph(f"({kategori_karsilasmasi_1} ve {kategori_karsilasmasi_2} Alanlarının Yoğunlukları)")
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
-    p = document.add_paragraph(f"Detaya inildiğinde;")
-    document.add_paragraph(
-        'Women’s run alanında yoğunluğu oluşturan asıl parametre kişi sayısıdır. Bu alanda yoğunluğu arttırmak için süreyi arttırmaya odaklanmak gerekir. Bu alanda geçirilen ortalama süre sadece 4.9 saniyedir.', style='List Bullet'
-    )
+        p = document.add_paragraph(f"")
+        p.add_run(f'Mağaza içerisindeki {kategori_karsilasmasi_1} ve {kategori_karsilasmasi_1} alanlarının yoğunlukları, metre kareleri ve metre kare başına düşen yoğunluk yüzdeleri kıyaslanmıştır.').italic = True
 
-    document.add_paragraph(
-        'Men’s run alanında ise yoğunluk, kişi değil süre ağırlıklıdır. Bu alanda geçirilen süre ortalama 16 saniyedir. Yoğunluğu arttırmak için kişi sayısı artarken sürenin düşmemesine dikkat etmek gerekir. Kişi sayısını arttırmanın satışları da arttırması beklenir.', style='List Bullet'
-    )
 
+        document.add_paragraph(
+            f'Mağaza içerisinde her iki alana ayrılan metre kareler yaklaşık olarak eşittir.', style='List Bullet'
+        )
+        document.add_paragraph(
+            f'{kategori_karsilasmasi_2} alanı, {kategori_karsilasmasi_1} run alanının yaklaşık olarak 1.5 katı yoğunluğa sahiptir.', style='List Bullet'
+        )
+        document.add_paragraph(
+            'Yoğunluk paylarının, satış paylarına paralel olması beklenir.', style='List Bullet'
+        )
+        document.add_paragraph(
+            f'Metre kare başına düşen yoğunluklar incelendiğinde, {kategori_karsilasmasi_2} alanının metre kare başına düşen yoğunluğu, {kategori_karsilasmasi_1}’dan daha büyüktür ve bu oran 1’in üzerindedir.', style='List Bullet'
+        )
+        document.add_paragraph(
+            f'Yani 1 birim metre kareye 1.15 birim yoğunluk düşmektedir. Alan yoğunluk bakımından verimli kullanılmıştır.', style='List Bullet'
+        )
+        document.add_paragraph(
+            f'{kategori_karsilasmasi_2} alanında yoğunluk/metre kare oranı 1’den küçüktür. Buna göre bu alan, yoğunluk bazında verimli kullanılamamıştır. Alana ayrılan metre karenin büyük geldiği düşünülüyorsa alan kademeli olarak küçültülmeli, metre kare küçülürken satış azalmıyorsa alan küçültülmelidir.', style='List Bullet'
+        )
+        document.add_paragraph(
+            f'Her iki alanda da yoğunluğu ve dolayısıyla satışları arttırmak için alana gelen kişi sayısını ve geçirilen süreyi arttırmak için aksiyon alınmalıdır.', style='List Bullet'
+        )
+        document.add_paragraph(
+            f'Yoğunluktaki artışın satışı da arttırması beklenir.', style='List Bullet'
+        )
+
+        document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/tablo-2.png" ),
+                               width=Inches ( 6 ), height=Inches ( 0.75 ) )
+        last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
+        last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/tablo-1.png" ),
+                               width=Inches ( 6 ), height=Inches ( 0.75 ) )
+        last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
+        last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p = document.add_paragraph ( f"({kategori_karsilasmasi_1} ve {kategori_karsilasmasi_2} Tablosu)" )
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+
+        p = document.add_paragraph(f"Detaya inildiğinde;")
+        document.add_paragraph(
+            f'{kategori_karsilasmasi_1} alanında yoğunluğu oluşturan asıl parametre kişi sayısıdır. Bu alanda yoğunluğu arttırmak için süreyi arttırmaya odaklanmak gerekir. Bu alanda geçirilen ortalama süre sadece 4.9 saniyedir.', style='List Bullet'
+        )
+
+        document.add_paragraph(
+            f'{kategori_karsilasmasi_2} alanında ise yoğunluk, kişi değil süre ağırlıklıdır. Bu alanda geçirilen süre ortalama 16 saniyedir. Yoğunluğu arttırmak için kişi sayısı artarken sürenin düşmemesine dikkat etmek gerekir. Kişi sayısını arttırmanın satışları da arttırması beklenir.', style='List Bullet'
+        )
+        #document.add_page_break ()
+
+
+    for karsilastirilacak in karsilastirilacak_isim_listesi:
+        populate_karsilastirma(karsilastirilacak[0],karsilastirilacak[1])
+
+    populate_karsilastirma(kategori_karsilasmasi_1,kategori_karsilasmasi_2)
+    populate_karsilastirma("Boys","Girls")
     ###-11_______________________________________________
-
-    document.add_page_break()
-    p = document.add_paragraph(f"")
-    p.add_run(f"Boys vs Girls").bold = True
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-3.png"), width=Inches(6) , height=Inches(2))
-    last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
-    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(Metre Kareleri Ve Metre Kare Başına Düşen Yoğunluk Yüzdeleri)")
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-
-
-    p = document.add_paragraph(f"")
-    p.add_run('Mağaza içerisindeki boys ve girls alanlarının yoğunlukları, metre kareleri ve metre kare başına düşen yoğunluk yüzdeleri kıyaslanmıştır.').italic = True
-
-    document.add_paragraph(
-        'Mağaza içerisinde her iki alana ayrılan metre kareler yaklaşık olarak eşittir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Girls alanı, Boys alanının yaklaşık olarak 2 katı yoğunluğa sahiptir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Yoğunluk paylarının, satış paylarına paralel olması beklenir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Metre kare başına düşen yoğunluklar incelendiğinde, Girls alanı eşit metre kareyle daha büyük yoğunluğa sahip olduğu için daha verimlidir. ', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Boys alanında yoğunluk/metre kare oranı 1’den küçüktür. Buna göre bu alan, yoğunluk bazında verimli kullanılamamıştır. Alana ayrılan metre karenin büyük geldiği düşünülüyorsa alan kademeli olarak küçültülmeli, metre kare küçülürken satış azalmıyorsa alan küçültülmelidir.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Girls alanında bu oran yaklaşık olarak 1’dir. Yoğunluğu arttırmak için alana gelen kişi sayısını ve geçirilen süreyi arttırmak için aksiyon alınmalıdır.', style='List Bullet'
-    )
-    document.add_paragraph(
-        'Yoğunluktaki artışın satışı da arttırması beklenir.', style='List Bullet'
-    )
-
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-2.png"), width=Inches(6) , height=Inches(0.75))
-    last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
-    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(Girl's Yoğunluk, Kişi Sayısı, Ortalama Süre, İlgi Oranı Tablosu)")
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-1.png"), width=Inches(6) , height=Inches(0.75))
-    last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
-    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"(Boys's Yoğunluk, Kişi Sayısı, Ortalama Süre, İlgi Oranı Tablosu)")
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-
-    p = document.add_paragraph(f"Detaya inildiğinde;")
-    document.add_paragraph(
-        'Girls alanında yoğunluğu oluşturan asıl parametre kişi sayısıdır. Bu alanda yoğunluğu arttırmak için süreyi arttırmaya odaklanmak gerekir. Bu alanda geçirilen ortalama süre sadece 9.2 saniyedir.', style='List Bullet'
-    )
-
-    document.add_paragraph(
-        'Boys alanında ise yoğunluk, kişi değil süre ağırlıklıdır. Bu alanda geçirilen süre ortalama 16 saniyedir. Yoğunluğu arttırmak için kişi sayısı artarken sürenin düşmemesine dikkat etmek gerekir. Kişi sayısını arttırmanın satışları da arttırması beklenir.', style='List Bullet'
-    )
-
 
 
     p = document.add_paragraph(f"Rapor ile ilgili sorularınızı ve yorumlarınızı hello@udentify.co adresine iletebilirsiniz. İyi çalışmalar!")
@@ -1416,7 +1377,7 @@ refresh()
 
 magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",240],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",240],["Under Armour","İstinye Park",228,"Under Armour Istinye Park",240]]
 
-start_writing_on_docx(firma,magza_statik_dosya_location_ismi,240,ilk_tarih,son_tarih,161,240)  ##birincisi firma adi ile dosya konumunu bulmaya yariyor   ,ikincisi statik dosya locationlarini bulmaya yariyor
+start_writing_on_docx(firma,magza_statik_dosya_location_ismi,240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])  ##birincisi firma adi ile dosya konumunu bulmaya yariyor   ,ikincisi statik dosya locationlarini bulmaya yariyor
 
 global_test =  True
 
@@ -1428,8 +1389,8 @@ global_test =  True
 ilk_tarih = "30/10/2020"
 son_tarih = "13/11/2020"
 
-start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240)
-start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240)
+start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240,[["a","b"],["c","d"]])
+start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])
 
 
 
