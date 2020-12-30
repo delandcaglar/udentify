@@ -15,6 +15,7 @@ import calendar
 #import docx_svg
 
 import request1
+from scipy.stats.stats import pearsonr
 
 
 
@@ -603,8 +604,74 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     performans_tablosu_listesi = request1.main_2_7_performans_tablosu ( performans_tablosu_id,ilk_tarih, son_tarih )
     print ( "performans_tablosu_listesi" )
     print ( performans_tablosu_listesi )
+    magaza_bolumu_id = (performans_tablosu_listesi[1])
 
     # sayfa-2.7
+
+
+    gunler_2_8 = request1.main_2_8_saatler_gunluk(magaza_bolumu_id, ilk_tarih, son_tarih)
+
+    gunler_ve_musteri_2_8 = request1.main_2_8_kisi_miktari(magaza_bolumu_id, ilk_tarih, son_tarih)
+
+    gunler_ve_sure_2_8 = request1.main_2_8_kisi_sure(magaza_bolumu_id, ilk_tarih, son_tarih)
+
+    hafta_ici_degerler_2_8 , haftasonu_degerleri_2_8 = request1.gunleri_classifiye_et(gunler_2_8)[0],request1.gunleri_classifiye_et(gunler_2_8)[1]
+
+    print("ilk_deneme")
+    print(hafta_ici_degerler_2_8)
+    print(haftasonu_degerleri_2_8)
+
+    hafta_ici_ortalama_2_8, haftasonu_ortalama_2_8 = request1.hafta_ici_hafta_sonu_ortalamalar(hafta_ici_degerler_2_8,haftasonu_degerleri_2_8,gunler_ve_musteri_2_8)[0],request1.hafta_ici_hafta_sonu_ortalamalar(hafta_ici_degerler_2_8,haftasonu_degerleri_2_8,gunler_ve_musteri_2_8)[1]
+
+    print(hafta_ici_ortalama_2_8)
+    print(haftasonu_ortalama_2_8)
+
+    katsayi_2_8 = request1.hafta_ici_hafta_sonu_oran_karsilastirmasi(hafta_ici_ortalama_2_8,haftasonu_ortalama_2_8)
+    print(katsayi_2_8)
+
+    artis_2_8 = request1.hafta_ici_hafta_sonu_buyukluk_karsilastirmasi(hafta_ici_ortalama_2_8,haftasonu_ortalama_2_8)
+
+    ortalama_sure_2_8 = request1.gunluk_ortalama_sure_2_8(gunler_ve_sure_2_8)
+
+    #### saatlik kisi sure grafigi
+
+    saatler_listes_2_8_ = (request1.saatler_2_8_ ( magaza_bolumu_id, ilk_tarih, son_tarih ))
+    kisi_sure_saatlik_listes_2_8_ = (request1.toplam_kisi_sure_saatlik_2_8_ ( magaza_bolumu_id, ilk_tarih, son_tarih ))
+
+    array = list ( zip ( saatler_listes_2_8_, kisi_sure_saatlik_listes_2_8_ ) )
+    artisin_oldugu_sure_2_8 = request1.max_number_array ( array )
+    print ( artisin_oldugu_sure_2_8 )
+
+    kisi_sure_saatlik_liste_2_8_ = (request1.kisi_sure_saatlik_2_8_ ( magaza_bolumu_id, ilk_tarih, son_tarih ))
+
+    saat_sure_2_8 = request1.saat_sure_saatlik_2_8_ ( magaza_bolumu_id, ilk_tarih, son_tarih )
+
+    r_degeri = (pearsonr ( kisi_sure_saatlik_liste_2_8_, saat_sure_2_8 ))
+
+    korelasyon_degeri_2_8= float("{:.2f}".format(round(r_degeri[0], 3)))
+
+
+    korelasyon_turu = request1.korelasyon_orani(korelasyon_degeri_2_8)
+
+    #2_8 yogunluk
+    yogunluk_tarihleri_2_8 = (request1.yogunluk_listesi_tarihler_2_8_ ( magaza_bolumu_id, ilk_tarih, son_tarih ))
+    yougunluk_miktarlari_2_8 = (request1.yogunluk_listesi_2_8_ ( magaza_bolumu_id, ilk_tarih, son_tarih ))
+    array_yogunluk_2_8 = list ( zip ( yogunluk_tarihleri_2_8, yougunluk_miktarlari_2_8 ) )
+    print ( array_yogunluk_2_8 )
+    print ( request1.cal_average_density_arrray ( array_yogunluk_2_8 ) )
+    print ( request1.bigger_than_average_arrray ( array_yogunluk_2_8 ) )
+    ortalamanin_ustundeki_yogunluklar_2_8 = request1.bigger_than_average_arrray ( array_yogunluk_2_8 )
+    print ( "bak____" )
+    print ( ortalamanin_ustundeki_yogunluklar_2_8 )
+
+    yogunlugu_fazla_olan_tarihler_2_8 = (request1.gunleri_classifiye_et ( ortalamanin_ustundeki_yogunluklar_2_8 ))
+
+
+
+    hafta_ici_hafta_sonu_oranlari_2_8 = request1.hafta_ici_hafta_sonu_oranlari(yogunlugu_fazla_olan_tarihler_2_8[0],yogunlugu_fazla_olan_tarihler_2_8[1])
+
+    edinme_hunisi_yuzde = request1.main_2_8_edinme_hunisi(performans_tablosu_listesi[4],ilk_tarih, son_tarih) # burayı a veya b ye goree ayarlayabılıyoruz
+
 
 
 
@@ -802,7 +869,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     )
 
     document.add_paragraph(
-        f"Hafta sonu mağazaya gelen ziyaretçi sayısı, hafta içinin {hafta_ici_hafta_sonu_musteri_orani} katıdır.", style='List Bullet'
+        f"Hafta sonu mağazaya gelen ortalama ziyaretçi sayısı, hafta içinin {hafta_ici_hafta_sonu_musteri_orani} katıdır.", style='List Bullet'
     )
 
 
@@ -952,9 +1019,20 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_paragraph(
         'Bu alanlarda, metre karenin küçültülmesi düşünülebilir. Buna karar vermek için metre kare kademeli olarak küçültülüp bunun satışa etkisi incelenmelidir. Alan küçülürken satış azalmıyorsa alan küçültülmelidir.', style='List Bullet'
     )
+    try:
+        listeyy = f"{yogunlugu_1_in_altindakiler[0].title ()}, {yogunlugu_1_in_altindakiler[1].title ()}, {yogunlugu_1_in_altindakiler[2].title ()}"
+    except:
+        try:
+            listeyy = f"{yogunlugu_1_in_altindakiler[0].title ()}, {yogunlugu_1_in_altindakiler[1].title ()}"
+        except:
+            try:
+                listeyy = f"{yogunlugu_1_in_altindakiler[0].title ()}"
+            except:
+                listeyy = f"hepsi cok iyi"
+
 
     document.add_paragraph(
-        f"Bazı alanlarda ise bu oran 1’in üstündedir. Yani, birim metre kare başına birim yoğunluktan daha fazlası düşmüştür. Örneğin; {yogunlugu_1_in_altindakiler[0].title()}, {yogunlugu_1_in_altindakiler[1].title()}, {yogunlugu_1_in_altindakiler[2].title()} alanları.", style='List Bullet'
+        f"Bazı alanlarda ise bu oran 1’in üstündedir. Yani, birim metre kare başına birim yoğunluktan daha fazlası düşmüştür. Örneğin; {listeyy} alanları.", style='List Bullet'
     )
 
     document.add_paragraph(
@@ -1074,11 +1152,11 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
     document.add_paragraph(
-        'Günlük kişi süre grafiği incelendiğinde, hafta sonu mağazaya gelen kişi sayısının hafta içinin 1,36 katı olduğu görülür.', style='List Bullet'
+        f'Günlük kişi süre grafiği incelendiğinde, hafta sonu mağazaya gelen ortalama kişi sayısı hafta sonuna göre {artis_2_8} Bu oran {katsayi_2_8} katıdır.', style='List Bullet'
     )
 
     document.add_paragraph(
-        'Bu alana gelen bir kişinin alanda geçirdiği ortalama süre 14.59 saniyedir.', style='List Bullet'
+        f'Bu alana gelen bir kişinin alanda geçirdiği ortalama süre {ortalama_sure_2_8} saniyedir.', style='List Bullet'
     )
 
 
@@ -1090,15 +1168,17 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
     document.add_paragraph(
-        'Saatlik kişi süre grafiği incelendiğinde mağazaya en çok sayıda ziyaretçinin geldiği zaman aralığının 17-18 saatleri arası olduğu görülür.', style='List Bullet'
+        f'Saatlik kişi süre grafiği incelendiğinde mağazaya en çok sayıda ziyaretçinin geldiği zaman aralığının {artisin_oldugu_sure_2_8} saatleri arası olduğu görülür.', style='List Bullet'
+    )
+
+    document.add_paragraph (
+        'Geçirilen sürenin arttığı saatlerde müşteri ilgisi artmaktadır.', style='List Bullet'
     )
 
     document.add_paragraph(
-        'Kişi sayısı gün içerisinde değişiklik gösterirken geçirilen süre neredeyse sabit kalmıştır.', style='List Bullet'
+        f'Kişi sayısı ile süre korelasyonu {korelasyon_degeri_2_8} dir, yani {korelasyon_turu} vardır.', style='List Bullet'
     )
-    document.add_paragraph(
-        'Geçirilen sürenin arttığı saatlerde müşteri ilgisi artmaktadır.', style='List Bullet'
-    )
+
 
     document.add_paragraph(
         'Bu saatlerde, artan yoğunluk potansiyelini satışa dönüştürmek için personel ilgisine ekstra dikkat etmek gerekir.', style='List Bullet'
@@ -1108,16 +1188,16 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()}Alanı Yoğunluk Ve Yoğunluk Ortalaması Grafiği)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Yoğunluk Ve Yoğunluk Ortalaması Grafiği)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
     document.add_paragraph(
-        'Yoğunluk grafiğinde, yoğunluğun ortalamanın üstünde ve altında kaldığı günler görülmektedir. Yoğunluğun arttığı günlerde, satışın da artması beklenir.', style='List Bullet'
+        f'Yoğunluk grafiğinde, yoğunluğun ortalamanın üstünde ve altında kaldığı günler görülmektedir. Yoğuluğun arttığı tarihler {request1.list_to_string(ortalamanin_ustundeki_yogunluklar_2_8)} olarak gözükmektedir. Yoğunluğun arttığı günlerde, satışın da artması beklenir.', style='List Bullet'
     )
 
     document.add_paragraph(
-        'Yoğunluğun en çok arttığı tarihler kişi sayısının artmasına bağlı olarak hafta sonlarıdır.', style='List Bullet'
+        f'{hafta_ici_hafta_sonu_oranlari_2_8}', style='List Bullet'
     )
 
     ##-_____________________________________________________
@@ -1143,9 +1223,9 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_paragraph(
         'Edinme hunisi incelendiğinde, alana gelen kişilerin', style='List Bullet'
     )
-    p = document.add_paragraph(f"	13%’si alanda 30 saniye ve üzerinde,")
-    p = document.add_paragraph(f"	25%’si 20 saniye ve üzerinde, ")
-    p = document.add_paragraph(f"	35%’si 15 saniye ve üzerinde zaman geçirmektedir.")
+    p = document.add_paragraph(f"o 15 saniye ve üzeri alanında {edinme_hunisi_yuzde[2][1]}%.")
+    p = document.add_paragraph(f"o 10 saniye ve üzeri alanında {edinme_hunisi_yuzde[1][1]}%.")
+    p = document.add_paragraph(f"o 3 saniye ve üzeri alanında {edinme_hunisi_yuzde[0][1]}% zaman geçirilmektedir.")
 
 
 
@@ -1154,7 +1234,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-5.png"), width=Inches(6) , height=Inches(2))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Yüzdelik Perrformans Değişimi Grafiği)")
+    p = document.add_paragraph(f"({performans_tablosu_listesi[0].title()} Alanı Yüzdelik Performans Değişimi Grafiği)")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
@@ -1345,7 +1425,10 @@ global_test =  True
 
 #start_writing_on_docx("Under Armour","under atmour akasyya")
 
-start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,161,240)
+ilk_tarih = "30/10/2020"
+son_tarih = "13/11/2020"
+
+start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240)
 start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240)
 
 

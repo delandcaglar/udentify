@@ -5,6 +5,10 @@ from decimal import *
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+import datetime
+import time
+import calendar
+from scipy.stats.stats import pearsonr
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
@@ -33,8 +37,8 @@ APITOKEN = ""
 
 
 magaza_id = 240
-tarih_ilk = "30/10/2020"
-tarih_son = "13/11/2020"
+tarih_ilk = "16/11/2020"
+tarih_son = "02/12/2020"
 
 
 url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
@@ -50,7 +54,14 @@ deneme2_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}0&stime=10:00&etime
 
 devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=10:00&etime=22:00&filter=1&tzoffset=0"
 
-magaza_bazli = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+gunluk_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+
+
+yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=0"
+
+
+edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset=0"  # 3, 10 , 15 sabit
 
 
 
@@ -98,6 +109,8 @@ def main(url1):
     #list_data = json.loads ( headersiz_data )
 
     #print(list_data['fruits'])
+
+
 def main1_1_tarih (magaza_id, tarih_ilk , tarih_son):
     data = get_performancetable ( url1 , magaza_id, tarih_ilk, tarih_son ) ##240 akasyaya baktigimiz icin
     #print ( data )
@@ -184,6 +197,20 @@ def main_1_1_yogunluk_listesi(magaza_id, tarih_ilk , tarih_son):
     # print ( headersiz_data[4]["Serial"] )
 
     return headersiz_data[4]["Serial"]  # yogunluk_listesi =
+
+
+def list_to_string(s):
+    # initialize an empty string
+    str1 = " "
+
+    elma = [x for y in (s[i:i+1] + [','] * (i < len(s) - 1) for i in range(0, len(s), 1)) for x in y]
+    #print(elma)
+    # return string
+    return (str1.join (elma))
+
+
+
+
 
 def cal_average(num):
     sum_num = 0
@@ -452,6 +479,7 @@ def main_2_3_yogunluk_haritasi_top_5(magaza_id, tarih_ilk , tarih_son):
     # list_data = json.loads ( data )
 
     headersiz_data = (data["Data"])
+
     print ( headersiz_data )
 
 
@@ -699,7 +727,7 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
     # list_data = json.loads ( data )
 
     headersiz_data = (data["Data"])
-    #print ( headersiz_data )
+    print ( headersiz_data )
     n = 0
     print(len(headersiz_data)) # kac tane alan var
     meterSquareTotal = float(0)
@@ -771,17 +799,30 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
         print ( headersiz_data[n]["Name"] )
         print(headersiz_data[n]["Id"])
         print("department rectangles")
-        print ( headersiz_data[n]["DepartmentRectangles"][0]["Density"])
+        #print ( headersiz_data[n]["DepartmentRectangles"][0]["Density"])
 
         print("TotalCount")
         TotalCount = float(headersiz_data[n]["TotalCount"])
         print(TotalCount)
         if En_cok_ziyaret_edilen_sayi < TotalCount :
+            print("son_denemeeeee")
+
             En_cok_ziyaret_edilen_sayi = TotalCount
             En_cok_ziyaret_edilen_ad = headersiz_data[n]["Name"]
             En_cok_ziyaret_edilen_id = headersiz_data[n]["Id"]
+            print ( En_cok_ziyaret_edilen_sayi )
+            print ( En_cok_ziyaret_edilen_ad )
+            print ( En_cok_ziyaret_edilen_id )
+            try:
+                En_cok_ziyaret_edilen_id1 = headersiz_data[n]["DepartmentRectangles"][0]["Id"]
+                print (En_cok_ziyaret_edilen_id1)
+                En_cok_ziyaret_edilen_id2= headersiz_data[n]["DepartmentRectangles"][1]["Id"]
+                print ( En_cok_ziyaret_edilen_id2 )
 
-
+            except Exception as e:
+                log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
+                app_log.info ( log_info )
+                continue
 
 
 
@@ -819,19 +860,22 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
 
     #yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
 
+    try:
+        info_all = [En_cok_ziyaret_edilen_ad,En_cok_ziyaret_edilen_id,En_cok_ziyaret_edilen_sayi,En_cok_ziyaret_edilen_id1,En_cok_ziyaret_edilen_id2]
+    except:
+        info_all = [En_cok_ziyaret_edilen_ad, En_cok_ziyaret_edilen_id, En_cok_ziyaret_edilen_sayi]
 
-    info_all = [En_cok_ziyaret_edilen_ad,En_cok_ziyaret_edilen_id,En_cok_ziyaret_edilen_sayi]
     print(headersiz_data)
     #return headersiz_data
     return info_all
 
 
 
-#print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
+print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
 
 
 def main_2_8_ozel_alan(magaza_id, tarih_ilk , tarih_son):
-    data = get_performancetable ( magaza_bazli,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
     # print ( data )
 
     # list_data = json.loads ( data )
@@ -845,8 +889,10 @@ def main_2_8_ozel_alan(magaza_id, tarih_ilk , tarih_son):
     return headersiz_data
 
 
+
+
 def main_2_8_saatler_gunluk(magaza_id, tarih_ilk , tarih_son):
-    data = get_performancetable ( magaza_bazli,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
     # print ( data )
 
     # list_data = json.loads ( data )
@@ -860,12 +906,11 @@ def main_2_8_saatler_gunluk(magaza_id, tarih_ilk , tarih_son):
     # print ( headersiz_data[4]["Serial"] )
     return headersiz_data[0]["Serial"]
 
-def main_2_8_kisi_sure_gunluk(magaza_id, tarih_ilk , tarih_son):
-    data = get_performancetable ( magaza_bazli,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+def main_2_8_kisi_miktari(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
     # print ( data )
 
     # list_data = json.loads ( data )
-    print("_________")
     headersiz_data = (data["Data"])
     # print ( "________________________________" )
     # print ( headersiz_data[0]["Name"] )  # Labels tarih
@@ -874,11 +919,275 @@ def main_2_8_kisi_sure_gunluk(magaza_id, tarih_ilk , tarih_son):
     # print ( headersiz_data[4]["Serial"] )
     return headersiz_data[1]["Serial"]
 
-print(main_2_8_saatler_gunluk(4777,tarih_ilk , tarih_son))
+def main_2_8_kisi_sure(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
 
-print(main_2_8_kisi_sure_gunluk(4777,tarih_ilk , tarih_son))
+    # list_data = json.loads ( data )
+    print("_________main_2_8_kisi_miktari")
+    headersiz_data = (data["Data"])
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return (headersiz_data[3]["Serial"])
+
+
+
+def findDay(date):
+    born = datetime.datetime.strptime(date, "%d/%m/%Y").weekday()
+    return (calendar.day_name[born])
+
+def gunleri_classifiye_et(gunler):
+    hafta_sonu_degerleri = []
+    hafta_ici_degerleri = []
+    for gun in gunler:
+        if (findDay(gun) == "Sunday") or (findDay(gun) == "Saturday"):
+            #print(gun)
+            index = gunler.index ( gun )  # sifirdan basliyor
+            #print ( 'The index of e:', index )
+            #print("bugun sunday")
+            hafta_sonu_degerleri.append ( index )
+        else:
+            #print(gun)
+            index = gunler.index ( gun )  # sifirdan basliyor
+            #print ( 'The index of e:', index )
+            hafta_ici_degerleri.append(index)
+    return hafta_ici_degerleri,hafta_sonu_degerleri
+
+def hafta_ici_hafta_sonu_ortalamalar(hafta_ici_degerleri,hafta_sonu_degerleri,gunler_ve_musteri):
+    hafta_ici_ortalama_listesi = []
+    hafta_sonu_ortalama_listesi = []
+    for hafta_ici_degerler in hafta_ici_degerleri:
+         #print(gunler_ve_musteri[hafta_ici_degerler])
+         hafta_ici_ortalama_listesi.append(gunler_ve_musteri[hafta_ici_degerler])
+
+    hafta_ici_ortalama = cal_average(hafta_ici_ortalama_listesi)
+    #print(hafta_ici_ortalama)
+    for hafta_sonu_degerler in hafta_sonu_degerleri:
+        #print ( gunler_ve_musteri[hafta_sonu_degerler] )
+        hafta_sonu_ortalama_listesi.append ( gunler_ve_musteri[hafta_sonu_degerler]  )
+    hafta_sonu_ortalama = cal_average ( hafta_sonu_ortalama_listesi )
+    #print ( hafta_sonu_ortalama )
+    return(hafta_ici_ortalama,hafta_sonu_ortalama)
+
+def hafta_ici_hafta_sonu_oran_karsilastirmasi(hafta_ici_ortalama,hafta_sonu_ortalama):
+    #print(hafta_sonu_ortalama / hafta_ici_ortalama)
+    return ("{:.2f}".format(round((hafta_sonu_ortalama / hafta_ici_ortalama), 2))) # en yakin ikinci basamaga yuvarliyor
+
+def hafta_ici_hafta_sonu_buyukluk_karsilastirmasi(hafta_ici_ortalama,hafta_sonu_ortalama):
+
+    if hafta_sonu_ortalama > hafta_ici_ortalama:
+        return "artmaktadır."
+    elif hafta_sonu_ortalama < hafta_ici_ortalama:
+        return "azalmaktadır."
+    elif hafta_sonu_ortalama > hafta_ici_ortalama:
+        return "hafta içi ile ortalamada günlük olarak aynı kalmaktadır."
+
+def gunluk_ortalama_sure_2_8(gunler_ve_sure): ##tum gunluk sureleri topla gunluk sure sayisina bol
+    global gunluk_ortalama_sure #sundan bir emin ol
+    toplam_deger = float(0)
+    for gunler in gunler_ve_sure:
+        toplam_deger = toplam_deger + gunler
+    return ("{:.2f}".format(round(toplam_deger/(len(gunler_ve_sure)), 2)))
+
+# gunler = main_2_8_saatler_gunluk(4777,tarih_ilk , tarih_son)
+# gunler_ve_musteri = main_2_8_kisi_miktari(4777,tarih_ilk , tarih_son)
+# gunler_ve_sure = main_2_8_kisi_sure(4777,tarih_ilk , tarih_son)
+# print(gunluk_ortalama_sure_2_8(gunler_ve_sure))
+# print("bababa")
+# print(gunleri_classifiye_et(main_2_8_saatler_gunluk(4777,tarih_ilk , tarih_son)))
+# print(hafta_ici_hafta_sonu_ortalamalar(gunleri_classifiye_et(main_2_8_saatler_gunluk(4777,tarih_ilk , tarih_son))[0],gunleri_classifiye_et(main_2_8_saatler_gunluk(4777,tarih_ilk , tarih_son))[1],main_2_8_kisi_miktari(4777,tarih_ilk , tarih_son)))
+# print(hafta_ici_hafta_sonu_oran_karsilastirmasi(1760.6923076923076, 1796.25))
+# print(hafta_ici_hafta_sonu_buyukluk_karsilastirmasi(1760.6923076923076,1796.25))
+
+def saatler_2_8_(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( saatlik_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    # print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[0]["Serial"]
+
+def toplam_kisi_sure_saatlik_2_8_(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( saatlik_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    #print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[2]["Serial"]
+
+def saat_sure_saatlik_2_8_(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( saatlik_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    #print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[3]["Serial"]
+
+def kisi_sure_saatlik_2_8_(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( saatlik_kisi_sure_grafigi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    print("bakbakbak")
+    print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[1]["Serial"]
+
+
+# kisi_sure_saatlik_liste_2_8_ = (kisi_sure_saatlik_2_8_(4777,tarih_ilk , tarih_son))
+# #lilil = (saatler_2_8_(4777,tarih_ilk , tarih_son))
+# #lilil1 = (toplam_kisi_sure_saatlik_2_8_(4777,tarih_ilk , tarih_son))
+# saat_sure_2_8 = saat_sure_saatlik_2_8_(4777,tarih_ilk , tarih_son)
+#
+# #sure corrolated olabilir #sure sabit kalabilir #sure corralated olmayabilir
+#
+# print(cal_average(saat_sure_2_8))
+# print("sss")
+# print(saat_sure_2_8) #sure
+# # print(lilil)
+# # print(lilil1)
+# # array = list ( zip ( lilil, lilil1 ) )
+# # elma = max_number_array ( array )
+# print("ornekk")
+#
+#
+# r_degeri = (pearsonr(kisi_sure_saatlik_liste_2_8_,saat_sure_2_8))
+
+def korelasyon_orani(r_degeri):
+    if r_degeri >= 0:
+        if 0.85 <= r_degeri <= 1:
+            return("pozitif güçlü korelasyon")
+        if 0.5 <= r_degeri <= 0.85:
+            return("pozitif orta korelasyon")
+        if 0.1 <= r_degeri <= 0.5:
+            return("pozitif zayıf korelasyon")
+        if  0 <= r_degeri <= 0.1:
+            return("pozitif çok zayıf korelasyon")
+    else:
+        if -0.85 <= r_degeri <= -1:
+            return("negatif güçlü korelasyon")
+        if -0.5 <= r_degeri <= -0.85:
+            return("negatif orta korelasyon")
+        if -0.1 <= r_degeri <= -0.5:
+            return("negatif zayıf korelasyon")
+        if -0 <= r_degeri <= -0.1:
+            return("negatif çok zayıf korelasyon")
+
+#print(korelasyon_orani(r_degeri[0]))
 
 #main_2_8_ozel_alan(4777,tarih_ilk , tarih_son)
+
+def yogunluk_listesi_tarihler_2_8_(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( yogunluk_haritasi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    # print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[0]["Serial"]
+
+
+def yogunluk_listesi_2_8_(magaza_id, tarih_ilk , tarih_son):
+    data = get_performancetable ( yogunluk_haritasi_2_8,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    #print(headersiz_data)
+    # print("________________________________")
+    # print(headersiz_data[0]["Name"]) # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+
+    return headersiz_data[4]["Serial"]  # yogunluk_listesi =
+
+
+# yogunluk_tarihleri_2_8 = (yogunluk_listesi_tarihler_2_8_(4777,tarih_ilk , tarih_son))
+# yougunluk_miktarlari_2_8 = (yogunluk_listesi_2_8_(4777,tarih_ilk , tarih_son))
+# array_yogunluk_2_8 = list ( zip ( yogunluk_tarihleri_2_8, yougunluk_miktarlari_2_8 ) )
+# print ( array_yogunluk_2_8 )
+# print ( cal_average_density_arrray ( array_yogunluk_2_8 ) )
+# print ( bigger_than_average_arrray ( array_yogunluk_2_8 ) )
+# ortalamanin_ustundeki_yogunluklar_2_8 = bigger_than_average_arrray ( array_yogunluk_2_8 )
+# print("bak____")
+# print(ortalamanin_ustundeki_yogunluklar_2_8)
+# yogunlugu_fazla_olan_tarihler_2_8 = (gunleri_classifiye_et(ortalamanin_ustundeki_yogunluklar_2_8))
+
+def hafta_ici_hafta_sonu_oranlari(hafta_ici, hafta_sonu):
+    if len(hafta_ici) == len(hafta_sonu):
+        return(f"Yoğunluğu ortalamanın üstünde olan günler hafta içinde ve hafta sonunda aynıdır. Miktarları {len(hafta_sonu)} olarak ortaya çıkmıştır.")
+    if len(hafta_ici) > len(hafta_sonu):
+        return ( f"Yoğunluğu ortalamanın üstünde olan günler hafta içinde daha fazladır miktarları sırasıyla {len(hafta_sonu)} ve {len(hafta_ici)} olarak ortaya çıkmıştır." )
+    if len ( hafta_sonu ) > len ( hafta_ici ):
+        return ( f"Yoğunluğu ortalamanın üstünde olan günler hafta sonunda daha fazladır ve miktarları sırasıyla {len(hafta_sonu)} ve {len(hafta_ici)} olarak ortaya çıkmıştır." )
+
+# hafta_ici_hafta_sonu_oranlari(yogunlugu_fazla_olan_tarihler_2_8[0],yogunlugu_fazla_olan_tarihler_2_8[1])
+def main_2_8_edinme_hunisi(magaza_id, tarih_ilk , tarih_son): #degeerleri 3s 10s 15s
+    data = get_performancetable ( edinme_hunisi_url,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+
+    #list_data = json.loads ( data )
+    print("_________ edinme hunisii")
+    headersiz_data = (data["Data"])
+    saniye_3 = headersiz_data[0]
+    saniye_10 = headersiz_data[1]
+    saniye_15 = headersiz_data[2]
+
+    saniye_3_yuzde = float(100)
+    saniye_10_yuzde = round(float(headersiz_data[1])/float(headersiz_data[0])*100)
+    saniye_15_yuzde = round(float(headersiz_data[2])/float(headersiz_data[0])*100)
+
+    saniye_liste = [saniye_3,saniye_10,saniye_15]
+    print(saniye_liste)
+    yuzde_liste = [saniye_3_yuzde,saniye_10_yuzde,saniye_15_yuzde]
+    print ( yuzde_liste )
+    array = list ( zip ( saniye_liste, yuzde_liste ) )
+
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return array
 
 
 if __name__ == "__main__":
@@ -945,3 +1254,8 @@ if __name__ == "__main__":
 #aksam_ortalmasi = (cal_average_array ( aksam_listesi ))
 #print ( sabah_ogle_aksam ( sabah_ortalmasi, oglen_ortalmasi, aksam_ortalmasi ) )
 #print ( max_number_array ( array ) )
+
+
+
+# Korelasyon mantigi == https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.stats.pearsonr.html
+# Korelasyon aciklamasi == https://www.ck12.org/c/statistics/linear-correlation-and-regression/lesson/Linear-Correlation-Coefficient-PST/#:~:text=Linear%20correlation%20is%20a%20measure,strength%20of%20the%20linear%20relationship.
