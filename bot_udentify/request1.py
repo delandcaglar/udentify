@@ -37,8 +37,10 @@ APITOKEN = ""
 
 
 magaza_id = 240
-tarih_ilk = "16/11/2020"
-tarih_son = "02/12/2020"
+# tarih_ilk = "16/11/2020"
+# tarih_son = "02/12/2020"
+tarih_ilk = "16/10/2020"
+tarih_son = "30/10/2020"
 
 
 url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
@@ -871,7 +873,7 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
 
 
 
-print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
+
 
 
 def main_2_8_ozel_alan(magaza_id, tarih_ilk , tarih_son):
@@ -1160,8 +1162,8 @@ def hafta_ici_hafta_sonu_oranlari(hafta_ici, hafta_sonu):
         return ( f"Yoğunluğu ortalamanın üstünde olan günler hafta sonunda daha fazladır ve miktarları sırasıyla {len(hafta_sonu)} ve {len(hafta_ici)} olarak ortaya çıkmıştır." )
 
 # hafta_ici_hafta_sonu_oranlari(yogunlugu_fazla_olan_tarihler_2_8[0],yogunlugu_fazla_olan_tarihler_2_8[1])
-def main_2_8_edinme_hunisi(magaza_id, tarih_ilk , tarih_son): #degeerleri 3s 10s 15s
-    data = get_performancetable ( edinme_hunisi_url,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+def main_2_8_edinme_hunisi(huni_id, tarih_ilk , tarih_son): #degeerleri 3s 10s 15s
+    data = get_performancetable ( edinme_hunisi_url,huni_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
     # print ( data )
 
 
@@ -1191,10 +1193,13 @@ def main_2_8_edinme_hunisi(magaza_id, tarih_ilk , tarih_son): #degeerleri 3s 10s
 
 
 if __name__ == "__main__":
+    # print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
     #main ()
     print("s")
+    tarih_ilk = "01/12/2020"
+    tarih_son = "25/12/2020"
 
-
+    print(main_2_8_edinme_hunisi ( 11162, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
 
 
 
