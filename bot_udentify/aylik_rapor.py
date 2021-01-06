@@ -1373,25 +1373,29 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
 
-refresh()
+#refresh() # burayi degistirdin
 
-magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",240],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",240],["Under Armour","İstinye Park",228,"Under Armour Istinye Park",240]]
 
-start_writing_on_docx(firma,magza_statik_dosya_location_ismi,240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])  ##birincisi firma adi ile dosya konumunu bulmaya yariyor   ,ikincisi statik dosya locationlarini bulmaya yariyor
-
-global_test =  True
 
 #start_writing_on_docx(magza_statik_dosya_location,magaza_dosyasi_ismi,200,ilk_tarih,son_tarih,gereken_dosya_ismi)
 
 
 #start_writing_on_docx("Under Armour","under atmour akasyya")
 
-ilk_tarih = "30/10/2020"
-son_tarih = "13/11/2020"
 
-start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240,[["a","b"],["c","d"]])
-start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])
+#burasi test kismi
+
+# magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",240],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",240],["Under Armour","İstinye Park",228,"Under Armour Istinye Park",240]]
+#
+# start_writing_on_docx(firma,magza_statik_dosya_location_ismi,240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])  ##birincisi firma adi ile dosya konumunu bulmaya yariyor   ,ikincisi statik dosya locationlarini bulmaya yariyor
+#
+# global_test =  True
+#
+# ilk_tarih = "30/10/2020"
+# son_tarih = "13/11/2020"
+#
+# start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240,[["a","b"],["c","d"]])
+# start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])
 
 
 
-#convert("/Users/ilkedelandcaglar/Downloads/udentıfy/microsoft_try/demo1.docx") #access problemini coz
