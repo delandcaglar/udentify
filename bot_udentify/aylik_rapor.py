@@ -671,7 +671,9 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     hafta_ici_hafta_sonu_oranlari_2_8 = request1.hafta_ici_hafta_sonu_oranlari(yogunlugu_fazla_olan_tarihler_2_8[0],yogunlugu_fazla_olan_tarihler_2_8[1])
 
     edinme_hunisi_yuzde = request1.main_2_8_edinme_hunisi(performans_tablosu_listesi[4],ilk_tarih, son_tarih) # burayı a veya b ye goree ayarlayabılıyoruz
-
+    print("deneme1111111")
+    print(performans_tablosu_listesi)
+    print(performans_tablosu_listesi[4])
 
 
 
@@ -1394,7 +1396,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 # ilk_tarih = "30/10/2020"
 # son_tarih = "13/11/2020"
 #
-# start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240,[["a","b"],["c","d"]])
+#start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240,[["a","b"],["c","d"]])
 # start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])
 
 

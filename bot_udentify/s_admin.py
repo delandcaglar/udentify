@@ -105,7 +105,7 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
+            element.screenshot ( f"{path}/trends_{isim}.png" )
             print(f"{path}/{isim}.png")  #test icin
 
         def deger_yolla(xpath, deger):
@@ -118,12 +118,9 @@ class udentify_bot():
         sleep ( 4 + ek_sure)
 
 
-        take_screen_shot('//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"density1")
+        take_screen_shot('//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"density_haftalik")
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,f"density_aylik" )
         print("density screen shot alindi")
-
-
-
-
 
         self.driver.find_element_by_xpath ( '//*[@id="3"]/span' )
         interest_btn = self.driver.find_element_by_xpath ( '//*[@id="3"]/span' )
@@ -131,7 +128,9 @@ class udentify_bot():
 
         sleep ( 3 + ek_sure )
 
-        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"interest" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"interest_haftalik" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,
+                           f"interest_aylik" )
 
         print ( "interest screen shot alindi" )
 
@@ -141,7 +140,9 @@ class udentify_bot():
 
         sleep ( 3 + ek_sure )
 
-        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"visitor" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"visitor_haftalik" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,
+                           f"visitor_aylik" )
         print ( "visitor screen shot alindi" )
 
         self.driver.find_element_by_xpath ( '//*[@id="2"]/span' )
@@ -149,8 +150,12 @@ class udentify_bot():
         meantime_btn.click ()
 
         sleep ( 3 + ek_sure )
-        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"meantime" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"meantime_haftalik" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,
+                           f"meantime_aylik" )
         print ( "meantime screen shot alindi" )
+
+
 
 
         # self.driver.find_element_by_xpath ( '//*[@id="CompanyHome"]/nav/div/div[2]/div[1]/ul/li[3]/a' )
@@ -523,12 +528,12 @@ class udentify_bot():
         aaaa= "performans_tablosu"
         element.screenshot ( f"{path}/{aaaa}.png" )
 
-        content = self.driver.find_element_by_css_selector (
-            '.col-xl-12:nth-of-type(2) .PageContent__Title' ).get_attribute ( 'outerHTML' )
-        aaaa = "1111"
-        if content == '<h1 class="PageContent__Title">Kasadaki Müşteri Sayısı &amp; Ortalama Geçirilen Süre (sn)</h1>':
-            print ( content )
-        content.screenshot ( f"{path}/{aaaa}.png" )
+        #gereksiz kod
+        # content = self.driver.find_element_by_css_selector ('.col-xl-12:nth-of-type(2) .PageContent__Title' ).get_attribute ( 'outerHTML' )
+        # aaaa = "1111"
+        # if content == '<h1 class="PageContent__Title">Kasadaki Müşteri Sayısı &amp; Ortalama Geçirilen Süre (sn)</h1>':
+        #     print ( content )
+        # content.screenshot ( f"{path}/{aaaa}.png" )
 
     def magaza_data_topla_final(self,performans_tablosu_no,ilk_tarih,son_tarih,path):
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
@@ -770,10 +775,77 @@ class udentify_bot():
         sayfaya_git_gunluk( performans_tablosu_no, ilk_tarih, son_tarih, departman_id )
         infolari_yazdir ( "gunluk" )
 
+    def go_oneriler(self , performans_tablosu_no,ilk_tarih,son_tarih,path,): ##path burada statik dosya icin
+        def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/Suggestions?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=0" )
+        def click(xpath):
+            self.driver.find_element_by_xpath ( xpath )
+            density_btn = self.driver.find_element_by_xpath (xpath )
+            density_btn.click ()
+
+        def giris_yap(xpath, keys):
+            self.driver.find_element_by_xpath (xpath )
+            email_in = self.driver.find_element_by_xpath (xpath)
+            email_in.send_keys ( keys )
+            sleep ( 2 + ek_sure )
+
+        def take_screen_shot(xpath, path, isim):
+            element = self.driver.find_element_by_xpath (xpath)
+            element.screenshot ( f"{path}/{isim}.png" )
+            print(f"{path}/degisim_{isim}.png")  #test icin
+
+        def deger_yolla(xpath, deger):
+            self.driver.find_element_by_xpath ( xpath )
+            density_btn = self.driver.find_element_by_xpath ( xpath )
+            density_btn.click ()
+            density_btn.send_keys ( deger )
+
+        sayfaya_git ( performans_tablosu_no, ilk_tarih, son_tarih )
+        sleep ( 4 + ek_sure)
+
+
+        take_screen_shot('//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[2]/div[2]', path, f"density_haftalik")
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[3]', path,
+                           f"density_aylik" )
+        print("density screen shot alindi")
+
+        self.driver.find_element_by_xpath ( '//*[@id="2"]/span' )
+        interest_btn = self.driver.find_element_by_xpath ( '//*[@id="2"]/span' )
+        interest_btn.click ()
+
+        sleep ( 3 + ek_sure )
+
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[2]/div[2]', path, f"interest_haftalik" )
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[3]', path,
+                           f"interest_aylik" )
+
+        print ( "interest screen shot alindi" )
+
+        self.driver.find_element_by_xpath ( '//*[@id="3"]/span' )
+        visitor_btn = self.driver.find_element_by_xpath ( '//*[@id="3"]/span' )
+        visitor_btn.click ()
+
+        sleep ( 3 + ek_sure )
+
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[2]/div[2]', path, f"visitor_haftalik" )
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[3]', path,
+                           f"visitor_aylik" )
+        print ( "visitor screen shot alindi" )
+
+        self.driver.find_element_by_xpath ( '//*[@id="4"]/span' )
+        meantime_btn = self.driver.find_element_by_xpath ( '//*[@id="4"]/span' )
+        meantime_btn.click ()
+
+        sleep ( 3 + ek_sure )
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[2]/div[2]', path, f"meantime_haftalik" )
+        take_screen_shot ( '//*[@id="Suggestion"]/div[3]/div/div[2]/div/div[3]', path,
+                           f"meantime_aylik" )
+        print ( "meantime screen shot alindi" )
 
 
 
-path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re/" ##bunu dosya duzeni olarak dynami ayarla
+
+path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re_sunum1/" ##bunu dosya duzeni olarak dynami ayarla
 sirket_adi= "Under Armour"
 magza_adi = "Akasya"
 magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
@@ -811,9 +883,17 @@ else:
         bot = udentify_bot ()
         bot.login ()
         bot.select_firm ( sirket_adi, magza_adi ) #magza_adi"İstinye Park"
-        #bot.go_trends(228,ilk_tarih,son_tarih,path)
-        bot.yogunluk_haritasi_final(240,ilk_tarih,son_tarih,path)#228
-        #bot.alansal_performans_tablosu_data_final ( 228, ilk_tarih, son_tarih, path,4764 )  # 240
+        # bot.magaza_data_topla_final ( 240, ilk_tarih, son_tarih, path )
+        # bot.yogunluk_haritasi_final(240,ilk_tarih,son_tarih,path)#228
+        # bot.performans_tablosu_topla_final ( 240, ilk_tarih, son_tarih, path )
+        # bot.alansal_performans_tablosu_data_final ( 240, ilk_tarih, son_tarih, path, 4796 )
+        bot.go_trends(228,ilk_tarih,son_tarih,path)
+        bot.go_oneriler ( 228, ilk_tarih, son_tarih, path )
+        # bot.isi_tablosu_topla_final ( 240, ilk_tarih, son_tarih, path )
+
+
+
+
 
 
 

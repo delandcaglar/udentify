@@ -9,6 +9,7 @@ import datetime
 import time
 import calendar
 from scipy.stats.stats import pearsonr
+import math
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
@@ -43,27 +44,27 @@ tarih_ilk = "16/10/2020"
 tarih_son = "30/10/2020"
 
 
-url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
-url_yogunluk = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
-ure_yogunluk_g = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
+url_yogunluk = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
+ure_yogunluk_g = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
 
-saatlik_kisi_sure_grafigi = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=0"
-yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate=29/10/2020&edate=12/11/2020&stime=10:00&etime=22:00&tzoffset=0&layer=1" ##hatali
-performas_tablosu = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=0&layer=1"
+saatlik_kisi_sure_grafigi = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=180"
+yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate=29/10/2020&edate=12/11/2020&stime=10:00&etime=22:00&tzoffset=180&layer=1" ##hatali
+performas_tablosu = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=180&layer=1" ##
 
-deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=0&layer=1"
-deneme2_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}0&stime=10:00&etime=22:00&tzoffset=0&layer=1"
+deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=180&layer=1"
+deneme2_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}0&stime=10:00&etime=22:00&tzoffset=180&layer=1"
 
-devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=10:00&etime=22:00&filter=1&tzoffset=180"
 
-gunluk_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
-
-
-yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
-saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=0"
+gunluk_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
 
 
-edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset=0"  # 3, 10 , 15 sabit
+yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
+saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=180"
+
+
+edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset=180"  # 3, 10 , 15 sabit
 
 
 
@@ -717,6 +718,187 @@ def main_2_5_yogunluk_haritasi_orani_top_5_orani(magaza_id, tarih_ilk , tarih_so
 
     return yogunluk_haritasi_hesaplama_degerleri_top_5_orani(headersiz_data)
 
+def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil gordugun yere round fonksiyonu at
+    data = get_performancetable ( performas_tablosu,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    tarih_ilk1 = "06/11/2020"
+    tarih_son1 = "30/11/2020"
+    data1 = get_performancetable ( performas_tablosu, magaza_id, tarih_ilk1, tarih_son1 )
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    headersiz_data1 = (data1["Data"])
+    print ( headersiz_data )
+    n = 0
+    print(len(headersiz_data)) # kac tane alan var
+    meterSquareTotal = float(0)
+    densityTotal = float(0)
+    densityPrevTotal = float(0)
+    saleQuantityTotal = float(0)
+    prevsaleQuantityTotal = float(0)
+    prevsaleAmountTotal = float(0)
+    saleAmountTotal = float(0)
+
+    for headers in headersiz_data:
+        #print(headersiz_data[n])
+        #print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
+        #print(headersiz_data[n]["Id"])
+        meterSquareTotal = meterSquareTotal + float(headersiz_data[n]["Metersquare"])
+        print(headersiz_data[n]["Name"])
+        densityTotal = (densityTotal + float (math.ceil( headersiz_data[n]["Density"])))
+        print("guncellendi")
+        densityPrevTotal = densityPrevTotal + float (( headersiz_data1[n]["Density"] ))
+        try:
+            saleQuantityTotal = saleQuantityTotal + float ( headersiz_data[n]["AvgSaleQuantity"] ) #eksik data bunu sor
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            continue
+
+        try:
+            densityPrevTotal = densityPrevTotal + float ( headersiz_data1[n]["Density"] ) #AvgSaleAmount
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            print ( "nassiya" )
+            continue
+
+
+        try:
+            prevsaleAmountTotal = prevsaleAmountTotal + float (headersiz_data1[n]["AvgSaleAmount"] )
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            print ( "nassiya1" )
+            continue
+
+
+
+
+        saleAmountTotal = saleAmountTotal + float ( headersiz_data[n]["AvgSaleAmount"] )
+
+
+
+
+        n += 1
+
+
+    print(meterSquareTotal)
+    print(densityTotal)
+    print(densityPrevTotal)
+    print(saleQuantityTotal)
+    print(prevsaleQuantityTotal)
+    print(prevsaleAmountTotal)
+    print(saleAmountTotal)
+
+    En_cok_ziyaret_edilen_ad = ""
+    En_cok_ziyaret_edilen_id = ""
+    En_cok_ziyaret_edilen_sayi = float(0)
+    info_all = []
+
+    n = 0
+    for headers in headersiz_data:
+        print ( headersiz_data[n]["Name"] )
+        print ( headersiz_data[n]["Id"] )
+        print(headersiz_data[n])
+        print("__previousData__")
+        #print ( headersiz_data1[n] )
+        print("header uzunlugu")
+        #print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
+
+        print("department rectangles")
+        #print ( headersiz_data[n]["DepartmentRectangles"][0]["Density"])
+
+        print("TotalCount")
+        TotalCount = float(headersiz_data[n]["TotalCount"])
+        print(TotalCount)
+        if En_cok_ziyaret_edilen_sayi < TotalCount :
+            print("son_denemeeeee")
+
+            En_cok_ziyaret_edilen_sayi = TotalCount
+            En_cok_ziyaret_edilen_ad = headersiz_data[n]["Name"]
+            En_cok_ziyaret_edilen_id = headersiz_data[n]["Id"]
+            print ( En_cok_ziyaret_edilen_sayi )
+            print ( En_cok_ziyaret_edilen_ad )
+            print ( En_cok_ziyaret_edilen_id )
+            try:
+                En_cok_ziyaret_edilen_id1 = headersiz_data[n]["DepartmentRectangles"][0]["Id"]  #HUNI iD BUNLARI GUNCELLE
+                print (En_cok_ziyaret_edilen_id1)
+                En_cok_ziyaret_edilen_id2= headersiz_data[n]["DepartmentRectangles"][1]["Id"]  #HUNI iD BUNLARI GUNCELLE
+                print ( En_cok_ziyaret_edilen_id2 )
+
+            except Exception as e:
+                log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
+                app_log.info ( log_info )
+                continue
+
+
+            print("En_cok_ziyaret_edilen_ad11")
+            print(En_cok_ziyaret_edilen_ad)
+
+            print("Density")
+            Density = float((((headersiz_data[n]["Density"]))*(100))/(densityTotal))
+            print(Density)
+            print("DensityStoreChange") #duzelttin
+            DensityStoreChange = Density - (float((((headersiz_data1[n]["Density"]))*(100))/(densityPrevTotal)))
+            print(DensityStoreChange)
+            print("DensityChange")
+            DensityChange = (((float(headersiz_data[n]["Count"]) * float(headersiz_data[n]["Dwell"])) - (float(headersiz_data1[n]["Dwell"]) * float(headersiz_data1[n]["Count"]))) / (float(headersiz_data1[n]["Count"]) * float(headersiz_data1[n]["Dwell"]))) * 100
+            print(DensityChange)
+
+            print("PrevCount")
+            PrevCount = ((float(headersiz_data[n]["Count"])-float(headersiz_data1[n]["Count"]))/float(headersiz_data1[n]["Count"]))*100
+            print(PrevCount)
+            print("PrevDwell")
+            PrevDwell = ((float(headersiz_data[n]["Dwell"])-float(headersiz_data1[n]["Dwell"])) / float(headersiz_data1[n]["Dwell"])) * 100
+            print(PrevDwell)
+            print("SaleAmount")
+            #SaleAmount = float(headersiz_data[n]["AvgSaleAmount"]) # key error veriyor bunu hallet
+            #print(SaleAmount)
+            print("ConversionRate")
+            #ConversionRate = (float(headersiz_data[n]["AvgSaleAmount"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))/(float(headersiz_data[n]["AvgSaleAmount"]))*100
+            #print(ConversionRate) # key error veriyor bunu hallet
+            print("ConversionChange") #emin olamadim bak
+            print("Enterance_15s")
+            Enterance_15s = (float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"]))*100
+            print(Enterance_15s)
+            print("EntranceChange") #try except koydur hepsinde yok
+            #EntranceChange = ((float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/(float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15Sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"])))
+            #print(EntranceChange)
+
+        n += 1
+        print("/n 1")
+
+    #yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
+
+    try:
+        info_all = [En_cok_ziyaret_edilen_ad,En_cok_ziyaret_edilen_id,En_cok_ziyaret_edilen_sayi,En_cok_ziyaret_edilen_id1,En_cok_ziyaret_edilen_id2]
+    except:
+        info_all = [En_cok_ziyaret_edilen_ad, En_cok_ziyaret_edilen_id, En_cok_ziyaret_edilen_sayi]
+
+
+    #print(headersiz_data)
+    #return headersiz_data
+    print(densityTotal)
+    return info_all
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -755,7 +937,7 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
             continue
 
         try:
-            densityPrevTotal = densityPrevTotal + float ( headersiz_data[n]["DepartmentRectangles"][0]["AvgSaleAmount"] )
+            densityPrevTotal = densityPrevTotal + float ( headersiz_data[n]["DepartmentRectangles"][0]["Density"] ) ## hatali
         except Exception as e:
             log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
             app_log.info(log_info)
@@ -816,9 +998,9 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
             print ( En_cok_ziyaret_edilen_ad )
             print ( En_cok_ziyaret_edilen_id )
             try:
-                En_cok_ziyaret_edilen_id1 = headersiz_data[n]["DepartmentRectangles"][0]["Id"]
+                En_cok_ziyaret_edilen_id1 = headersiz_data[n]["DepartmentRectangles"][0]["Id"]  #HUNI iD BUNLARI GUNCELLE
                 print (En_cok_ziyaret_edilen_id1)
-                En_cok_ziyaret_edilen_id2= headersiz_data[n]["DepartmentRectangles"][1]["Id"]
+                En_cok_ziyaret_edilen_id2= headersiz_data[n]["DepartmentRectangles"][1]["Id"]  #HUNI iD BUNLARI GUNCELLE
                 print ( En_cok_ziyaret_edilen_id2 )
 
             except Exception as e:
@@ -827,35 +1009,38 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
                 continue
 
 
+            print("En_cok_ziyaret_edilen_ad11")
+            print(En_cok_ziyaret_edilen_ad)
 
-        print("Density")
-        Density = float((((headersiz_data[n]["Density"]))*(100))/(densityTotal))
-        print("DensityStoreChange")
-        DensityStoreChange = Density / (float((((headersiz_data[n]["DepartmentRectangles"][0]["Density"]))*(100))/(densityPrevTotal)))
-        print(DensityStoreChange)
-        print("DensityChange")
-        DensityChange = (((float(headersiz_data[n]["Count"]) * float(headersiz_data[n]["Dwell"])) - (float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]) * float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))) / (float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]) * float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))) * 100
-        print(DensityChange)
+            print("Density")
+            Density = float((((headersiz_data[n]["Density"]))*(100))/(densityTotal))
+            print(Density)
+            print("DensityStoreChange") #duzelttin
+            DensityStoreChange = Density - (float((((headersiz_data[n]["DepartmentRectangles"][0]["Density"]))*(100))/(densityPrevTotal)))
+            print(DensityStoreChange)
+            print("DensityChange")
+            DensityChange = (((float(headersiz_data[n]["Count"]) * float(headersiz_data[n]["Dwell"])) - (float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]) * float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))) / (float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]) * float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))) * 100
+            print(DensityChange)
 
-        print("PrevCount")
-        PrevCount = ((float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))*100
-        print(PrevCount)
-        print("PrevDwell")
-        PrevDwell = ((float(headersiz_data[n]["Dwell"])-float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"])) / float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"])) * 100
-        print(PrevDwell)
-        print("SaleAmount")
-        #SaleAmount = float(headersiz_data[n]["AvgSaleAmount"]) # key error veriyor bunu hallet
-        #print(SaleAmount)
-        print("ConversionRate")
-        #ConversionRate = (float(headersiz_data[n]["AvgSaleAmount"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))/(float(headersiz_data[n]["AvgSaleAmount"]))*100
-        #print(ConversionRate) # key error veriyor bunu hallet
-        print("ConversionChange") #emin olamadim bak
-        print("Enterance_15s")
-        Enterance_15s = (float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"]))*100
-        print(Enterance_15s)
-        print("EntranceChange") #try except koydur hepsinde yok
-        #EntranceChange = ((float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/(float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15Sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"])))
-        #print(EntranceChange)
+            print("PrevCount")
+            PrevCount = ((float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))*100
+            print(PrevCount)
+            print("PrevDwell")
+            PrevDwell = ((float(headersiz_data[n]["Dwell"])-float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"])) / float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"])) * 100
+            print(PrevDwell)
+            print("SaleAmount")
+            #SaleAmount = float(headersiz_data[n]["AvgSaleAmount"]) # key error veriyor bunu hallet
+            #print(SaleAmount)
+            print("ConversionRate")
+            #ConversionRate = (float(headersiz_data[n]["AvgSaleAmount"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Dwell"]))/(float(headersiz_data[n]["AvgSaleAmount"]))*100
+            #print(ConversionRate) # key error veriyor bunu hallet
+            print("ConversionChange") #emin olamadim bak
+            print("Enterance_15s")
+            Enterance_15s = (float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"]))*100
+            print(Enterance_15s)
+            print("EntranceChange") #try except koydur hepsinde yok
+            #EntranceChange = ((float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/(float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15Sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"])))
+            #print(EntranceChange)
 
         n += 1
         print("/n 1")
@@ -867,7 +1052,8 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk , tarih_son): #ceil gordugu
     except:
         info_all = [En_cok_ziyaret_edilen_ad, En_cok_ziyaret_edilen_id, En_cok_ziyaret_edilen_sayi]
 
-    print(headersiz_data)
+
+    #print(headersiz_data)
     #return headersiz_data
     return info_all
 
@@ -1193,13 +1379,15 @@ def main_2_8_edinme_hunisi(huni_id, tarih_ilk , tarih_son): #degeerleri 3s 10s 1
 
 
 if __name__ == "__main__":
-    # print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
+
     #main ()
     print("s")
     tarih_ilk = "01/12/2020"
     tarih_son = "25/12/2020"
+    #print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
+    print(main_2_7_performans_tablosu_double(240, tarih_ilk , tarih_son))
 
-    print(main_2_8_edinme_hunisi ( 11162, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
+    #print(main_2_8_edinme_hunisi ( 11162, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
 
 
 
