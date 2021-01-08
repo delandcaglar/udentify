@@ -754,7 +754,6 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
         except Exception as e:
             log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
             app_log.info(log_info)
-            continue
 
         try:
             densityPrevTotal = densityPrevTotal + float ( headersiz_data1[n]["Density"] ) #AvgSaleAmount
@@ -762,7 +761,7 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
             log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
             app_log.info(log_info)
             print ( "nassiya" )
-            continue
+
 
 
         try:
@@ -771,14 +770,13 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
             log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
             app_log.info(log_info)
             print ( "nassiya1" )
-            continue
 
-
-
-
-        saleAmountTotal = saleAmountTotal + float ( headersiz_data[n]["AvgSaleAmount"] )
-
-
+        try:
+            saleAmountTotal = saleAmountTotal + float ( headersiz_data[n]["AvgSaleAmount"] )
+        except Exception as e:
+            log_info = str(f"{e}_ buyuk olasilikla eksik data var burada")
+            app_log.info(log_info)
+            print ( "nassiya1" )
 
 
         n += 1
