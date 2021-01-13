@@ -1269,14 +1269,74 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_page_break ()
     document.add_heading('2.9 Kategori Karşılaştırması', level=1)
 
-    kategori_karsilasmasi_1 = "Women's Run"
-    kategori_karsilasmasi_2 = "Men's Run"
+
 
     def populate_karsilastirma(kategori_karsilasmasi_1, kategori_karsilasmasi_2):
+
 
         p = document.add_paragraph(f"")
         p.add_run(f"{kategori_karsilasmasi_1} & {kategori_karsilasmasi_2}").bold = True
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        kategori_1 = request1.main_2_7_performans_tablosu_double_isim(240, ilk_tarih , son_tarih,kategori_karsilasmasi_1)
+        kategori_2 = request1.main_2_7_performans_tablosu_double_isim ( 240, ilk_tarih, son_tarih,
+                                                                        kategori_karsilasmasi_2 )
+
+        kategori_1_kisi_sayisi = kategori_1[1][3]  # kisi sayisi
+        kategori_1_sure = kategori_1[1][6]  # sure
+        kategori_1_m2 = kategori_1[1][10]  # sure
+        kategori_1_m2_orani = kategori_1[1][11]  # sure
+        kategori_1_yogunluk = kategori_1[1][0]
+        kategori_1_m2_bolu_yogunluk = float(kategori_1_m2)/float(kategori_1_yogunluk)
+
+
+        kategori_2_kisi_sayisi = kategori_2[1][3]  # kisi sayisi
+        kategori_2_sure = kategori_2[1][6]  # sure
+        kategori_2_m2 = kategori_2[1][10]  # sure
+        kategori_2_m2_orani = kategori_2[1][11]  # sure
+        kategori_2_yogunluk = kategori_2[1][0]
+        kategori_2_m2_bolu_yogunluk = float ( kategori_2_m2 ) / float ( kategori_2_yogunluk )
+
+        print("su sayilara bakk")
+        print(kategori_1_m2_bolu_yogunluk)
+        print ( kategori_2_m2_bolu_yogunluk )
+
+
+        def yazilar(kategori_karsilasmasi_1,kategori_1_kisi_sayisi,kategori_1_sure,kategori_karsilasmasi_2,kategori_2_kisi_sayisi,kategori_2_sure):
+            if kategori_1_kisi_sayisi> kategori_2_kisi_sayisi:
+                print("süre ağırlıklı")
+                if kategori_1_sure > kategori_2_sure:
+                    return f'{kategori_karsilasmasi_1} alanında yoğunluğu oluşturan asıl parametre kişi sayısı ve ortalama geçirilen süredir. {kategori_karsilasmasi_2} alanına daha çok odaklanılmalıdır. Bu alanda geçirilen ortalama süre sadece {kategori_1_sure} saniye, ortalama kişi sayısı {kategori_1_kisi_sayisi} kişidir.'
+                else:
+                    return f'{kategori_karsilasmasi_1} alanında yoğunluğu oluşturan asıl parametre kişi sayısıdır. Bu alanda yoğunluğu arttırmak için süreyi arttırmaya odaklanmak gerekir. Bu alanda geçirilen ortalama süre sadece {kategori_1_sure} saniyedir.'
+
+            elif kategori_1_sure > kategori_2_sure:
+                return f'{kategori_karsilasmasi_1} alanında yoğunluğu oluşturan asıl parametre süre ağırlıklıdır. Bu alanda yoğunluğu arttırmak için kişi sayısını arttırmaya odaklanmak gerekir. Bu alandaki ortalama kişi sayısı {kategori_1_sure} saniyedir.'
+            else:
+                return f'{kategori_karsilasmasi_2} alanına göre kişi veya süre ağırlıklı değildir. Bu alanda yoğunluğu arttırmak için kişi sayısını ve süreyi arttırmaya odaklanmak gerekir.'
+
+        ilk_part = yazilar(kategori_karsilasmasi_1,kategori_1_kisi_sayisi,kategori_1_sure,kategori_karsilasmasi_2,kategori_2_kisi_sayisi,kategori_2_sure)
+        ikici_part = yazilar(kategori_karsilasmasi_2,kategori_2_kisi_sayisi,kategori_2_sure,kategori_karsilasmasi_1,kategori_1_kisi_sayisi,kategori_1_sure)
+
+
+        def m2_karsilastirma(kategori_karsilasmasi_1,kategori_1_m2,kategori_karsilasmasi_2,kategori_2_m2):
+            if kategori_1_m2 >kategori_2_m2:
+                return(f'Mağaza içerisinde {kategori_karsilasmasi_1} alanının m2 orani büyüktür, fark {("{:.2f}".format(round(kategori_1_m2-kategori_2_m2, 2)))} kadardır.') #{("{:.2f}".format(round(kategori_1_m2-kategori_2_m2, 2)))}
+            elif kategori_2_m2 >kategori_1_m2:
+                return ( f'Mağaza içerisinde {kategori_karsilasmasi_2} alanının m2 orani küçüktür,fark {("{:.2f}".format(round(kategori_2_m2-kategori_1_m2, 2)))} kadardır.' )
+            elif kategori_1_m2 +2 >kategori_2_m2 or kategori_1_m2 -2 >kategori_2_m2:
+                return ( f"Mağaza içerisinde her iki alana ayrılan metre kareler yaklaşık olarak eşittir." )
+
+        m2_karsilartirma_1 = m2_karsilastirma(kategori_karsilasmasi_1,kategori_1_m2,kategori_karsilasmasi_2,kategori_2_m2)
+
+        def yogunluk_karsilastirma(kategori_karsilasmasi_1,kategori_1_yogunluk,kategori_karsilasmasi_2,kategori_2_yogunluk):
+            if kategori_1_yogunluk >kategori_2_yogunluk:
+                return(f'{kategori_karsilasmasi_1} alanı, {kategori_karsilasmasi_2} alanının yaklaşık olarak {("{:.2f}".format(round(kategori_1_yogunluk/kategori_2_yogunluk, 2)))} katı yoğunluğa sahiptir.')
+            else:
+                return (f'{kategori_karsilasmasi_2} alanı, {kategori_karsilasmasi_1} alanının yaklaşık olarak {("{:.2f}".format(round(kategori_2_yogunluk/kategori_1_yogunluk, 2)))} katı yoğunluğa sahiptir.')
+
+        yogunluk_karsilastirma_1 = yogunluk_karsilastirma(kategori_karsilasmasi_1,kategori_1_yogunluk,kategori_karsilasmasi_2,kategori_2_yogunluk)
+
+
 
         document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-4.png"), width=Inches(6) , height=Inches(0.75))
         last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
@@ -1290,13 +1350,13 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
         document.add_paragraph(
-            f'Mağaza içerisinde her iki alana ayrılan metre kareler yaklaşık olarak eşittir.', style='List Bullet'
+            f'{m2_karsilartirma_1}', style='List Bullet'
         )
         document.add_paragraph(
-            f'{kategori_karsilasmasi_2} alanı, {kategori_karsilasmasi_1} run alanının yaklaşık olarak 1.5 katı yoğunluğa sahiptir.', style='List Bullet'
+            f'{yogunluk_karsilastirma_1}', style='List Bullet'
         )
         document.add_paragraph(
-            'Yoğunluk paylarının, satış paylarına paralel olması beklenir.', style='List Bullet'
+            'Yoğunluk paylarının, satış paylarına paralel olması beklenir.', style='List Bullet' # burayi gelistir
         )
         document.add_paragraph(
             f'Metre kare başına düşen yoğunluklar incelendiğinde, {kategori_karsilasmasi_2} alanının metre kare başına düşen yoğunluğu, {kategori_karsilasmasi_1}’dan daha büyüktür ve bu oran 1’in üzerindedir.', style='List Bullet'
@@ -1328,13 +1388,16 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 
+
+
+
         p = document.add_paragraph(f"Detaya inildiğinde;")
         document.add_paragraph(
-            f'{kategori_karsilasmasi_1} alanında yoğunluğu oluşturan asıl parametre kişi sayısıdır. Bu alanda yoğunluğu arttırmak için süreyi arttırmaya odaklanmak gerekir. Bu alanda geçirilen ortalama süre sadece 4.9 saniyedir.', style='List Bullet'
+            f'{ilk_part}', style='List Bullet'
         )
 
         document.add_paragraph(
-            f'{kategori_karsilasmasi_2} alanında ise yoğunluk, kişi değil süre ağırlıklıdır. Bu alanda geçirilen süre ortalama 16 saniyedir. Yoğunluğu arttırmak için kişi sayısı artarken sürenin düşmemesine dikkat etmek gerekir. Kişi sayısını arttırmanın satışları da arttırması beklenir.', style='List Bullet'
+            f'{ikici_part}', style='List Bullet'
         )
         #document.add_page_break ()
 
@@ -1342,8 +1405,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     for karsilastirilacak in karsilastirilacak_isim_listesi:
         populate_karsilastirma(karsilastirilacak[0],karsilastirilacak[1])
 
-    populate_karsilastirma(kategori_karsilasmasi_1,kategori_karsilasmasi_2)
-    populate_karsilastirma("Boys","Girls")
+
     ###-11_______________________________________________
 
 
@@ -1397,7 +1459,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 # son_tarih = "13/11/2020"
 #
 #start_writing_on_docx(firma,"Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,240,[["a","b"],["c","d"]])
-# start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240,[["a","b"],["c","d"]])
+start_writing_on_docx(firma,"Under Armour Akasya",240,ilk_tarih,son_tarih,161,240,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 
 
 
