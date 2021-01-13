@@ -267,6 +267,10 @@ def cal_average_density_arrray(num): ##sadece deegeri verilen sayilari topluyor
     no_zero = len ( num )
     if no_zero == 0:
         no_zero = 1
+    print("cozumm")
+    print(num)
+    print ( sum_num )
+    print ( no_zero )
     avg = sum_num / (no_zero - cikarilacak_sayilar)
     return avg
 
@@ -718,7 +722,7 @@ def main_2_5_yogunluk_haritasi_orani_top_5_orani(magaza_id, tarih_ilk , tarih_so
 
     return yogunluk_haritasi_hesaplama_degerleri_top_5_orani(headersiz_data)
 
-def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil gordugun yere round fonksiyonu at
+def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk , tarih_son,bakilan_alan): #ceil gordugun yere round fonksiyonu at
     data = get_performancetable ( performas_tablosu,magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
 
     def numOfDays(date1, date2):
@@ -828,9 +832,38 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
         print("department rectangles")
         #print ( headersiz_data[n]["DepartmentRectangles"][0]["Density"])
 
-        print("TotalCount")
-        TotalCount_final = float(headersiz_data[n]["TotalCount"])
+        print("bakilan_alan")
+        # TotalCount_final = float(headersiz_data[n][bakilan_alan])
+        # print(TotalCount_final)
+
+        def searching_function(bakilan_alan):
+            if bakilan_alan == "PrevCount":
+                a1 = float ( headersiz_data[n]["Count"] )
+                a2 = float ( headersiz_data1[n]["Count"] )
+                return  float(math.ceil ( ((a1 - a2) / a2) * 100 ))
+            if bakilan_alan == "PrevDwell" :
+                a1 = float ( headersiz_data[n]["Dwell"] )
+                a2 = float ( headersiz_data1[n]["Dwell"] )
+                return float(math.ceil ( ((a1 - a2) / a2) * 100 ))
+            if bakilan_alan == "_15s_Enterance" :
+                _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
+                return float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
+            if bakilan_alan == "n_15s_Enterance" :
+                _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
+                try :
+                    return   1/float( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
+                except:
+                    return 1/10000
+            if bakilan_alan == "Dwell":
+                Dwell = float ( headersiz_data[n]["Dwell"] )
+                return float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
+            if bakilan_alan == "Count":
+                return  float ( headersiz_data[n]["Count"] )
+
+        TotalCount_final = searching_function(bakilan_alan)
+
         print(TotalCount_final)
+        print(En_cok_ziyaret_edilen_sayi)
 
         if En_cok_ziyaret_edilen_sayi < TotalCount_final :
             print("son_denemeeeee")
@@ -923,6 +956,24 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
             # DensityChange = float ( ("{:.2f}".format ( float ( ( DensityChange  ) ), 2 )) )
             # print(DensityChange)
 
+            #_______________ m2
+
+            a1 = float ( headersiz_data[n]["Metersquare"] )
+            a2 = float ( meterSquareTotal )
+            a3 = float ( headersiz_data1[n]["SketchMetersquare"] )
+
+            SketchMetersquare = ((a1 /a2 ) * a3)
+            SketchMetersquare = float ( ("{:.2f}".format ( float ( (SketchMetersquare) ), 2 )) )
+
+            a1 = float ( headersiz_data[n]["Metersquare"] )
+            a2 = float ( meterSquareTotal )
+
+
+            Metersquare = ((a1 * 100) / a2)
+            Metersquare = float ( ("{:.2f}".format ( float ( (Metersquare) ), 2 )) )
+
+
+
 
 
             print("SaleAmount")
@@ -939,15 +990,11 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
             #EntranceChange = ((float(headersiz_data[n]["CountOver15Sec"])/float(headersiz_data[n]["Count"])-float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"]))/(float(headersiz_data[n]["DepartmentRectangles"][0]["CountOver15Sec"])/float(headersiz_data[n]["DepartmentRectangles"][0]["Count"])))
             #print(EntranceChange)
 
+
         n += 1
         print("/n 1")
 
     #yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
-
-    try:
-        info_all = [En_cok_ziyaret_edilen_ad,En_cok_ziyaret_edilen_id,En_cok_ziyaret_edilen_sayi,En_cok_ziyaret_edilen_id1,En_cok_ziyaret_edilen_id2]
-    except:
-        info_all = [En_cok_ziyaret_edilen_ad, En_cok_ziyaret_edilen_id, En_cok_ziyaret_edilen_sayi]
 
 
     #print(headersiz_data)
@@ -995,15 +1042,23 @@ def main_2_7_performans_tablosu_double(magaza_id, tarih_ilk , tarih_son): #ceil 
     print ( "bitti" )
 
 
+    print("\n______ m2_orani")
+
+    print("SketchMetersquare __ metrekare")
+    print(SketchMetersquare)
+    print("Metersquare  __metrekare orani")
+    print(Metersquare)
 
 
 
+    try:
+        info_all = [[En_cok_ziyaret_edilen_ad,En_cok_ziyaret_edilen_id,En_cok_ziyaret_edilen_sayi,En_cok_ziyaret_edilen_id1,En_cok_ziyaret_edilen_id2],[Density,DensityStoreChange,DensityChange,Count,TotalCount,PrevCount,Dwell,PrevDwell,_15s_Enterance,EntranceChange,SketchMetersquare,Metersquare]]
+    except:
+        info_all = [[En_cok_ziyaret_edilen_ad, En_cok_ziyaret_edilen_id, En_cok_ziyaret_edilen_sayi,En_cok_ziyaret_edilen_id1],[Density,DensityStoreChange,DensityChange,Count,TotalCount,PrevCount,Dwell,PrevDwell,_15s_Enterance,EntranceChange,SketchMetersquare,Metersquare]]
 
-
-    print ( "PrevCount" )
-    print(PrevCount)
 
     return info_all
+
 
 
 
@@ -1591,6 +1646,7 @@ def hafta_ici_hafta_sonu_ortalamalar(hafta_ici_degerleri,hafta_sonu_degerleri,gu
     #print ( hafta_sonu_ortalama )
     return(hafta_ici_ortalama,hafta_sonu_ortalama)
 
+
 def hafta_ici_hafta_sonu_oran_karsilastirmasi(hafta_ici_ortalama,hafta_sonu_ortalama):
     #print(hafta_sonu_ortalama / hafta_ici_ortalama)
     return ("{:.2f}".format(round((hafta_sonu_ortalama / hafta_ici_ortalama), 2))) # en yakin ikinci basamaga yuvarliyor
@@ -1713,13 +1769,13 @@ def korelasyon_orani(r_degeri):
         if  0 <= r_degeri <= 0.1:
             return("pozitif çok zayıf korelasyon")
     else:
-        if -0.85 <= r_degeri <= -1:
+        if -0.85 >= r_degeri >= -1:
             return("negatif güçlü korelasyon")
-        if -0.5 <= r_degeri <= -0.85:
+        if -0.5 >= r_degeri >= -0.85:
             return("negatif orta korelasyon")
-        if -0.1 <= r_degeri <= -0.5:
+        if -0.1 >= r_degeri >= -0.5:
             return("negatif zayıf korelasyon")
-        if -0 <= r_degeri <= -0.1:
+        if -0 >= r_degeri >= -0.1:
             return("negatif çok zayıf korelasyon")
 
 #print(korelasyon_orani(r_degeri[0]))
@@ -1816,18 +1872,36 @@ if __name__ == "__main__":
     tarih_ilk = "01/12/2020"
     tarih_son = "25/12/2020"
     #print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
-    boys = (main_2_7_performans_tablosu_double_isim(240, tarih_ilk , tarih_son,"WOMEN'S RUN"))
+    #boys = (main_2_7_performans_tablosu_double_isim(240, tarih_ilk , tarih_son,"WOMEN'S RUN"))
     #girls = ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "MEN'S RUN" ) )
 
-    print(boys)
+    #print(boys)
     # print(girls)
     #
-    print(boys[1][10]) #metrekare
-    print ( boys[1][11] ) #metrekareorani
+    #print(boys[1][10]) #metrekare
+    #print ( boys[1][11] ) #metrekareorani
     # print(boys[1][3])
     # print ( boys[1][6] )
     # print ( girls[1][3] )
     # print ( girls[1][6] )
+
+    ###print(main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "PrevCount" ))
+
+    ## 5 INCISI KISI SAYISI DEGISIMI
+    ###print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "PrevDwell" ) )
+    ## 7 INCISI ortalama sure degisimi
+
+    ###print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "_15s_Enterance" ) )
+    ## 8 INCISI ILGI ORANNI
+
+    #print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "n_15s_Enterance" ) )
+    ## 8 INCISI ILGI ORANNI # EN AZ OLAN
+
+    #print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "n_15s_Enterance" ) )
+    ## 8 INCISI ILGI ORANNI # EN AZ OLAN
+
+
+    #print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
 
     #3 kisi sayisi
 

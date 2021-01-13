@@ -9,7 +9,7 @@ print(BASE_DIR)
 
 
 
-
+#yeni_liste =[["Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Istinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]]]
 
 magaza_adi_listesi = [["Under Armour","Akasya",404,"Under Armour Akasya"],["Under Armour","Zorlu Center",404,"Under Armour Zorlu Center"],["Under Armour","İstinye Park",404,"Under Armour Istinye Park"]]
 
@@ -25,7 +25,7 @@ def dosya_yaratici(magaza,BASE_DIR):
 
     gereken_dosya = magaza[0]
     #print ( gereken_dosya )
-    gereken_dosya_ismi = magaza[3]
+    gereken_dosya_ismi = magaza[2]
     #print(gereken_dosya_ismi)
     dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify/firms/{gereken_dosya}" )
     #print ( dosya_yolu )
@@ -46,7 +46,7 @@ def dosya_yaratici(magaza,BASE_DIR):
         file = open ( dosya_word_yolu, 'w+' )
 
     src_dir = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_resimler"  ### burayi statik yapmalisin
-    dst_dir = os.path.join ( BASE_DIR, f"bot_udentify/firms/{magaza[0]}/Statik {magaza[3]}")
+    dst_dir = os.path.join ( BASE_DIR, f"bot_udentify/firms/{magaza[0]}/Statik {magaza[2]}")
 
     ########!!!!!!!!!!______burraya magaza logolarini ekle imagenamees kismina f string koy o string urun basina degissin
 

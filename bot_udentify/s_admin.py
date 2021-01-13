@@ -13,9 +13,10 @@ import os
 import create_folders
 import aylik_rapor
 
+#test icin false false
 
-global_test = False
-console = False  #development mode icinn true yap
+global_test = True
+console = True  #development mode icinn true yap
 
 
 ek_sure = float(1)
@@ -848,7 +849,7 @@ class udentify_bot():
 path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re_sunum1/" ##bunu dosya duzeni olarak dynami ayarla
 sirket_adi= "Under Armour"
 magza_adi = "Akasya"
-magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
+
 degisken_path = (f"{BASE_DIR}/bot_udentify/demo_re") ##bbosluk birakma error olur
 
 #bot.magaza_data_topla_final(240, '15/10/2020', '30/10/2020','/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re/')
@@ -856,6 +857,13 @@ degisken_path = (f"{BASE_DIR}/bot_udentify/demo_re") ##bbosluk birakma error olu
 
 ilk_tarih = '15/10/2020'
 son_tarih = '30/10/2020'
+
+
+#magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
+
+magaza_adi_listesi =[["Under Armour","Under Armour Zorlu Center",239,"01/12/2020","25/12/2020",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
+                     ["Under Armour","Under Armour Akasya",240,"01/12/2020","25/12/2020",161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
+                     ["Under Armour","Under Armour Istinye Park",228,"01/12/2020","25/12/2020",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]]]
 
 if console == True :
     print("konsol modu aktif")
@@ -868,15 +876,17 @@ else:
         for magaza in magaza_adi_listesi:
             create_folders.dosya_yaratici ( magaza,BASE_DIR )
             print("base/dir")
-            magza_statik_dosya_location = (f"{BASE_DIR}/Statik {magaza[3]} ")
+            magza_statik_dosya_location = (f"{BASE_DIR}/Statik {magaza[2]} ")
             print(magza_statik_dosya_location)
-            bot = udentify_bot ()
-            bot.login ()
-            bot.select_firm ( magaza[0], magaza[1] )
-            magza_statik_dosya_location = os.path.join ( BASE_DIR,f"bot_udentify/firms/{magaza[0]}/Statik {magaza[3]}/" )
-            bot.go_trends ( 228,ilk_tarih,son_tarih,magza_statik_dosya_location )
-            bot.magaza_data_topla ( magza_statik_dosya_location )
-            aylik_rapor.start_writing_on_docx(magaza[0],magaza[3],magaza[2],ilk_tarih,son_tarih,magaza[4],magaza[5],magaza[6]) # degistirdin bak
+            # bot = udentify_bot ()
+            # bot.login ()
+            # bot.select_firm ( magaza[0], magaza[1] )
+            # magza_statik_dosya_location = os.path.join ( BASE_DIR,f"bot_udentify/firms/{magaza[0]}/Statik {magaza[3]}/" )
+            # bot.go_trends ( 228,ilk_tarih,son_tarih,magza_statik_dosya_location )
+            # bot.magaza_data_topla ( magza_statik_dosya_location )
+            aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],
+                                    magaza[6] )
+
 
     else:
         print("local doyalardan biri deneniyor")
