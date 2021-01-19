@@ -25,7 +25,7 @@ def dosya_yaratici(magaza,BASE_DIR):
 
     gereken_dosya = magaza[0]
     #print ( gereken_dosya )
-    gereken_dosya_ismi = magaza[2]
+    gereken_dosya_ismi = magaza[1] ## 2 ler 1 oldu
     #print(gereken_dosya_ismi)
     dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify/firms/{gereken_dosya}" )
     #print ( dosya_yolu )
@@ -46,7 +46,7 @@ def dosya_yaratici(magaza,BASE_DIR):
         file = open ( dosya_word_yolu, 'w+' )
 
     src_dir = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_resimler"  ### burayi statik yapmalisin
-    dst_dir = os.path.join ( BASE_DIR, f"bot_udentify/firms/{magaza[0]}/Statik {magaza[2]}")
+    dst_dir = os.path.join ( BASE_DIR, f"bot_udentify/firms/{magaza[0]}/Statik {magaza[1]}")
 
     ########!!!!!!!!!!______burraya magaza logolarini ekle imagenamees kismina f string koy o string urun basina degissin
 
