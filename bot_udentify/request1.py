@@ -1,16 +1,11 @@
 import requests
-import json
-import time
-from decimal import *
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 import datetime
 import time
 import calendar
-from scipy.stats.stats import pearsonr
 import math
-import time
 
 BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
 print ( BASE_DIR )
@@ -312,7 +307,7 @@ def main_2_1_kisi_sure_saatlik(magaza_id, tarih_ilk, tarih_son):
     # list_data = json.loads ( data )
 
     headersiz_data = (data["Data"])
-    # print ( headersiz_data )
+    print ( headersiz_data )
     # print ( "________________________________" )
     # print ( headersiz_data[0]["Name"] )  # Labels tarih
     # print ( headersiz_data[0]["Serial"] )
@@ -2050,7 +2045,9 @@ if __name__ == "__main__":
     tarih_ilk = "01/01/2021"
     tarih_son = "19/01/2021"
 
-    print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
+    main_2_1_kisi_sure_saatlik ( magaza_id, tarih_ilk, tarih_son )
+
+    # print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
 
     # print ( main_2_7_performans_tablosu_isimsel ( magaza_id, tarih_ilk, tarih_son, "APOLLO" ) )
 

@@ -1,11 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
-# import secrets1
 from selenium.webdriver.support.ui import Select
 import secrets1
-#import cv2
-import urllib
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -15,6 +12,7 @@ import aylik_rapor
 from selenium.webdriver.common.action_chains import ActionChains
 import request1
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.options import Options
 import excel_reader
 
 #test icin false false
@@ -34,9 +32,10 @@ class udentify_bot():
         option = webdriver.ChromeOptions ()
         #option.add_argument ( '--headless' ) #kapatmak icin
         option.add_argument ( "--start-maximized" )
-        #option.add_argument ( f"--window-size=1080,{720}" )  ##boyut hatasindan kurtulmak icin
+        #option.add_argument ( f"--window-size=2080,{1080}" )  ##boyut hatasindan kurtulmak icin
         option.add_argument ( "--hide-scrollbars" )
-        self.driver = webdriver.Chrome ( executable_path="/Applications/chromedriver", options=option )
+        self.driver = webdriver.Chrome ( executable_path=  f"{BASE_DIR}/bot_udentify/chromedriver", options=option )
+
 
         height = self.driver.execute_script (
             "return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight )" )
@@ -96,7 +95,7 @@ class udentify_bot():
 
     def go_trends(self , performans_tablosu_no,ilk_tarih,son_tarih,path,): ##path burada statik dosya icin
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/Trends?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=0" )
+            self.driver.get ( f"https://app.udentify.co/Trends?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0" )
 
         def click(xpath):
             self.driver.find_element_by_xpath ( xpath )
@@ -543,17 +542,20 @@ class udentify_bot():
 
     def magaza_data_topla_final(self,performans_tablosu_no,ilk_tarih,son_tarih,path):
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=1" )
+            deger = f"https://app.udentify.co/?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1"
+            self.driver.get ( deger )
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
             element.screenshot ( f"{path}/{isim}.png" )
             print(f"{path}/{isim}.png")  #test icin
 
         def saatlik_sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=0" )
+            deger = f"https://app.udentify.co/?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0"
+            self.driver.get ( deger )
 
 
-        def isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,grafik_adi,onceki_siralama): #bbot hata neden vermiyo
+
+        def isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,grafik_adi,onceki_siralama,path): #bbot hata neden vermiyo
             sabit_katsayi = 1 + onceki_siralama
             liste_katsayi = 1
             toplam_grafik_sayisi = 0
@@ -576,18 +578,21 @@ class udentify_bot():
             liste_katsayi = 0
             return toplam_grafik_sayisi
 
+        print("tarihler")
+        print(ilk_tarih)
+        print ( son_tarih )
         sayfaya_git ( performans_tablosu_no, ilk_tarih, son_tarih )
         grafik_isimleri = ['<h1 class="PageContent__Title">Giren Kişi Sayısı</h1>',
                            '<h1 class="PageContent__Title">Kasadaki Müşteri Sayısı &amp; Ortalama Geçirilen Süre (sn)</h1>',
                            '<h1 class="PageContent__Title">Mağaza Önünden Geçen Müşteri Sayısı</h1>']  # bu kisim maksimum gerekli ismleri gerektiriir
         grafik_isimleri_word_icin = ["Giren_Kişi_Sayısı_gunluk", "Kasadaki_Müşteri_Sayısı_gunluk", "Mağaza_Önünden_Geçen_Müşteri_Sayısı_gunluk"]
 
-        grafik_sayisi = isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,"col-xl-12",0)
+        grafik_sayisi = isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,"col-xl-12",0,path)
 
         grafik_isimleri_1 = ['<h1 class="PageContent__Title">En Çok Ziyaret Edilen Alanlar (kişi adet)</h1>','<h1 class="PageContent__Title">En Çok Vakit Geçirilen Alanlar (kişi sn)</h1>']
         grafik_isimleri_word_icin_1 = ["En_Çok_Ziyaret_Edilen_Alanlar_kişi_adet_gunluk", 'En_Çok_Vakit_Geçirilen_Alanlar_kişi_sn_gunluk']
 
-        grafik_sayisi_1 = isimlerde_ss_al ( grafik_isimleri_1, grafik_isimleri_word_icin_1,"col-lg-6", grafik_sayisi )
+        grafik_sayisi_1 = isimlerde_ss_al ( grafik_isimleri_1, grafik_isimleri_word_icin_1,"col-lg-6", grafik_sayisi,path )
 
         saatlik_sayfaya_git(performans_tablosu_no, ilk_tarih, son_tarih )
 
@@ -599,14 +604,17 @@ class udentify_bot():
         grafik_isimleri_word_icin = ["Giren_Kişi_Sayısı_saatlik", "Kasadaki_Müşteri_Sayısı_saatlik",
                                      "Mağaza_Önünden_Geçen_Müşteri_Sayısı_saatlik"]
 
-        grafik_sayisi = isimlerde_ss_al ( grafik_isimleri, grafik_isimleri_word_icin, "col-xl-12", 0 )
+        grafik_sayisi = isimlerde_ss_al ( grafik_isimleri, grafik_isimleri_word_icin, "col-xl-12", 0 ,path)
 
         grafik_isimleri_1 = ['<h1 class="PageContent__Title">En Çok Ziyaret Edilen Alanlar (kişi adet)</h1>',
                              '<h1 class="PageContent__Title">En Çok Vakit Geçirilen Alanlar (kişi sn)</h1>']
         grafik_isimleri_word_icin_1 = ["En_Çok_Ziyaret_Edilen_Alanlar_kişi_adet_saatlik",
                                        'En_Çok_Vakit_Geçirilen_Alanlar_kişi_sn_saatlik']
 
-        grafik_sayisi_1 = isimlerde_ss_al ( grafik_isimleri_1, grafik_isimleri_word_icin_1, "col-lg-6", grafik_sayisi )
+        grafik_sayisi_1 = isimlerde_ss_al ( grafik_isimleri_1, grafik_isimleri_word_icin_1, "col-lg-6", grafik_sayisi,path )
+
+
+
 
 
 
@@ -730,7 +738,7 @@ class udentify_bot():
             self.driver.execute_script ( "arguments[0].scrollIntoView();", find_location )
 
 
-        def isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,grafik_adi,onceki_siralama): #bbot hata neden vermiyo
+        def isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,grafik_adi,onceki_siralama,path): #bbot hata neden vermiyo
             sabit_katsayi = 1 + onceki_siralama
             liste_katsayi = 1
             toplam_grafik_sayisi = 0
@@ -757,11 +765,11 @@ class udentify_bot():
         def infolari_yazdir(saatlik): #self diye koydur duzelt
             grafik_isimleri = ['<h1 class="PageContent__Title">Alana Giriş Sayısı &amp; Ortalama Geçirilen Süre</h1>']  # bu kisim maksimum gerekli ismleri gerektiriir
             grafik_isimleri_word_icin = [f"Alana_Giriş_Sayısı_&_Ortalama_Geçirilen_Süre_{saatlik}"]
-            grafik_sayisi = isimlerde_ss_al ( grafik_isimleri, grafik_isimleri_word_icin, "col-xl-12", 0 )
+            grafik_sayisi = isimlerde_ss_al ( grafik_isimleri, grafik_isimleri_word_icin, "col-xl-12", 0 ,path)
             grafik_isimleri1 = ['<h1 class="PageContent__Title">Edinme Hunisi</h1>',
                                '<h1 class="PageContent__Title">Bildirimler</h1>']  # bu kisim maksimum gerekli ismleri gerektiriir
             grafik_isimleri_word_icin1 = [f"Edinme_Hunisi{saatlik}",f"Bildirimler{saatlik}"]
-            grafik_sayisi2 = isimlerde_ss_al ( grafik_isimleri1, grafik_isimleri_word_icin1, "col-xl-6", grafik_sayisi )
+            grafik_sayisi2 = isimlerde_ss_al ( grafik_isimleri1, grafik_isimleri_word_icin1, "col-xl-6", grafik_sayisi ,path)
             yogunluk_butonu = '<span class="buttontext">Yoğunluk</span>'
 
             content = bot.driver.find_element_by_css_selector (
@@ -774,7 +782,7 @@ class udentify_bot():
                 grafik_isimleri2 = [
                     '<h1 class="PageContent__Title">Alana Giriş Sayısı &amp; Ortalama Geçirilen Süre</h1>']  # bu kisim maksimum gerekli ismleri gerektiriir
                 grafik_isimleri_word_icin2 = [f"Alana_Giriş_Sayısı_&_Ortalama_Geçirilen_Süre_yogunluk_{saatlik}"]
-                grafik_sayisi = isimlerde_ss_al ( grafik_isimleri2, grafik_isimleri_word_icin2, "col-xl-12", 0 )
+                grafik_sayisi = isimlerde_ss_al ( grafik_isimleri2, grafik_isimleri_word_icin2, "col-xl-12", 0 ,path)
 
         liste = (request1.main_2_7_performans_tablosu_alansal ( performans_tablosu_no, ilk_tarih, son_tarih, "Count" ))
         departman_id = liste[0][1]
@@ -785,7 +793,7 @@ class udentify_bot():
 
     def go_oneriler(self , performans_tablosu_no,ilk_tarih,son_tarih,path,): ##path burada statik dosya icin
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/Suggestions?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=0" )
+            self.driver.get ( f"https://app.udentify.co/Suggestions?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0" )
         def click(xpath):
             self.driver.find_element_by_xpath ( xpath )
             density_btn = self.driver.find_element_by_xpath (xpath )
@@ -852,7 +860,7 @@ class udentify_bot():
 
     def magaza_ici_yogunluk_dagilimi(self , performans_tablosu_no,ilk_tarih,son_tarih,path,): ##path burada statik dosya icin
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/Company?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=1" )
+            self.driver.get ( f"https://app.udentify.co/Company?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
 
         def click(xpath):
             self.driver.find_element_by_xpath ( xpath )
@@ -881,7 +889,7 @@ class udentify_bot():
 
     def kategori_karsilastirmasi(self , performans_tablosu_no,ilk_tarih,son_tarih,path,istenenler_listesi,istenilen_magaza_konumu): ##path burada statik dosya icin
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/comparisonV2?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=1" )
+            self.driver.get ( f"https://app.udentify.co/comparisonV2?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
 
         def click(xpath):
             self.driver.find_element_by_xpath ( xpath )
@@ -980,7 +988,7 @@ class udentify_bot():
 
     def performas_tablosu_specific_resimler(self , performans_tablosu_no,ilk_tarih,son_tarih,path,liste): ##path burada statik dosya icin
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
-            self.driver.get ( f"https://app.udentify.co/PerformanceTable?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate{son_tarih}&filterType=1" )
+            self.driver.get ( f"https://app.udentify.co/PerformanceTable?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
 
 
         def click(xpath):
@@ -1046,26 +1054,27 @@ degisken_path = (f"{BASE_DIR}/bot_udentify/demo_re") ##bbosluk birakma error olu
 #bot.magaza_data_topla_final(240, '15/10/2020', '30/10/2020','/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re/')
 
 
-ilk_tarih = "05/01/2021"
+ilk_tarih = "05/01/2021" #05
 son_tarih = "19/01/2021"
 
 
 #magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
 
-magaza_adi_listesi =[["Under Armour","Under Armour Zorlu Center",239,"04/01/2021","15/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"],
-                     ["Under Armour","Under Armour Akasya",240,"04/01/2021","15/01/2021",161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Akasya"],
-                     ["Under Armour","Under Armour İstinye Park",228,"04/01/2021","15/01/2021",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"İstinye Park"],
-                    ["Suwen","Suwen Viaport",307,"04/01/2021","15/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],"Viaport"]
-                     ] #"Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]
-magaza_adi_listesi_eski =[["Under Armour","Under Armour Zorlu Center",239,"01/12/2020","25/12/2020",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
-                     ["Under Armour","Under Armour Akasya",240,"01/12/2020","25/12/2020",161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
-                     ["Under Armour","Under Armour Istinye Park",228,"01/12/2020","25/12/2020",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
-                    ["Suwen","Suwen Viaport",307,"01/12/2020","25/12/2020",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]]]
+# magaza_adi_listesi =[["Under Armour","Under Armour Zorlu Center",239,"01/01/2021","19/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"],
+#                      ["Under Armour","Under Armour Akasya",240,"01/01/2021","19/01/2021",161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Akasya"],
+#                      ["Under Armour","Under Armour İstinye Park",228,"01/01/2021","19/01/2021",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"İstinye Park"],
+#                     ["Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],"Viaport"]
+#                      ] #"Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]
+# magaza_adi_listesi_eski =[["Under Armour","Under Armour Zorlu Center",239,"01/12/2020","25/12/2020",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
+#                      ["Under Armour","Under Armour Akasya",240,"01/12/2020","25/12/2020",161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
+#                      ["Under Armour","Under Armour Istinye Park",228,"01/12/2020","25/12/2020",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
+#                     ["Suwen","Suwen Viaport",307,"01/12/2020","25/12/2020",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]]]
+#
 
 
 
-#magaza_adi_listesi = excel_reader.excel_to_list('/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/istenen_magazalar.xlsx')
-
+print("excel_listesi")
+magaza_adi_listesi = excel_reader.excel_to_list('/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/istenen_magazalar.xlsx')
 
 
 if console == True :
@@ -1073,40 +1082,51 @@ if console == True :
 
 else:
     if global_test == True:
-
         for magaza in magaza_adi_listesi:
 
             create_folders.dosya_yaratici ( magaza,BASE_DIR )
+            print("BASE_DIR")
+            print(BASE_DIR)
+
+        for magaza in magaza_adi_listesi:
+            print("magaza_degerleri")
+            # print ( "degerler" )
+            # print ( magaza )
+            # print ( magaza[0] )
+            # print ( magaza[1] )
+            # print ( magaza[2] )
+            # print ( magaza[3] )
+            # print ( magaza[4] )
+            # print ( magaza[5] )
+            # print ( magaza[6] )
+            # print ( magaza[7] )
+
             print("base/dir")
             magza_statik_dosya_location = (f"{BASE_DIR}/bot_udentify/firms/{magaza[0]}/Statik {magaza[1]}/")
             print(magza_statik_dosya_location)
             bot = udentify_bot ()
             bot.login ()
+            # bot.driver.set_window_size ( 1500, 1000 )
             bot.select_firm ( magaza[0], magaza[7] )
-            # bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
+            # bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] , magaza[7] )
-            # bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
-            #
             # bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.isi_tablosu_topla_final( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
 
-            # bot.go_trends ( 228,ilk_tarih,son_tarih,magza_statik_dosya_location )
-            # bot.magaza_data_topla ( magza_statik_dosya_location )
+
 
             bot.driver.close ()
-            try:
-                aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],
-                                        magaza[6] )
-                print("bu bitti")
-            except Exception as e:
-                print("error")
-                print(e)
-                continue
+
+            aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],magaza[6] )
+            print("bu bitti")
+
+
 
 
     else:

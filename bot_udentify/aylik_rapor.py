@@ -2,18 +2,10 @@ from docx import Document
 from docx.shared import Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml import OxmlElement, ns
-from docx2pdf import convert
 import os
-import io
-#import image_corpingv1
 import heatmap
-from datetime import date
-import calendar
 import datetime
-import time
 import calendar
-#import docx_svg
-
 import request1
 from scipy.stats.stats import pearsonr
 
@@ -798,7 +790,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
 
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/under_armour_logo.png"))
+    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/{firma}_logo.png"), width=Inches(2.5) , height=Inches(2.5))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = document.add_paragraph(f"")
@@ -893,7 +885,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     )
 
     document.add_paragraph(
-        f"Mağazaya gelen müşterileree ortalma satış miktarı {satis_ortalama} TL dir.", style='List Bullet'
+        f"Mağazaya gelen ziyaretçilere ortalma satış miktarı {satis_ortalama} TL dir.", style='List Bullet'
     )
 
     document.add_paragraph(
@@ -963,15 +955,15 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         f'Mağaza içerisinde geçirilen {en_yogun_zaman} saatlerinde artmaktadır. ', style='List Bullet'
     )
 
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/En_Çok_Vakit_Geçirilen_Alanlar_kişi_sn_saatlik.png"), width=Inches(6) , height=Inches(2))
+    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/En_Çok_Vakit_Geçirilen_Alanlar_kişi_sn_saatlik.png"), width=Inches(4) , height=Inches(2.62))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = document.add_paragraph(f"(En Çok Ziyaret Edilenler Tablosu(saatlik))")
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     document.add_picture ( os.path.join ( BASE_DIR,
-                                          f"{magza_statik_dosya_location}/ En_Çok_Ziyaret_Edilen_Alanlar_kişi_adet_saatlik.png" ),
-                           width=Inches ( 6 ), height=Inches ( 2 ) )
+                                          f"{magza_statik_dosya_location}/En_Çok_Ziyaret_Edilen_Alanlar_kişi_adet_saatlik.png" ),width=Inches(4) , height=Inches(2.62)
+                            )
     last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = document.add_paragraph ( f"(En Çok Ziyaret Edilenler Tablosu(saatlik))" )
@@ -989,7 +981,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_heading('2.3 Yoğunluk Haritası', level=1)
 
 
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk_haritasiyogunluk.png"), width=Inches(6) , height=Inches(2))
+    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk_haritasiyogunluk.png"), width=Inches(6) , height=Inches(3.43))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = document.add_paragraph(f"(Yoğunluk Haritaları Ve Tabloları)")
@@ -1056,7 +1048,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_heading('2.5 Metre Kare Başına Düşen Yoğunluk Haritası', level=1)
 
 
-    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk_haritasiYoğunluk_m2.png"), width=Inches(6) , height=Inches(2))
+    document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/yogunluk_haritasiYoğunluk_m2.png"), width=Inches(6) , height=Inches(3.34))
     last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p = document.add_paragraph(f"(Yoğunluk Haritası Ve Tablosu)")
@@ -1408,7 +1400,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
 
-    def populate_karsilastirma(kategori_karsilasmasi_1, kategori_karsilasmasi_2,magaza_id_no):
+    def populate_karsilastirma(kategori_karsilasmasi_1, kategori_karsilasmasi_2,magaza_id_no,siralamasi,ikiser_siralamasi):
 
 
         p = document.add_paragraph(f"")
@@ -1535,7 +1527,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
 
-        document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/tablo-4.png"), width=Inches(6) , height=Inches(0.75))
+        document.add_picture(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/kategori_karsilastirmasi{siralamasi}.png"), width=Inches(6) , height=Inches(3.83))
         last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
         last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p = document.add_paragraph(f"({kategori_karsilasmasi_1.title()} ve {kategori_karsilasmasi_2.title()} Alanlarının Yoğunlukları)")
@@ -1572,14 +1564,14 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         #     f'Yoğunluktaki artışın satışı da arttırması beklenir.', style='List Bullet'
         # )
 
-        document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/tablo-2.png" ),
-                               width=Inches ( 6 ), height=Inches ( 0.75 ) )
+        document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/karsilastitilacak_{ikiser_siralamasi}.png" ),
+                               width=Inches ( 6 ), height=Inches ( 0.64 ) )
         last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
         last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-        document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/tablo-1.png" ),
-                               width=Inches ( 6 ), height=Inches ( 0.75 ) )
+        document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/karsilastitilacak_{ikiser_siralamasi+1}.png" ),
+                               width=Inches ( 6 ), height=Inches ( 0.64 ) )
         last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
         last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p = document.add_paragraph ( f"({kategori_karsilasmasi_1.title()} ve {kategori_karsilasmasi_2.title()} Tablosu)" )
@@ -1599,9 +1591,12 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         )
         #document.add_page_break ()
 
-
+    ikiser_siralamasi = 0
+    siralamasi = 1
     for karsilastirilacak in karsilastirilacak_isim_listesi:
-        populate_karsilastirma(karsilastirilacak[0],karsilastirilacak[1],magaza_id_no)
+        populate_karsilastirma(karsilastirilacak[0],karsilastirilacak[1],magaza_id_no,siralamasi,ikiser_siralamasi)
+        siralamasi +=1
+        ikiser_siralamasi+=2
 
 
     ###-11_______________________________________________
@@ -1655,12 +1650,12 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 #
 
 #Calismayan
-ilk_tarih = "04/01/2021"
-son_tarih = "15/01/2021"
-
-#Calisan
 ilk_tarih = "01/01/2021"
 son_tarih = "19/01/2021"
+
+#Calisan
+# ilk_tarih = "05/01/2021"
+# son_tarih = "19/01/2021"
 #
 
 # yeni_liste =[["Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Istinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]]]
@@ -1670,10 +1665,10 @@ son_tarih = "19/01/2021"
 #                             liste[6] )
 
 
-start_writing_on_docx("Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-start_writing_on_docx("Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-#start_writing_on_docx("Under Armour","Under Armour Istinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-
+# start_writing_on_docx("Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
+# start_writing_on_docx("Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
+# start_writing_on_docx("Under Armour","Under Armour İstinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
+start_writing_on_docx("Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
 
 
 

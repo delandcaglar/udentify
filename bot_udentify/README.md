@@ -34,10 +34,12 @@ Udentify_bot'a başlamak için sadece [bu repository'i](https://github.com/delan
 
 ### 1.1 Anaconda Python indir:
 
-
-
 ```
 https://docs.anaconda.com/anaconda/install/
+mac için(teminalde kullanmak için şu adımları gerçekleştiebilirsin):
+source /opt/anaconda3/bin/activate 
+conda init zsh
+conda list geri dönüş yapıyorsa işlemi tamamladın
 ```
 ### 1.2 Gerekli library'leri indir:
 ```
@@ -46,14 +48,22 @@ cd {dosyanin konumu}
 python -m pip install -r requirements.txt
 ```
 
+### 1.3 Gerekli library'leri indir:
+```
+chrome veeriyonuna bak
+version 88 ise aşağıdaki likten 88 i diyelim 87 isi 87 yi indir.
+chrome driver'i indir
+https://chromedriver.chromium.org/downloads
+indirilen driver'ı udentify/bot_udentify dosyasina sürükle
+```
 
 ## 2. Nasil Kullanılır
 
 ### 2.1 Mağza adlarını doldur:
 ```
-Kullanmak için s_admin.py scriptine gidilip aşağıdaki örnekteki gibi "magaza_adi_listesi" adlı liste doldurulmalıdır.
-- Örnek --> magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya"],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center"]
-- 1. mağaza ismi, 2. mağaza konumu, 3. api kodu, 4. mağaza adı + mağaza konumu 
+Kullanmak için istenen_magazalar.xlsx excel dosyasına gidilip aşağıdaki örnekteki gibi doldurulmalıdır.
+- Örnek --> "Under Armour","Under Armour Zorlu Center",239,"01/01/2021","19/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"
+- Excel dosyasının içinde başlıklar görülmektedir.
 
 ```
 
@@ -88,6 +98,9 @@ Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl
 ```
 https://github.com/rajbot/kivy_pyinstaller_linux_example/blob/master/bootstrap.sh
 ```
+
+
+
 
 ## Yazarlar
 
