@@ -1,16 +1,11 @@
 import os
 import pandas as pd
-import xlrd
-from openpyxl import Workbook
-from openpyxl.styles import Font, Fill
-from openpyxl.styles import colors
 from openpyxl.styles import  Color,PatternFill, Border, Side, Alignment, Protection, Font
-from openpyxl import Workbook
-import openpyxl
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
 from openpyxl import load_workbook #for not overwriting
-import csv
+import numpy as np
+import ast
 #Not Mağza ve tarıh kısmını eklemen gerek
 ##hata olursa satir 55 e bak  neden commend out yaptin panda dataframe i
 
@@ -22,8 +17,8 @@ import csv
 #Avangate_ID olayini arastie
 
 
-print('Variables____________')
-firm_path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/ıstenen_magazalar.xlsx"
+
+firm_path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/istenen_magazalar.xlsx"
 excel_file_1 = '/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/ıstenen_magazalar.xlsx'
 alphabet_list=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R"] #18 tane var
 ornek_liste = ['9.9-Oto Koltukları', 6.87, 393, 7447, 95, 66.81, 154, 35.38, -16.93, 1.56, 60, 36, -40, 79449.76, 53735.16, -32.37, 1.15, 1.92]#6
@@ -32,13 +27,6 @@ ornek_liste2 = ['5.4-Yenidoğan Duvar', 2.04, 195, 7187, 130, 10.32, 29, 16.7, 2
 ornek_liste3 = ['Kasa', 8.68, 460, 14941, 147, 25.8, 127, 27.85, 2.85, '-', '-', '-', '-', '-', '-', '-', '-', 3.57]#9
 ornek_buyuk_liste = [ornek_liste,ornek_liste1,ornek_liste2,ornek_liste3]
 folder_list = []
-print('Variables_________')
-
-
-print('Functions__________________')
-
-
-print('Functions__________________')
 
 
 
@@ -263,11 +251,61 @@ istenilen_adet = 3
 # yaz
 #update_excel_file( firm_path,istenilen_adet )
 
-variable_excel_file(firm_path,istenilen_adet)
+#variable_excel_file(firm_path,istenilen_adet)
 
 #oku
+def excel_to_list(firm_path):
+    dataframe = pd.read_excel(firm_path, comment='#', format='%m/%d/%Y') #,dtype=str ,converters={'Date': str} index_col=0,
+    desired_width=160
+    pd.set_option('display.width', desired_width)
+    np.set_printoptions(linewidth=desired_width)
+    pd.set_option('display.max_columns',10)
+    print(dataframe)
+
+    # dataframe['İlk tarih'][0].strftime('%Y/%m/%d')
+    # dataframe['Son tarih'][0].strftime('%Y/%m/%d')
+    # dataframe['İlk tarih'][1].strftime('%Y/%m/%d')
+    # dataframe['Son tarih'][1].strftime('%Y/%m/%d')
+    # dataframe['İlk tarih'][2].strftime('%Y/%m/%d')
+    # dataframe['Son tarih'][2].strftime('%Y/%m/%d')
 
 
+    dataframe['İlk tarih'] = dataframe['İlk tarih'].dt.strftime("%d/%m/%Y").apply(str)
+    dataframe['Son tarih'] = dataframe['Son tarih'].dt.strftime("%d/%m/%Y").apply(str)
+    dataframe['Karşılaştırılacak isim listesi'] = [ast.literal_eval ( i ) for i in dataframe['Karşılaştırılacak isim listesi']]
+    #dataframe['Karşılaştırılacak isim listesi'] = dataframe['Karşılaştırılacak isim listesi'].apply ( ast.literal_eval )
+    #dataframe['Karşılaştırılacak isim listesi'] = dataframe['Karşılaştırılacak isim listesi'].apply ( str )
+
+    # print(dataframe)
+
+    # katsayii = 0
+    # while katsayii < len(dataframe):
+    #     dataframe["Son tarih"][katsayii] = (dataframe["Son tarih"][katsayii][0:10])
+    #     dataframe["İlk tarih"][katsayii] =  ( dataframe["İlk tarih"][katsayii][0:10] )
+    #     katsayii += 1
+
+    print ( "0000" )
+    print(dataframe)
+    print(dataframe['Karşılaştırılacak isim listesi'])
+
+    print ( "eeee" )
+    # liste = dataframe.to_numpy ()
+    # print ( liste )
+    #
+    # print ( liste[0][1] )
+
+    print ( "1111" )
+    liste = dataframe.values.tolist ()
+    print ( liste )
+
+    return liste
+
+
+
+
+
+
+excel_to_list(firm_path)
 
 
 

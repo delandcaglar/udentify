@@ -1106,7 +1106,7 @@ else:
             print(magza_statik_dosya_location)
             bot = udentify_bot ()
             bot.login ()
-            # bot.driver.set_window_size ( 1500, 1000 )
+            # # bot.driver.set_window_size ( 1500, 1000 )
             bot.select_firm ( magaza[0], magaza[7] )
             bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             # bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )

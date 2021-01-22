@@ -712,7 +712,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     htab_cells=htable.rows[0].cells
     ht0=htab_cells[1].add_paragraph()
     kh=ht0.add_run()
-    kh.add_picture('/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/udentıfy.png', width=Inches(1))
+    kh.add_picture(f"{magza_statik_dosya_location}/udentify.png", width=Inches(1))
     #ht1=htab_cells[1].add_paragraph('put your header text here')
     ht0.alignment = WD_ALIGN_PARAGRAPH.RIGHT
 

@@ -75,7 +75,7 @@ def dosya_yaratici(magaza,BASE_DIR):
                   'tablo-1.png', 'tablo-2.png', 'tablo-3.png', 'tablo-4.png','tablo-5.png', 'tablo-6.png',
                   'ters_ucgen.png', 'top5.png', 'toplam_kisi_sure.png', 'Under Armour_logo.png', 'under_armour_logo1.png',
                   'uzuntablo.png', 'yogunlu_m2.png', 'yogunluk.png',
-                  'yogunluk_haritasi.png', 'yogunluk_yogunluk_ortalamasi.png', 'korelasyonlar.png','Suwen_logo.png']
+                  'yogunluk_haritasi.png', 'yogunluk_yogunluk_ortalamasi.png', 'korelasyonlar.png','Suwen_logo.png','udentify.png']
     for imageName in imageNames:
 
         try:
