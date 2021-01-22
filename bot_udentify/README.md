@@ -54,7 +54,7 @@ chrome veeriyonuna bak
 version 88 ise aşağıdaki likten 88 i diyelim 87 isi 87 yi indir.
 chrome driver'i indir
 https://chromedriver.chromium.org/downloads
-indirilen driver'ı udentify/bot_udentify dosyasina sürükle
+indirilen driver'ı udentify/bot_udentify dosyasina sürükleme kopyala yapiştır yap. 
 ```
 
 ## 2. Nasil Kullanılır
