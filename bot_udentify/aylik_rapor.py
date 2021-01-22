@@ -396,24 +396,7 @@ yogunlugu_1_in_ustundekiler = []
 
 not: alani veya alanlarini ayarla cumle sonunda duzgun dursun"""
 
-hm1 = heatmap.find_where_is_everyone(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png"))
-print('hadi bakalim')
-print(hm1)
-hm2 = heatmap.find_where_is_everyone(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png"))
-print('hadi bakalim')
-print(hm2)
-hm3 = heatmap.find_where_is_everyone(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png"))
-print('hadi bakalim')
-print(hm3)
-hm4 = heatmap.find_where_is_everyone(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png"))
-print('hadi bakalim')
-print(hm4)
-hm5 = heatmap.find_where_is_everyone(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png"))
-print('hadi bakalim')
-print(hm5)
-hm6 = heatmap.find_where_is_everyone(os.path.join(BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png"))
-print('hadi bakalim')
-print(hm6)
+
 
 
 
@@ -692,6 +675,28 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     print("deneme1111111") # ! burayi degistirdin 4 u yukarida 3 yaprin
     print(performans_tablosu_listesi)
     print(performans_tablosu_listesi[0][3])
+
+
+    # isi haritasi
+
+    hm1 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
+    print ( 'hadi bakalim' )
+    print ( hm1 )
+    hm2 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
+    print ( 'hadi bakalim' )
+    print ( hm2 )
+    hm3 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
+    print ( 'hadi bakalim' )
+    print ( hm3 )
+    hm4 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
+    print ( 'hadi bakalim' )
+    print ( hm4 )
+    hm5 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
+    print ( 'hadi bakalim' )
+    print ( hm5 )
+    hm6 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
+    print ( 'hadi bakalim' )
+    print ( hm6 )
 
 
 
@@ -1666,9 +1671,9 @@ son_tarih = "19/01/2021"
 
 
 # start_writing_on_docx("Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-# start_writing_on_docx("Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
+#start_writing_on_docx("Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 # start_writing_on_docx("Under Armour","Under Armour İstinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-start_writing_on_docx("Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
+# start_writing_on_docx("Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
 
 
 

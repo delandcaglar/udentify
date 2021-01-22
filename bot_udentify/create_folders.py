@@ -64,7 +64,7 @@ def dosya_yaratici(magaza,BASE_DIR):
         print ( dosya_word_yolu )
 
 
-    src_dir = f"{BASE_DIR}/bot_udentify/demo_resimler"  ### burayi statik yapmalisin
+    src_dir = f"{BASE_DIR}/bot_udentify/statik_resimler"  ### burayi statik yapmalisin
     dst_dir = os.path.join ( BASE_DIR, f"bot_udentify/firms/{magaza[0]}/Statik {magaza[1]}")
 
     ########!!!!!!!!!!______burraya magaza logolarini ekle imagenamees kismina f string koy o string urun basina degissin

@@ -565,7 +565,8 @@ class udentify_bot():
                     content = self.driver.find_element_by_css_selector (
                         f'.{grafik_adi}:nth-of-type({sabit_katsayi}) .PageContent__Title' ).get_attribute ( 'outerHTML' )
                     if content == grafik_isimleri[liste_katsayi-1]:
-                        print("baklol")
+                        print("baklol__cikanlar")
+                        print(grafik_isimleri_word_icin[liste_katsayi-1])
                         print ( content )
                         toplam_grafik_sayisi += 1
                         content1.screenshot ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
@@ -1058,6 +1059,12 @@ ilk_tarih = "05/01/2021" #05
 son_tarih = "19/01/2021"
 
 
+
+
+print("excel_listesi")
+magaza_adi_listesi = excel_reader.excel_to_list('/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/istenen_magazalar.xlsx')
+
+
 #magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
 
 # magaza_adi_listesi =[["Under Armour","Under Armour Zorlu Center",239,"01/01/2021","19/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"],
@@ -1065,16 +1072,6 @@ son_tarih = "19/01/2021"
 #                      ["Under Armour","Under Armour İstinye Park",228,"01/01/2021","19/01/2021",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"İstinye Park"],
 #                     ["Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],"Viaport"]
 #                      ] #"Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]
-# magaza_adi_listesi_eski =[["Under Armour","Under Armour Zorlu Center",239,"01/12/2020","25/12/2020",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
-#                      ["Under Armour","Under Armour Akasya",240,"01/12/2020","25/12/2020",161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
-#                      ["Under Armour","Under Armour Istinye Park",228,"01/12/2020","25/12/2020",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],
-#                     ["Suwen","Suwen Viaport",307,"01/12/2020","25/12/2020",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]]]
-#
-
-
-
-print("excel_listesi")
-magaza_adi_listesi = excel_reader.excel_to_list('/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/istenen_magazalar.xlsx')
 
 
 if console == True :
@@ -1106,21 +1103,18 @@ else:
             print(magza_statik_dosya_location)
             bot = udentify_bot ()
             bot.login ()
-            # # bot.driver.set_window_size ( 1500, 1000 )
+            # bot.driver.set_window_size ( 1500, 1000 )
             bot.select_firm ( magaza[0], magaza[7] )
             bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
-            # bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] , magaza[7] )
-            # bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.isi_tablosu_topla_final( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            # bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-
-
-
+            bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
+            bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] , magaza[7] )
+            bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.isi_tablosu_topla_final( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.driver.close ()
 
             aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],magaza[6] )
