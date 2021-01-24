@@ -1,3 +1,4 @@
+#input("Press enter to continue...")
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
@@ -19,6 +20,7 @@ import excel_reader
 
 global_test = True
 console = False  #development mode icinn true yap
+
 
 
 ek_sure = float(1)
@@ -1062,7 +1064,7 @@ son_tarih = "19/01/2021"
 
 
 print("excel_listesi")
-magaza_adi_listesi = excel_reader.excel_to_list('/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/istenen_magazalar.xlsx')
+magaza_adi_listesi = excel_reader.excel_to_list(f'{BASE_DIR}/bot_udentify/istenen_magazalar.xlsx')
 
 
 #magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
@@ -1072,6 +1074,7 @@ magaza_adi_listesi = excel_reader.excel_to_list('/Users/ilkedelandcaglar/Downloa
 #                      ["Under Armour","Under Armour İstinye Park",228,"01/01/2021","19/01/2021",149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"İstinye Park"],
 #                     ["Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],"Viaport"]
 #                      ] #"Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]
+
 
 
 if console == True :

@@ -7,6 +7,18 @@ import time
 import calendar
 import math
 
+from pytz import timezone
+from dateutil.relativedelta import relativedelta
+
+utcnow = timezone('utc').localize(datetime.datetime.utcnow()) # generic time
+here = utcnow.astimezone(timezone('Turkey')).replace(tzinfo=None)
+real_location = (utcnow.astimezone().replace(tzinfo=None))
+offset = relativedelta(here, real_location)
+offser_ayari = (offset.hours)* 60
+print(offser_ayari)
+
+
+
 BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
 print ( BASE_DIR )
 dosya_yolu = (BASE_DIR + f"/bot_udentify/test.log")
@@ -31,26 +43,26 @@ APITOKEN = ""
 tarih_ilk = "01/01/2021"
 tarih_son = "19/01/2021"
 
-url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
-url_yogunluk = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
-ure_yogunluk_g = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
+url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
+url_yogunluk = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
+ure_yogunluk_g = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 
-saatlik_kisi_sure_grafigi = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=180"
-yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate=29/10/2020&edate=12/11/2020&stime=10:00&etime=22:00&tzoffset=180&layer=1"  ##hatali
-performas_tablosu = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=0&layer=1"  ##  180 i 0 yaptin duzelt
+saatlik_kisi_sure_grafigi = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
+yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate=29/10/2020&edate=12/11/2020&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##hatali
+performas_tablosu = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##  180 i 0 yaptin duzelt
 
-deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=180&layer=1"
-deneme2_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}0&stime=10:00&etime=22:00&tzoffset=180&layer=1"
+deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"
+deneme2_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}0&stime=10:00&etime=22:00&tzoffset={}&layer=1"
 
-devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=10:00&etime=22:00&filter=1&tzoffset=180"
+devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 
-gunluk_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
-gunluk_kisi_sure_grafigi_2_8_updated = "{}/Store/{}/LineEntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=0"
+gunluk_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
+gunluk_kisi_sure_grafigi_2_8_updated = "{}/Store/{}/LineEntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 
-yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset=180"
-saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset=180"
+yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
+saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
 
-edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset=180"  # 3, 10 , 15 sabit
+edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset={}"  # 3, 10 , 15 sabit
 
 
 # https://api.udentify.co/Store/240/AreaCount?sdate=15/10/2020&edate=30/10/2020&stime=10:00&etime=22:00&tzoffset=0
@@ -64,6 +76,7 @@ def get_token():
 
 def get_performancetable(url1, storeId, start, end):
     global APITOKEN
+    global offser_ayari
     if APITOKEN == "":
         APITOKEN = get_token ()
     headers = {
@@ -72,7 +85,7 @@ def get_performancetable(url1, storeId, start, end):
     }
 
     # url = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=0&layer=1".format ( APIURL,storeId,start,end )
-    url = url1.format ( APIURL, storeId, start, end )
+    url = url1.format ( APIURL, storeId, start, end ,offser_ayari)
     r = requests.get ( url, headers=headers )
     return r.json ()
 
