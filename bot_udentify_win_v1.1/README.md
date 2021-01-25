@@ -34,7 +34,7 @@ Udentify_bot'a başlamak için sadece [bu repository'i](https://github.com/delan
 
 ```
 https://docs.anaconda.com/anaconda/install/
-mac için(teminalde kullanmak için şu adımları gerçekleştiebilirsin):
+mac için(terminalde kullanmak için şu adımları gerçekleştiebilirsin):
 ```
 ### 1.2 Gerekli library'leri indir:
 ```
@@ -43,7 +43,7 @@ cd {dosyanin konumu} # örnek: cd C:\Users\Administrator\Desktop\udentify-master
 İndirdiğiniz dosyaların directory'sine gidin
 Şu komut normalde işe yaramalı ama büyük olasılıla ben bir şeyi yanlış yaptım.....
 python -m pip install -r requirements.txt
-Bu yüzden dosya konumundayken python s_admin.py yazacağız hata çıktığında büyük olasılıkla bu x library'si eksik gibi bir şey olacak requirements.txt dosyasına girilip gerekli librarynin ismi versiyonuyla kopyalanmalı
+Bu yüzden dosya konumundayken python s_admin.py yazacağız hata çıktığında büyük olasılıkla bu x library'si eksik gibi bir şey olacak requirements.txt dosyasına girilip gerekli librarynin ismi ve versiyonu kopyalanmalı
 ardından örnek olarak pip install docx==0.2.4 gibi yazılmalı 
 şu ana kadar sadece docx librarysinde bbir hata çıkabilir exception yazan hata çıkıyorsa 
 pip install python-docx==0.8.10 yazın bu o sorunu çözecektirr onun dışında bir sıkıntıı çıkmamalı
@@ -65,7 +65,7 @@ indirilen driver'ı udentify/bot_udentify dosyasina sürükleme kopyala yapişt�
 ![udentify](https://i.imgur.com/yyqHcLT.png)
 ```
 Kullanmak için istenen_magazalar.xlsx excel dosyasına gidilip aşağıdaki örnekteki gibi doldurulmalıdır. Büyük küçük harfler çok önemlidir yanlış yazıldığı şartlar altında program çalışmaz.
-- Örnek --> "under armour","under armour zorlu center",239,"01/01/2021","19/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"
+- Örnek --> under armour,under armour zorlu center,239, 01/01/2021, 19/01/2021,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],Zorlu Center
 - Excel dosyasının içinde başlıklar görülmektedir.
 
 ```
@@ -110,4 +110,4 @@ https://github.com/rajbot/kivy_pyinstaller_linux_example/blob/master/bootstrap.s
  **TeamUdentify**
 
 Backend ana mantığı İlke Deland Çağlar ve Rıdvan Çilli tarafından yapılmıştır. Projeyi başlattığı için Can Dörtkardeşlere teşekkür ederiz.
-Yazılımda katkısı olan diğer kişikleri görmek için şu listeye bakabilirsiniz: [katkıda bulunanlar](https://github.com/sukeesh/Jarvis/graphs/contributors).
+Yazılımda katkısı olan diğer kişikleri görmek için şu listeye bakabilirsiniz: [katkıda bulunanlar](https://github.com/delandcaglar/udenfity/graphs/contributors).
