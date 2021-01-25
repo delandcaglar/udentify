@@ -12,7 +12,7 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 ## Hangi Dosya Seçilmeli
 
-- bot_udentify dosyası macOS Bıg Sur 11.1 de denenmiştir.
+- bot_udentify dosyası macOS Big Sur 11.1 de denenmiştir.
 - bot_udentify_win_v1.1 dosyası Windows Server 2019 de denenmiştir.
 
 Versiyonunuza en uygun olabilecek sürümü indirin. İndirdikteen sonra Readme dosyasındaki aşamaları takip edin.
