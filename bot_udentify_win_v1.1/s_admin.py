@@ -34,7 +34,7 @@ class udentify_bot():
         option.add_argument ( "--start-maximized" )
         #option.add_argument ( f"--window-size=2080,{1080}" )  ##boyut hatasindan kurtulmak icin
         option.add_argument ( "--hide-scrollbars" )
-        self.driver = webdriver.Chrome ( executable_path=  f"{BASE_DIR}/bot_udentify/chromedriver", options=option )
+        self.driver = webdriver.Chrome ( executable_path=  f"{BASE_DIR}/bot_udentify_win_v1.1/chromedriver", options=option )
 
 
         height = self.driver.execute_script (
@@ -1047,11 +1047,11 @@ class udentify_bot():
 
 
 
-path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re/" ##bunu dosya duzeni olarak dynami ayarla
+path = "/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify_win_v1.1/demo_re/" ##bunu dosya duzeni olarak dynami ayarla
 sirket_adi= "Under Armour"
 magza_adi = "Akasya"
 
-degisken_path = (f"{BASE_DIR}/bot_udentify/demo_re") ##bbosluk birakma error olur
+degisken_path = (f"{BASE_DIR}/bot_udentify_win_v1.1/demo_re") ##bbosluk birakma error olur
 
 #bot.magaza_data_topla_final(240, '15/10/2020', '30/10/2020','/Users/ilkedelandcaglar/Downloads/udentify/bot_udentify/demo_re/')
 
@@ -1063,7 +1063,7 @@ son_tarih = "19/01/2021"
 
 
 print("excel_listesi")
-magaza_adi_listesi = excel_reader.excel_to_list(f'{BASE_DIR}/bot_udentify/istenen_magazalar.xlsx')
+magaza_adi_listesi = excel_reader.excel_to_list(f'{BASE_DIR}/bot_udentify_win_v1.1/istenen_magazalar.xlsx')
 
 #magaza_adi_listesi = [["Under Armour","Akasya",240,"Under Armour Akasya",160,240,[["a","b"],["c","d"]]],["Under Armour","Zorlu Center",239,"Under Armour Zorlu Center",160,240,[["a","b"],["c","d"]]]] #["Under Armour","İstinye Park",228,"Under Armour Istinye Park"]
 
@@ -1097,7 +1097,7 @@ else:
             print ( magaza[7] )
 
             print("base/dir")
-            magza_statik_dosya_location = (f"{BASE_DIR}/bot_udentify/firms/{magaza[0]}/Statik {magaza[1]}/")
+            magza_statik_dosya_location = (f"{BASE_DIR}/bot_udentify_win_v1.1/firms/{magaza[0]}/Statik {magaza[1]}/")
             print(magza_statik_dosya_location)
             bot = udentify_bot ()
             bot.login ()

@@ -9,7 +9,7 @@ import math
 
 BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
 print ( BASE_DIR )
-dosya_yolu = (BASE_DIR + f"/bot_udentify/test.log")
+dosya_yolu = (BASE_DIR + f"/bot_udentify_win_v1.1/test.log")
 print ( dosya_yolu )
 
 log_formatter = logging.Formatter ( '%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s' )

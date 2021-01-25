@@ -40,18 +40,18 @@ if global_test == True:
     print("global version")
     BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
     print ( BASE_DIR )
-    magza_statik_dosya_location = os.path.join ( BASE_DIR, f"bot_udentify/firms/{firma}/Statik {magza_statik_dosya_location_ismi}" )
+    magza_statik_dosya_location = os.path.join ( BASE_DIR, f"bot_udentify_win_v1.1/firms/{firma}/Statik {magza_statik_dosya_location_ismi}" )
     print ( magza_statik_dosya_location )
-    dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify/firms/{firma}" )
+    dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify_win_v1.1/firms/{firma}" )
     magaza_dosyasi_ismi = f"{dosya_yolu}/{magza_statik_dosya_location_ismi}.docx"  ##bunu sona baglayacan
 
 else:
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     print(BASE_DIR)
-    magza_statik_dosya_location = os.path.join(BASE_DIR, 'bot_udentify/demo_resimler')
+    magza_statik_dosya_location = os.path.join(BASE_DIR, 'bot_udentify_win_v1.1/demo_resimler')
     print(magza_statik_dosya_location)
-    dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify" )
+    dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify_win_v1.1" )
     magaza_dosyasi_ismi = (f"{dosya_yolu}/demo.docx")
 
 
@@ -467,17 +467,17 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         print ( "global version" )
         BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
         print ( BASE_DIR )
-        magza_statik_dosya_location = os.path.join ( BASE_DIR,f"bot_udentify/firms/{firma}/Statik {magza_statik_dosya_location_ismi}" )
+        magza_statik_dosya_location = os.path.join ( BASE_DIR,f"bot_udentify_win_v1.1/firms/{firma}/Statik {magza_statik_dosya_location_ismi}" )
         print ( magza_statik_dosya_location )
-        dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify/firms/{firma}" )
+        dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify_win_v1.1/firms/{firma}" )
         magaza_dosyasi_ismi = f"{dosya_yolu}/{magza_statik_dosya_location_ismi}.docx"  ##bunu sona baglayacan
     else:
 
         BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
         print ( BASE_DIR )
-        magza_statik_dosya_location = os.path.join ( BASE_DIR, 'bot_udentify/demo_resimler' )
+        magza_statik_dosya_location = os.path.join ( BASE_DIR, 'bot_udentify_win_v1.1/demo_resimler' )
         print ( magza_statik_dosya_location )
-        dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify" )
+        dosya_yolu = os.path.join ( BASE_DIR, f"bot_udentify_win_v1.1" )
         magaza_dosyasi_ismi = (f"{dosya_yolu}/demo.docx")
 
 

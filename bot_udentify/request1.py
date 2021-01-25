@@ -15,7 +15,9 @@ here = utcnow.astimezone(timezone('Turkey')).replace(tzinfo=None)
 real_location = (utcnow.astimezone().replace(tzinfo=None))
 offset = relativedelta(here, real_location)
 offser_ayari = (offset.hours)* 60
+print("offset")
 print(offser_ayari)
+# offser_ayari = 0
 
 
 
@@ -2058,9 +2060,9 @@ if __name__ == "__main__":
     tarih_ilk = "01/01/2021"
     tarih_son = "19/01/2021"
 
-    main_2_1_kisi_sure_saatlik ( magaza_id, tarih_ilk, tarih_son )
-
-    # print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
+    # #main_2_1_kisi_sure_saatlik ( magaza_id, tarih_ilk, tarih_son )
+    #
+    print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
 
     # print ( main_2_7_performans_tablosu_isimsel ( magaza_id, tarih_ilk, tarih_son, "APOLLO" ) )
 
