@@ -19,7 +19,7 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 
 
-## 1. Udentify_bot nasıl yüklenir
+## 1. Udentify_bot nasıl çalışır hale getirilir
 
 pyhthon 3.7+ environment kullanılmalıdır. Bu sürüm 3.8.3 de denenmiştir.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırır)
 
@@ -41,9 +41,9 @@ mac için(teminalde kullanmak için şu adımları gerçekleştiebilirsin):
 Anaconda Powershell Prompt'u aç
 cd {dosyanin konumu} # örnek: cd C:\Users\Administrator\Desktop\udentify-master\bot_udentify_win
 İndirdiğiniz dosyaların directory'sine gidin
-Şu komut normalde işe yaramalı ama büyük olasılıla ben bir şeyi yaptım.....
+Şu komut normalde işe yaramalı ama büyük olasılıla ben bir şeyi yanlış yaptım.....
 python -m pip install -r requirements.txt
-Bu yüzden Dosya konumundayken python s_admin.py yazacağız hata çıktığında büyük olasılıkla bu x library'si eksik gibi bir şey olacak requirements.txt dosyasına girilip gerekli librarynin ismi versiyonuyla kopyalanmalı
+Bu yüzden dosya konumundayken python s_admin.py yazacağız hata çıktığında büyük olasılıkla bu x library'si eksik gibi bir şey olacak requirements.txt dosyasına girilip gerekli librarynin ismi versiyonuyla kopyalanmalı
 ardından örnek olarak pip install docx==0.2.4 gibi yazılmalı 
 şu ana kadar sadece docx librarysinde bbir hata çıkabilir exception yazan hata çıkıyorsa 
 pip install python-docx==0.8.10 yazın bu o sorunu çözecektirr onun dışında bir sıkıntıı çıkmamalı

@@ -19,7 +19,7 @@ Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır
 
 
 
-## 1. Udentify_bot nasıl yüklenir
+## 1. Udentify_bot nasıl çalışır hale getirilir
 
 pyhthon 3.7+ environment kullanılmalıdır.(ileriki updatelerde bazı library'ler problem çıkarabileceğinden anaconda python işlemleri çok daha kolaylaştırır)
 
@@ -43,9 +43,14 @@ conda list geri dönüş yapıyorsa işlemi tamamladın
 ```
 ### 1.2 Gerekli library'leri indir:
 ```
-cd {dosyanin konumu}
-İndirdiğiniz dosyalaarın directory'sine gidin
+cd {dosyanin konumu} # örnek: cd C:\Users\Administrator\Desktop\udentify-master\bot_udentify_win
+İndirdiğiniz dosyaların directory'sine gidin
+Şu komut normalde işe yaramalı ama büyük olasılıla ben bir şeyi yanlış yaptım.....
 python -m pip install -r requirements.txt
+Bu yüzden dosya konumundayken python s_admin.py yazacağız hata çıktığında büyük olasılıkla bu x library'si eksik gibi bir şey olacak requirements.txt dosyasına girilip gerekli librarynin ismi versiyonuyla kopyalanmalı
+ardından örnek olarak pip install docx==0.2.4 gibi yazılmalı 
+şu ana kadar sadece docx librarysinde bbir hata çıkabilir exception yazan hata çıkıyorsa 
+pip install python-docx==0.8.10 yazın bu o sorunu çözecektirr onun dışında bir sıkıntıı çıkmamalı
 ```
 
 ### 1.3 Gerekli library'leri indir:
@@ -57,12 +62,15 @@ https://chromedriver.chromium.org/downloads
 indirilen driver'ı udentify/bot_udentify dosyasina sürükleme kopyala yapiştır yap. 
 ```
 
+
 ## 2. Nasil Kullanılır
 
 ### 2.1 Mağza adlarını doldur:
+
+![udentify](https://i.imgur.com/yyqHcLT.png)
 ```
-Kullanmak için istenen_magazalar.xlsx excel dosyasına gidilip aşağıdaki örnekteki gibi doldurulmalıdır.
-- Örnek --> "Under Armour","Under Armour Zorlu Center",239,"01/01/2021","19/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"
+Kullanmak için istenen_magazalar.xlsx excel dosyasına gidilip aşağıdaki örnekteki gibi doldurulmalıdır. Büyük küçük harfler çok önemlidir yalnış yazıldığı şartlar altında program çalışmaz.
+- Örnek --> "under armour","under armour zorlu center",239,"01/01/2021","19/01/2021",160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],"Zorlu Center"
 - Excel dosyasının içinde başlıklar görülmektedir.
 
 ```
