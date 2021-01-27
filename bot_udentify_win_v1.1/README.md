@@ -62,7 +62,7 @@ indirilen driver'ı udentify/bot_udentify dosyasina sürükleme kopyala yapişt�
 
 ### 2.1 Mağza adlarını doldur:
 
-![udentify](https://i.imgur.com/yyqHcLT.png)
+![udentify](https://i.imgur.com/BtKGgmv.png)
 ```
 Kullanmak için istenen_magazalar.xlsx excel dosyasına gidilip aşağıdaki örnekteki gibi doldurulmalıdır. Büyük küçük harfler çok önemlidir yanlış yazıldığı şartlar altında program çalışmaz.
 - Örnek --> under armour,under armour zorlu center,239, 01/01/2021, 19/01/2021,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],Zorlu Center
