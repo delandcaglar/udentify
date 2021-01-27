@@ -5,7 +5,7 @@
 
 Word dosyalarının otomatik olarak hazırlanıp müşterilere yollanmaya hazır hale gelmesi için yazılmış Python script. 
 
-![udentify](https://i.imgur.com/RQoJhvo.png)
+![udentify](https://i.imgur.com/J9E0ouq.png)
 
 
 

@@ -16,29 +16,24 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 import excel_reader
 
-#test icin false false
+
+# test icin False False
+# development mode icin True, False yap
 
 global_test = True
-console = False  #development mode icinn true yap
-
-
-
+console = False
 ek_sure = float(1)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
-
 class udentify_bot():
     def __init__(self):
         # get scroll Height
         # close browser
         option = webdriver.ChromeOptions ()
-        #option.add_argument ( '--headless' ) #kapatmak icin
+        # option.add_argument ( '--headless' ) #kapatmak icin
         option.add_argument ( "--start-maximized" )
-        #option.add_argument ( f"--window-size=2080,{1080}" )  ##boyut hatasindan kurtulmak icin
+        # option.add_argument ( f"--window-size=2080,{1080}" )  ##boyut hatasindan kurtulmak icin
         option.add_argument ( "--hide-scrollbars" )
         self.driver = webdriver.Chrome ( executable_path=  f"{BASE_DIR}/bot_udentify/chromedriver", options=option )
-
-
         height = self.driver.execute_script (
             "return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight )" )
         print ( height )
