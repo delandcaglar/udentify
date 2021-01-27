@@ -1145,7 +1145,7 @@ else:
     if global_test == True:
         for magaza in magaza_adi_listesi:
 
-            #create_folders.dosya_yaratici ( magaza,BASE_DIR )
+            create_folders.dosya_yaratici ( magaza,BASE_DIR )
 
             print("BASE_DIR_cozum")
             print(magaza)

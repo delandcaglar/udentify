@@ -305,7 +305,7 @@ def excel_to_list(firm_path):
 
 
 
-excel_to_list(firm_path)
+#excel_to_list(firm_path)
 
 
 
