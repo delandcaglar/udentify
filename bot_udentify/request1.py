@@ -749,6 +749,7 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
     date1 = datetime.datetime ( yil1, ay1, gun1 )
     date2 = datetime.datetime ( yil2, ay2, gun2 )
     elma = (numOfDays ( date1, date2 ), "days")[0] + 1
+    cikarilacak_gun = (numOfDays ( date1, date2 ), "days")[0]
     onceki_ay_son_tarih = date2 - datetime.timedelta ( days=elma )
     onceki_ay_ilk_tarih = date1 - datetime.timedelta ( days=elma )
     print ( "tarih_kontrolu" )
@@ -774,6 +775,7 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
     prevsaleQuantityTotal = float ( 0 )
     prevsaleAmountTotal = float ( 0 )
     saleAmountTotal = float ( 0 )
+
 
     for headers in headersiz_data:
         # print(headersiz_data[n])
@@ -829,6 +831,40 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
     info_all = []
 
     n = 0
+
+    def searching_function(bakilan_alan):
+        if bakilan_alan == "PrevCount":
+            a1 = float ( headersiz_data[n]["Count"] )
+            a2 = float ( headersiz_data1[n]["Count"] )
+            return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
+        if bakilan_alan == "PrevDwell":
+            print ( "PrevDwell_degeri" )
+            a1 = float ( headersiz_data[n]["Dwell"] )
+            a2 = float ( headersiz_data1[n]["Dwell"] )
+            print ( "PrevDwell_degeri" )
+            print ( float ( math.ceil ( ((a1 - a2) / a2) * 100 ) ) )
+            return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
+        if bakilan_alan == "_15s_Enterance":
+            _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
+            return float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
+        if bakilan_alan == "n_15s_Enterance":
+            _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
+            try:
+                return 1 / float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
+            except:
+                return 1 / 10000
+        if bakilan_alan == "Dwell":
+            Dwell = float ( headersiz_data[n]["Dwell"] )
+            return float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
+        if bakilan_alan == "Count":
+            return float ( headersiz_data[n]["Count"] )
+
+
+    TotalCount_final = searching_function ( bakilan_alan )
+    if bakilan_alan == "PrevDwell":
+
+        ( En_cok_ziyaret_edilen_sayi ) = float(-999)
+
     for headers in headersiz_data:
         print ( headersiz_data[n]["Name"] )
         print ( headersiz_data[n]["Id"] )
@@ -846,29 +882,7 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
         # TotalCount_final = float(headersiz_data[n][bakilan_alan])
         # print(TotalCount_final)
 
-        def searching_function(bakilan_alan):
-            if bakilan_alan == "PrevCount":
-                a1 = float ( headersiz_data[n]["Count"] )
-                a2 = float ( headersiz_data1[n]["Count"] )
-                return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
-            if bakilan_alan == "PrevDwell":
-                a1 = float ( headersiz_data[n]["Dwell"] )
-                a2 = float ( headersiz_data1[n]["Dwell"] )
-                return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
-            if bakilan_alan == "_15s_Enterance":
-                _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
-                return float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
-            if bakilan_alan == "n_15s_Enterance":
-                _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
-                try:
-                    return 1 / float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
-                except:
-                    return 1 / 10000
-            if bakilan_alan == "Dwell":
-                Dwell = float ( headersiz_data[n]["Dwell"] )
-                return float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
-            if bakilan_alan == "Count":
-                return float ( headersiz_data[n]["Count"] )
+
 
         TotalCount_final = searching_function ( bakilan_alan )
 
@@ -920,14 +934,11 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
             print ( DensityChange )
             print ( headersiz_data[n]["Density"] )
             print ( densityTotal )
-            Density = float (
-                ((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )  # ! duzelt math.ceil
+            Density = float (((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )  # ! duzelt math.ceil
             print ( Density )
             print ( "DensityStoreChange" )  # duzelttin
-            DensityStoreChange = Density - (
-                float ( (((headersiz_data1[n]["Density"])) * (100)) / (densityPrevTotal) ))  # magaza ici degisimi
-            DensityStoreChange = float (
-                ("{:.2f}".format ( float ( (DensityStoreChange) ), 2 )) )  # magaza ici degisimi
+            DensityStoreChange = Density - (float ( (((headersiz_data1[n]["Density"])) * (100)) / (densityPrevTotal) ))  # magaza ici degisimi
+            DensityStoreChange = float (("{:.2f}".format ( float ( (DensityStoreChange) ), 2 )) )  # magaza ici degisimi
             print ( DensityStoreChange )
 
             # kisi sayisi ile alakadar degisim
@@ -1196,7 +1207,7 @@ def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,
                 if searching_function ( "Density", hesap ) > TotalCount_final:
                     kategori_sirasi += 1
                 hesap += 1
-            final_kategori_sirasi = kategori_sirasi
+        final_kategori_sirasi1 = kategori_sirasi
 
         n += 1
         print ( "/n 1" )
@@ -1204,9 +1215,9 @@ def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,
     # yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
 
     try:
-        info_all = [En_cok_ziyaret_edilen_ad, final_kategori_sirasi]
+        info_all = [En_cok_ziyaret_edilen_ad, final_kategori_sirasi1]
     except:
-        info_all = [En_cok_ziyaret_edilen_ad, final_kategori_sirasi]
+        info_all = [En_cok_ziyaret_edilen_ad, final_kategori_sirasi1]
 
     return info_all
 
@@ -2056,13 +2067,18 @@ if __name__ == "__main__":
     ## 8 INCISI ILGI ORANNI # EN AZ OLAN
 
     print ( "s" )
-    magaza_id = 240
-    tarih_ilk = "01/01/2021"
-    tarih_son = "19/01/2021"
+    # magaza_id = 307
+    # tarih_ilk = "20/01/2021"  # tariha hatasini coz
+    # tarih_son = "27/01/2021"
+    #print(main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son,"PrevDwell" ))
+    # boys = (main_2_7_performans_tablosu_double_isim(228, tarih_ilk , tarih_son,"BOYS"))
+    # print(boys)
 
-    # #main_2_1_kisi_sure_saatlik ( magaza_id, tarih_ilk, tarih_son )
-    #
-    print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
+    # # #main_2_1_kisi_sure_saatlik ( magaza_id, tarih_ilk, tarih_son )
+    # #
+    # print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
+
+
 
     #print ( main_2_7_performans_tablosu_isimsel ( magaza_id, tarih_ilk, tarih_son, "APOLLO" ) )
 

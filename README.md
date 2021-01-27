@@ -20,6 +20,10 @@ Versiyonunuza en uygun olabilecek sürümü indirin. İndirdikten sonra Readme d
 
 ## Updateler:
 
+
+### Version_1.11
+- request1.py deki, performans tablosu ile alakadar, mağaza "PrevDwell" değerlerinin hepsi negatif oldugunda çıkan sorun çözüldü
+
 ### Version_1.1
 - Create folder dosyası değiştirildi. Artık resimlerin isimleri manuel yazmadan otomatik olarak yüklenmekte. Bu sayede artık statik_resimler dosyasina şirket logo resmi koyulduğunda, program word dosyalarına yazarken resim bulunamadı hatası gelmeyecek (logo uygun formatta yazılmalıdır).
 - request1.py dosyasindaki offset ayari dinamik hale getirildi ülke fark etmeksizin offset ayarlanabilmekte.

@@ -1675,6 +1675,7 @@ son_tarih = "19/01/2021"
 # start_writing_on_docx("under armour","under armour akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 # start_writing_on_docx("under armour","under armour istinye park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 # start_writing_on_docx("suwen","suwen viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
+#start_writing_on_docx("suwen","suwen mall of istanbul",306,"20/01/2021","27/01/2021",189,[["LOHUSA","ÇORAP"],["KORSE","TRENDY"]],['Giriş', 'Sol', 'Sağ', 'Cam 4'])
 
 
 

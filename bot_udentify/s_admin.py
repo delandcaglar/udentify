@@ -24,6 +24,8 @@ global_test = True
 console = False
 ek_sure = float(1)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(BASE_DIR)
+
 class udentify_bot():
     def __init__(self):
         # get scroll Height
@@ -572,6 +574,10 @@ class udentify_bot():
                         print ( content )
                         print ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                         toplam_grafik_sayisi += 1
+                        try:
+                            self.driver.execute_script ( "arguments[0].scrollIntoView();", content )
+                        except :
+                            print("kaydirma_basarisiz")
                         content1.screenshot ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                     print("katsayi artti")
                 except Exception as e:
@@ -1140,7 +1146,7 @@ else:
     if global_test == True:
         for magaza in magaza_adi_listesi:
 
-            create_folders.dosya_yaratici ( magaza,BASE_DIR )
+            #create_folders.dosya_yaratici ( magaza,BASE_DIR )
 
             print("BASE_DIR_cozum")
             print(magaza)
@@ -1169,13 +1175,13 @@ else:
             print("window_size")  # {'width': 1200, 'height': 935} normal ayari
             print(bot.driver.get_window_size())
             bot.driver.set_window_size(1200, 935)
-            bot.driver.set_window_size ( 1500, 1000 ) #( f"--window-size=2080,{1080}" )
+            bot.driver.set_window_size ( 1200, 1000 ) #( f"--window-size=2080,{1080}" )
             print("bakalim_ayar")
             bot.select_firm ( magaza[0], magaza[7] )
-            bot.performas_tablosu_specific_resim_tek( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
+            bot.performas_tablosu_specific_resim_tek ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
             bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
