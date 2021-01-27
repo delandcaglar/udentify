@@ -20,10 +20,10 @@ Versiyonunuza en uygun olabilecek sürümü indirin. İndirdikten sonra Readme d
 
 ## Updateler:
 - Version_1.1
-- Create folder dosyası değiştirildi artık resimlerin isimleri manuel yazmadan otomatik olarak yüklenmekte. Bu sayede artık statik_resimler dosyasina şirket logo resmi koyulduğunda resim bulunamadı hatası gelmeyecek (logo uygun formatta yazılmalıdır) word dosyalarına yazarken.
+- Create folder dosyası değiştirildi. Artık resimlerin isimleri manuel yazmadan otomatik olarak yüklenmekte. Bu sayede artık statik_resimler dosyasina şirket logo resmi koyulduğunda, program word dosyalarına yazarken resim bulunamadı hatası gelmeyecek (logo uygun formatta yazılmalıdır).
 - request1.py dosyasindaki offset ayari dinamik hale getirildi ülke fark etmeksizin offset ayarlanabilmekte.
 - docx dosyasındaki baştaki kısımlar güncellendi request kısmına göre
-- Sistem tamamen windows uyumluluştı
+- Sistem tamamen windows ile uyumluluştı artık windows versiyonunu indirmeye gerek yok.
 - Screen shot alirken tarayici boyutu değiştirme özelliği geldi artık resimler daha az kayıyor
 - Word dosyasında resimlerin boyutları ayarlandı 
 
