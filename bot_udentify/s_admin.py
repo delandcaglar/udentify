@@ -282,7 +282,7 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath ( xpath )
-            element.screenshot ( f"{path}/{isim}.png" )
+            element.screenshot ( f"{path}{isim}.png" )
 
         def deger_yolla(xpath, deger):
             self.driver.find_element_by_xpath ( xpath )
@@ -332,7 +332,7 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
+            element.screenshot ( f"{path}{isim}.png" )
 
         def deger_yolla(xpath, deger):
             self.driver.find_element_by_xpath ( xpath )
@@ -525,11 +525,15 @@ class udentify_bot():
             sleep ( 3 )
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
+            element.screenshot ( f"{path}{isim}.png" )
             print(f"{path}{isim}.png")  #test icin
 
 
         sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih)
+
+        content = self.driver.find_element_by_css_selector ( ".rt-th.rt-resizable-header:nth-of-type(3)" )
+        content.click ()
+        content.click ()
 
         element = self.driver.find_element_by_class_name ( "rt-tbody" )
         aaaa= "performans_tablosu_final"
@@ -548,8 +552,8 @@ class udentify_bot():
             self.driver.get ( deger )
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
 
         def saatlik_sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
             deger = f"https://app.udentify.co/?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0"
@@ -563,6 +567,7 @@ class udentify_bot():
             toplam_grafik_sayisi = 0
             for grafik in grafik_isimleri:
                 try:
+                    sleep(3+ ek_sure)
                     content1 = self.driver.find_element_by_css_selector (f'.{grafik_adi}:nth-of-type({sabit_katsayi})' )
                     content = self.driver.find_element_by_css_selector (
                         f'.{grafik_adi}:nth-of-type({sabit_katsayi}) .PageContent__Title' ).get_attribute ( 'outerHTML' )
@@ -570,10 +575,12 @@ class udentify_bot():
                         print("baklol__cikanlar")
                         print(grafik_isimleri_word_icin[liste_katsayi-1])
                         print ( content )
+                        print ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                         toplam_grafik_sayisi += 1
                         content1.screenshot ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                     print("katsayi artti")
                 except Exception as e:
+                    print("eksik_parca")
                     print(e)
                 sabit_katsayi += 1
                 liste_katsayi += 1
@@ -591,6 +598,8 @@ class udentify_bot():
         grafik_isimleri_word_icin = ["Giren_Kişi_Sayısı_gunluk", "Kasadaki_Müşteri_Sayısı_gunluk", "Mağaza_Önünden_Geçen_Müşteri_Sayısı_gunluk"]
 
         grafik_sayisi = isimlerde_ss_al(grafik_isimleri,grafik_isimleri_word_icin,"col-xl-12",0,path)
+        print("grafik_sayisi")
+        print(grafik_sayisi)
 
         grafik_isimleri_1 = ['<h1 class="PageContent__Title">En Çok Ziyaret Edilen Alanlar (kişi adet)</h1>','<h1 class="PageContent__Title">En Çok Vakit Geçirilen Alanlar (kişi sn)</h1>']
         grafik_isimleri_word_icin_1 = ["En_Çok_Ziyaret_Edilen_Alanlar_kişi_adet_gunluk", 'En_Çok_Vakit_Geçirilen_Alanlar_kişi_sn_gunluk']
@@ -630,8 +639,8 @@ class udentify_bot():
             sleep ( 3 )
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
 
         def scroll_until_location(xpath):
             find_location = self.driver.find_element_by_xpath (xpath )
@@ -655,13 +664,14 @@ class udentify_bot():
                 content1 = self.driver.find_element_by_css_selector ( f'.col-xl-6:nth-of-type({sayi})' )
                 self.driver.execute_script ( "arguments[0].scrollIntoView();", content1 )
                 self.driver.execute_script ( "window.scrollBy(0, -65)" ) #burada error olabilir bak
-                content1.screenshot ( f"{path}/isi_haritasi{sayi}.png" )
+                content1.screenshot ( f"{path}isi_haritasi{sayi}.png" )
                 sayi += 1
             sayi = 0
             return isim_listesi
 
         isim_listesi = kamera_resimlerini_al()
         print(isim_listesi)
+        return isim_listesi
 
     def yogunluk_haritasi_final(self,performans_tablosu_no,ilk_tarih,son_tarih,path):
         def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
@@ -672,8 +682,8 @@ class udentify_bot():
             sleep ( 3 )
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
 
         def scroll_until_location(xpath):
             find_location = self.driver.find_element_by_xpath (xpath )
@@ -707,7 +717,7 @@ class udentify_bot():
                 yogunluk_resim = bot.driver.find_element_by_css_selector ( f'.areaContainer:nth-of-type({baslangic_numarasi}) ' )
                 self.driver.execute_script ( "arguments[0].scrollIntoView();", yogunluk_resim )
                 self.driver.execute_script ( "window.scrollBy(0, -65)" )
-                yogunluk_resim.screenshot ( f"{path}/yogunluk_haritasi{sonuc_yazisi}.png" )
+                yogunluk_resim.screenshot ( f"{path}yogunluk_haritasi{sonuc_yazisi}.png" )
             print(sonuc_yazisi)
             baslangic_numarasi += 1
 
@@ -733,8 +743,8 @@ class udentify_bot():
             sleep ( 3 )
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
 
         def scroll_until_location(xpath):
             find_location = self.driver.find_element_by_xpath (xpath )
@@ -754,7 +764,7 @@ class udentify_bot():
                         print("baklol")
                         print ( content )
                         toplam_grafik_sayisi += 1
-                        content1.screenshot ( f"{path}/{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
+                        content1.screenshot ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                     print("katsayi artti")
                 except Exception as e:
                     print(e)
@@ -810,8 +820,8 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/degisim_{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}degisim_{isim}.png")  #test icin
 
         def deger_yolla(xpath, deger):
             self.driver.find_element_by_xpath ( xpath )
@@ -878,8 +888,8 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/degisim_{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}degisim_{isim}.png")  #test icin
 
         def deger_yolla(xpath, deger):
             self.driver.find_element_by_xpath ( xpath )
@@ -907,8 +917,8 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/degisim_{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}degisim_{isim}.png")  #test icin
 
         def deger_yolla(xpath, deger):
             self.driver.find_element_by_xpath ( xpath )
@@ -1007,8 +1017,8 @@ class udentify_bot():
 
         def take_screen_shot(xpath, path, isim):
             element = self.driver.find_element_by_xpath (xpath)
-            element.screenshot ( f"{path}/{isim}.png" )
-            print(f"{path}/degisim_{isim}.png")  #test icin
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}degisim_{isim}.png")  #test icin
 
         def deger_yolla(xpath, deger):
             self.driver.find_element_by_xpath ( xpath )
@@ -1040,6 +1050,57 @@ class udentify_bot():
             kategori_sayisi += 1
             resimleri_cek ( performans_tablosu_no, ilk_tarih, son_tarih, kategori[1], kategori_sayisi )
             kategori_sayisi += 1
+
+    def performas_tablosu_specific_resim_tek(self , performans_tablosu_no,ilk_tarih,son_tarih,path): ##path burada statik dosya icin
+        def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/PerformanceTable?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
+
+
+        def click(xpath):
+            self.driver.find_element_by_xpath ( xpath )
+            density_btn = self.driver.find_element_by_xpath (xpath )
+            density_btn.click ()
+
+        def giris_yap(xpath, keys):
+            self.driver.find_element_by_xpath (xpath )
+            email_in = self.driver.find_element_by_xpath (xpath)
+            email_in.send_keys ( keys )
+            sleep ( 2 + ek_sure )
+
+        def take_screen_shot(xpath, path, isim):
+            element = self.driver.find_element_by_xpath (xpath)
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}degisim_{isim}.png")  #test icin
+
+        def deger_yolla(xpath, deger):
+            self.driver.find_element_by_xpath ( xpath )
+            density_btn = self.driver.find_element_by_xpath ( xpath )
+            density_btn.click ()
+            density_btn.send_keys ( deger )
+
+        sayfaya_git ( performans_tablosu_no, ilk_tarih, son_tarih )
+        sleep ( 4 + ek_sure)
+
+        content = self.driver.find_element_by_css_selector (".rt-th.rt-resizable-header:nth-of-type(3)")
+        content.click()
+        content.click()
+
+        def resimleri_cek(performans_tablosu_no,ilk_tarih,son_tarih,resim_sayisi):
+            performans_tablosu_listesi = request1.main_2_7_performans_tablosu_alansal ( performans_tablosu_no, ilk_tarih,son_tarih, "Count" )
+            isim = performans_tablosu_listesi[0][0]
+            istenilen_sira = request1.main_2_7_performans_tablosu_isimsel ( performans_tablosu_no, ilk_tarih, son_tarih, isim )
+            istenilen_sira = int(istenilen_sira[1])
+            print(istenilen_sira)
+            content = self.driver.find_element_by_css_selector ( f'.rt-tbody .rt-tr-group:nth-of-type({istenilen_sira})' )
+            #self.driver.execute_script ( "arguments[0].scrollIntoView();", content )
+            #self.driver.execute_script ( "window.scrollBy(0, -65)" )  # burada error olabilir bak
+            content.screenshot ( f'{path}performans_tek{resim_sayisi}.png' )
+
+
+
+        resimleri_cek ( performans_tablosu_no, ilk_tarih, son_tarih,0 )
+
+
 
 
 
@@ -1084,9 +1145,13 @@ else:
     if global_test == True:
         for magaza in magaza_adi_listesi:
 
-            create_folders.dosya_yaratici ( magaza,BASE_DIR )
-            print("BASE_DIR")
+            #create_folders.dosya_yaratici ( magaza,BASE_DIR )
+
+            print("BASE_DIR_cozum")
+            print(magaza)
             print(BASE_DIR)
+
+
 
         for magaza in magaza_adi_listesi:
             print("magaza_degerleri")
@@ -1106,22 +1171,33 @@ else:
             print(magza_statik_dosya_location)
             bot = udentify_bot ()
             bot.login ()
-            # bot.driver.set_window_size ( 1500, 1000 )
+            print("window_size")  # {'width': 1200, 'height': 935} normal ayari
+            print(bot.driver.get_window_size())
+            bot.driver.set_window_size(1200, 935)
+            bot.driver.set_window_size ( 1500, 1000 ) #( f"--window-size=2080,{1080}" )
+            print("bakalim_ayar")
             bot.select_firm ( magaza[0], magaza[7] )
+            bot.performas_tablosu_specific_resim_tek( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
             bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
             bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] , magaza[7] )
+            bot.driver.set_window_size ( 1200, 935 )
             bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.isi_tablosu_topla_final( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            isi_tablosu_liste = bot.isi_tablosu_topla_final( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location, magaza[6],
+                                           magaza[7] )
+            print("kamera_isimleri")
+            print(isi_tablosu_liste)
             bot.driver.close ()
 
-            aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],magaza[6] )
+            aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],magaza[6],isi_tablosu_liste )
             print("bu bitti")
+
 
 
 
@@ -1131,6 +1207,7 @@ else:
         bot = udentify_bot ()
         bot.login ()
         bot.select_firm ( sirket_adi, magza_adi ) #magza_adi"İstinye Park"
+
         # bot.magaza_data_topla_final ( 240, ilk_tarih, son_tarih, path )
         # bot.yogunluk_haritasi_final(240,ilk_tarih,son_tarih,path)#228
         # bot.performans_tablosu_topla_final ( 240, ilk_tarih, son_tarih, path )

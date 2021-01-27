@@ -2064,7 +2064,7 @@ if __name__ == "__main__":
     #
     print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "Count" ) )
 
-    # print ( main_2_7_performans_tablosu_isimsel ( magaza_id, tarih_ilk, tarih_son, "APOLLO" ) )
+    #print ( main_2_7_performans_tablosu_isimsel ( magaza_id, tarih_ilk, tarih_son, "APOLLO" ) )
 
     # 3 kisi sayisi
 
