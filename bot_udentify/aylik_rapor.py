@@ -30,7 +30,7 @@ firma = "Under Armour"
 magza_statik_dosya_location_ismi = "Under Armour Akasya"
 gereken_dosya_ismi = "Under Armour Akasya"
 magaza_id_no = 240
-magaza_adi = "Kadikoy"
+magaza_adi = "Kad'ikoy"
 
 ilk_tarih = "01/12/2020"
 son_tarih = "25/12/2020"
@@ -825,6 +825,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     p = document.add_paragraph(f"       2.7 Performans Kıyaslaması")
     p = document.add_paragraph(f"       2.8 {performans_tablosu_listesi[0][0].title()}") #.capitilize da olur
     p = document.add_paragraph(f"       2.9 Kategori Karşılaştırması")
+    p = document.add_paragraph(f"       2.9.1 Trendler" )
 
     p = document.add_paragraph(f"")
     p.add_run(f"3.0 Sonuç").bold = True
@@ -1110,19 +1111,48 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         f"Kasa kamerasının {hm1} alanınnda, basketball kamerasının {hm1} alanınnda, men’s run kamerasının {hm2} alanınnda, heat gear kamerasının {hm1} alanınnda, FTW kamerasının {hm1} alanınnda, giriş kamerasının {hm1} alanınnda yoğunluğun arttığı görülmektedir.", style='List Bullet'
     )
     # ['Ana Giriş', 'Cam 7', 'Cam 8', 'Run', 'Youth', 'Giriş', 'Train', 'Train Ön']
-    def isi_haritalarini_yarat(sayi,kamera_adi_isimi):
-        document.add_picture(os.path.join(BASE_DIR, f'{magza_statik_dosya_location}/isi_haritasi{sayi}.png'), width=Inches(4.5) , height=Inches(3.8))
-        last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
-        last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    def isi_haritalarini_yarat(sayi,kamera_adi_isimi,table):
+        sifirdan_baslat = sayi - 1
+        if sifirdan_baslat % 2 == 0:
+            ikincisi = 0
+        else:
+            ikincisi = 1
+        birincisi =  ( round((sifirdan_baslat +1.01) / 2 )-1 ) #math.ceil kullanmamak icin 0.51 yaptim
+        print("birincisi_bak")
+        print(birincisi)
+        print(ikincisi)
+        row_cells1 = table.cell ( birincisi, ikincisi )
+        paragraph = row_cells1.paragraphs[0]
+        run = paragraph.add_run ()
+        run.add_picture ( f'{magza_statik_dosya_location}/isi_haritasi{sayi}.png', width=Inches ( 2.66 ),
+                                           height=Inches ( 2.24 ) ) ### 2.25 1.9 normalde
+
+        # last_paragraph = paragraph.paragraphs[-1]
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+        # document.add_picture(os.path.join(BASE_DIR, f'{magza_statik_dosya_location}/isi_haritasi{sayi}.png'), width=Inches(2.25) , height=Inches(1.9))
+        # last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
+        # last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         document.add_paragraph (
             f"{kamera_adi_isimi} kamerasının....",
             style='List Bullet'
         )
 
-    isi_tablosu_liste =isi_tablosu_liste
+
+    tablo_satir_sayisi = (round ( (len ( isi_tablosu_liste ) + 1.01) / 2 ) - 1)  # math.ceil kullanmamak icin 0.51 yaptim
+
+
+    table = document.add_table ( rows=tablo_satir_sayisi, cols=2 )
+    # table.columns[0].width = Inches ( 5 )
+    # table.rows[0].cells[0].height = Inches ( 5 )
+    for row in table.rows:
+        row.height = Inches( 2.25 )
+        row.width = Inches ( 1.9 )
+    table.style = 'TableGrid'
+
     sayi = 1
     for kamera in isi_tablosu_liste:
-        isi_haritalarini_yarat ( sayi, kamera)
+        isi_haritalarini_yarat ( sayi, kamera, table)
         sayi += 1
 
 
@@ -1608,11 +1638,183 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     ###-11_______________________________________________
 
 
-    p = document.add_paragraph(f"Rapor ile ilgili sorularınızı ve yorumlarınızı hello@udentify.co adresine iletebilirsiniz. İyi çalışmalar!")
+
+
+    # yogunluk_temas_sure
+    document.add_page_break()
+    document.add_heading ( '2.3 Yoğunluk, Temas ve Süre Değişimi', level=1 )
+
+    # Trendler_birinci_kisim
+    document.add_paragraph (
+        f'{tarih} tarih aralığında mağaza yoğunluk, temas ve süre oranı metriklerine göre incelenmiştir. En yüksek ve en düşük orana sahip 5 kategori belirtilen metriklere göre aşağıdaki tabloda gösterilmiştir. Referans noktası belirtilen tarih olmak üzere hafta içi, hafta sonu ve bir önceki hafta değerli ile karşılaştırılmıştır. Yoğunluk, temas ve süre oran verileri belirtildikten sonra bölüm sonunda analiz kısmı yer almaktadır.'
+    )
+
+
+    #trendler yogunluk
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"A. Yoğunluk" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
 
 
+    document.add_paragraph (
+        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{"AYARLANACAK"}’tir.'
+    )
 
+    table = document.add_table ( rows=1, cols=2 )
+    # table.columns[0].width = Inches ( 5 )
+    # table.rows[0].cells[0].height = Inches ( 5 )
+    for row in table.rows:
+        row.height = Inches ( 2.25 )
+        row.width = Inches ( 1.9 )
+
+
+    row_cells1 = table.cell ( 0, 0 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_kisi0_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    row_cells1 = table.cell ( 0, 1 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_kisi1_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    document.add_paragraph (
+        f"(18/01/2021-11/01/2021) bir önceki hafta içi olan (11/01/2021-15/01/2021) tarih aralığıyla karşılaştırıldığında ‘Girls’, ‘Women’s Armour Fleece’ ve ‘Women’s Unstoppable’ kategorilerinde sırasıyla yoğunluk değişiminde %31, %15 ve %10’luk bir düşüş gözlemlenirken ‘Golf’, ‘MEN' S VANISH & RUSH’ ve ‘Men’s Recovery’ kategorilerinde ise sırasıyla %93, %58 ve %49’luk bir artış mevcuttur."
+    )
+    document.add_paragraph (
+        f"‘MAN’S THE ROCK’ ve ‘FTW’ kategorileri belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+    )
+
+    # Trendler_Temas
+    document.add_page_break()
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"A. Temas" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+    document.add_paragraph (
+        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{"AYARLANACAK"}’tir.'
+    )
+
+    table = document.add_table ( rows=1, cols=2 )
+    # table.columns[0].width = Inches ( 5 )
+    # table.rows[0].cells[0].height = Inches ( 5 )
+    for row in table.rows:
+        row.height = Inches ( 2.25 )
+        row.width = Inches ( 1.9 )
+
+
+    row_cells1 = table.cell ( 0, 0 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_sure0_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    row_cells1 = table.cell ( 0, 1 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_sure1_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    document.add_paragraph (
+        f"(18/01/2021-11/01/2021) bir önceki hafta içi olan (11/01/2021-15/01/2021) tarih aralığıyla karşılaştırıldığında ‘Girls’, ‘Women’s Armour Fleece’ ve ‘Women’s Unstoppable’ kategorilerinde sırasıyla yoğunluk değişiminde %31, %15 ve %10’luk bir düşüş gözlemlenirken ‘Golf’, ‘MEN' S VANISH & RUSH’ ve ‘Men’s Recovery’ kategorilerinde ise sırasıyla %93, %58 ve %49’luk bir artış mevcuttur."
+    )
+    document.add_paragraph (
+        f"‘MAN’S THE ROCK’ ve ‘FTW’ kategorileri belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+    )
+
+    # Trendler_Sure
+
+    document.add_page_break ()
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"A. Süre" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+    document.add_paragraph (
+        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{"AYARLANACAK"}’tir.'
+    )
+
+    table = document.add_table ( rows=1, cols=2 )
+    # table.columns[0].width = Inches ( 5 )
+    # table.rows[0].cells[0].height = Inches ( 5 )
+    for row in table.rows:
+        row.height = Inches ( 2.25 )
+        row.width = Inches ( 1.9 )
+
+
+    row_cells1 = table.cell ( 0, 0 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_yogunluk0_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    row_cells1 = table.cell ( 0, 1 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_yogunluk1_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    document.add_paragraph (
+        f"(18/01/2021-11/01/2021) bir önceki hafta içi olan (11/01/2021-15/01/2021) tarih aralığıyla karşılaştırıldığında ‘Girls’, ‘Women’s Armour Fleece’ ve ‘Women’s Unstoppable’ kategorilerinde sırasıyla yoğunluk değişiminde %31, %15 ve %10’luk bir düşüş gözlemlenirken ‘Golf’, ‘MEN' S VANISH & RUSH’ ve ‘Men’s Recovery’ kategorilerinde ise sırasıyla %93, %58 ve %49’luk bir artış mevcuttur."
+    )
+    document.add_paragraph (
+        f"‘MAN’S THE ROCK’ ve ‘FTW’ kategorileri belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+    )
+
+    document.add_page_break ()
+    document.add_heading ( '2.4 Trendler', level=1 )
+
+    # Trendler_birinci_kisim
+    document.add_paragraph (
+        'Trendler bölümünde süreklilik gösteren kategori ve alanlar incelenmiştir. Günlük, haftalık ve aylık olarak veriler incelenebilir. Bu bilgiler Trendler paneli aracılığıyla hem grafik modunda hem de harita modunda incelenebilirken aynı zamanda Excel dosyası şeklinde indirerek tablo halinde de incelenebilir.'
+    )
+
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"A. Yoğunluk" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+    document.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/trends_density_haftalik.png" ),
+        width=Inches ( 1.5 ), height=Inches ( 4.35 ) )
+    last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
+    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    p = document.add_paragraph (
+        f"3 Haftadır Yoğunluğu Artan Kategoriler: ‘MEN'S RUN’, ‘MAN' S UNSTOPPABLE’, ‘MAN' S THE ROCK’, ‘MEN' S VANISH & RUSH’, ‘MEN' S RECOVERY’, ‘BASKETBALL’, ‘MEN'S RIVAL FLEECE PLUS’, ‘APOLLO’, ‘WOMEN'S RIVAL FLEECE’, ‘WOMEN' S THE ROCK’, ‘WOMEN' S ARMOUR HG’" )
+    p = document.add_paragraph (
+        f"2 Haftadır Yoğunluğu Azalan Kategoriler: ‘WOMEN' S VANISH & RUSH’, ‘WOMEN' S UNSTOPPABLE’, ‘WOMEN' S RECOVERY - CHARGED COTTON’" )
+
+    # Trendler_ikinci_kisim
+    document.add_page_break ()
+
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"B. İlgi" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+    document.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/interest_haftalik.png" ),
+        width=Inches ( 1.5 ), height=Inches ( 4.35 ) )
+    last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
+    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    p = document.add_paragraph (
+        f"3 Haftadır Yoğunluğu Artan Kategoriler: ‘MEN'S RUN’, ‘MAN' S UNSTOPPABLE’, ‘MAN' S THE ROCK’, ‘MEN' S VANISH & RUSH’, ‘MEN' S RECOVERY’, ‘BASKETBALL’, ‘MEN'S RIVAL FLEECE PLUS’, ‘APOLLO’, ‘WOMEN'S RIVAL FLEECE’, ‘WOMEN' S THE ROCK’, ‘WOMEN' S ARMOUR HG’" )
+    p = document.add_paragraph (
+        f"2 Haftadır Yoğunluğu Azalan Kategoriler: ‘WOMEN' S VANISH & RUSH’, ‘WOMEN' S UNSTOPPABLE’, ‘WOMEN' S RECOVERY - CHARGED COTTON’" )
 
     #document.add_picture('monty-truth.png', width=Inches(1.25))
 
@@ -1674,7 +1876,7 @@ son_tarih = "19/01/2021"
 #start_writing_on_docx("under armour","under armour zorlu center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],['Kasa', 'Cam 2', 'Train', 'Cam 4', 'Giriş'])
 # start_writing_on_docx("under armour","under armour akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 # start_writing_on_docx("under armour","under armour istinye park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-# start_writing_on_docx("suwen","suwen viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
+# start_writing_on_docx("suwen","suwen viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],['Ön', 'Arka', 'Giriş', 'Cam 4'])
 #start_writing_on_docx("suwen","suwen mall of istanbul",306,"20/01/2021","27/01/2021",189,[["LOHUSA","ÇORAP"],["KORSE","TRENDY"]],['Giriş', 'Sol', 'Sağ', 'Cam 4'])
 
 

@@ -23,6 +23,7 @@ print(offser_ayari)
 
 BASE_DIR = os.path.dirname ( os.path.dirname ( os.path.abspath ( __file__ ) ) )
 print ( BASE_DIR )
+
 dosya_yolu = (BASE_DIR + f"/bot_udentify/test.log")
 print ( dosya_yolu )
 
@@ -2067,9 +2068,9 @@ if __name__ == "__main__":
     ## 8 INCISI ILGI ORANNI # EN AZ OLAN
 
     print ( "s" )
-    # magaza_id = 307
-    # tarih_ilk = "20/01/2021"  # tariha hatasini coz
-    # tarih_son = "27/01/2021"
+    magaza_id = 307
+    tarih_ilk = "18/01/2021"  # tariha hatasini coz
+    tarih_son = "27/01/2021"
     #print(main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son,"PrevDwell" ))
     # boys = (main_2_7_performans_tablosu_double_isim(228, tarih_ilk , tarih_son,"BOYS"))
     # print(boys)
@@ -2086,8 +2087,8 @@ if __name__ == "__main__":
 
     # 6 ortalama sure
 
-    # print(main_2_8_edinme_hunisi ( 11162, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
-
+    print(main_2_8_edinme_hunisi ( 10324, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
+    print("lalla")
 #############______________1.1_sayfa_yogunluk
 # liste = main_1_1_yogunluk_listesi(239, '29/10/2020', '12/11/2020' )
 # print(liste)

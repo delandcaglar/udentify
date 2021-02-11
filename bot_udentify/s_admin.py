@@ -15,7 +15,9 @@ import request1
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 import excel_reader
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import datetime
 
 # test icin False False
 # development mode icin True, False yap
@@ -121,8 +123,9 @@ class udentify_bot():
         sayfaya_git ( performans_tablosu_no, ilk_tarih, son_tarih )
         sleep ( 4 + ek_sure)
 
-
-        take_screen_shot('//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"density_haftalik")
+            # //*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]
+            #//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]
+        take_screen_shot('//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]', path, f"density_haftalik")
         take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,f"density_aylik" )
         print("density screen shot alindi")
 
@@ -131,8 +134,8 @@ class udentify_bot():
         interest_btn.click ()
 
         sleep ( 3 + ek_sure )
-
-        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"interest_haftalik" )
+        # //*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]', path, f"interest_haftalik" )
         take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,
                            f"interest_aylik" )
 
@@ -144,7 +147,7 @@ class udentify_bot():
 
         sleep ( 3 + ek_sure )
 
-        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"visitor_haftalik" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]', path, f"visitor_haftalik" )
         take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,
                            f"visitor_aylik" )
         print ( "visitor screen shot alindi" )
@@ -154,7 +157,7 @@ class udentify_bot():
         meantime_btn.click ()
 
         sleep ( 3 + ek_sure )
-        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]/div', path, f"meantime_haftalik" )
+        take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[2]', path, f"meantime_haftalik" )
         take_screen_shot ( '//*[@id="trends"]/div/div/div/div[3]/div/div/div[2]/div/div[3]', path,
                            f"meantime_aylik" )
         print ( "meantime screen shot alindi" )
@@ -575,8 +578,10 @@ class udentify_bot():
                         print ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                         toplam_grafik_sayisi += 1
                         try:
-                            self.driver.execute_script ( "arguments[0].scrollIntoView();", content )
-                        except :
+                            self.driver.execute_script ( "arguments[0].scrollIntoView();", content1 )
+                            self.driver.execute_script ( "window.scrollBy(0, -65)" )
+                        except Exception as e:
+                            print(e)
                             print("kaydirma_basarisiz")
                         content1.screenshot ( f"{path}{grafik_isimleri_word_icin[liste_katsayi-1]}.png" )
                     print("katsayi artti")
@@ -712,22 +717,227 @@ class udentify_bot():
 
         baslangic_numarasi = 1
         for element in content:
-            yazilar = bot.driver.find_element_by_css_selector (f'.areaContainer:nth-of-type({baslangic_numarasi}) .page-title :nth-child(1)' ).get_attribute ( 'outerHTML' )
-            sonuc_yazisi = hangisine_tekabul_ediyor(yazilar)
-            if sonuc_yazisi is not None:
-                yogunluk_resim = bot.driver.find_element_by_css_selector ( f'.areaContainer:nth-of-type({baslangic_numarasi}) ' )
-                self.driver.execute_script ( "arguments[0].scrollIntoView();", yogunluk_resim )
-                self.driver.execute_script ( "window.scrollBy(0, -65)" )
-                yogunluk_resim.screenshot ( f"{path}yogunluk_haritasi{sonuc_yazisi}.png" )
-            print(sonuc_yazisi)
+            try:
+                yazilar = bot.driver.find_element_by_css_selector (
+                    f'.areaContainer:nth-of-type({baslangic_numarasi}) .page-title :nth-child(1)' ).get_attribute (
+                    'outerHTML' )
+                sonuc_yazisi = hangisine_tekabul_ediyor ( yazilar )
+                print ( sonuc_yazisi )
+                print ( "22" )
+                if sonuc_yazisi is not None:
+                    yogunluk_resim = bot.driver.find_element_by_css_selector (
+                        f'.areaContainer:nth-of-type({baslangic_numarasi}) ' )
+                    self.driver.execute_script ( "arguments[0].scrollIntoView();", yogunluk_resim )
+                    self.driver.execute_script ( "window.scrollBy(0, -65)" )
+                    yogunluk_resim.screenshot ( f"{path}yogunluk_haritasi{sonuc_yazisi}.png" )
+                print ( sonuc_yazisi )
+            except:
+                print ( "sonra cozucen" )
             baslangic_numarasi += 1
 
-        liste = ['<h4>Yoğunluk/M2<span style="font-size: 15px;"> (Yoğunluk / Metrekare)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Yoğunluk/M2.xlsx" class="icon download link"></i></span></span></h4>',
-                 '<h4>Satış<span style="font-size: 15px;"> (Ürün Sayısı)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Satış.xlsx" class="icon download link"></i></span></span></h4>',
-                 '<h4>Satış(Tutar)/M2<span style="font-size: 15px;"> (Ürün Sayısı / Metrekare)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Satış(Tutar)/M2.xlsx" class="icon download link"></i></span></span></h4>',
-                 '<h4>Satış<span style="font-size: 15px;"> (Toplam Tutar)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Satış.xlsx" class="icon download link"></i></span></span></h4>',
-                 '(Müşteri Sayısı x Geçirilen Süre)',
-                 '',]
+        # liste = ['<h4>Yoğunluk/M2<span style="font-size: 15px;"> (Yoğunluk / Metrekare)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Yoğunluk/M2.xlsx" class="icon download link"></i></span></span></h4>',
+        #          '<h4>Satış<span style="font-size: 15px;"> (Ürün Sayısı)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Satış.xlsx" class="icon download link"></i></span></span></h4>',
+        #          '<h4>Satış(Tutar)/M2<span style="font-size: 15px;"> (Ürün Sayısı / Metrekare)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Satış(Tutar)/M2.xlsx" class="icon download link"></i></span></span></h4>',
+        #          '<h4>Satış<span style="font-size: 15px;"> (Toplam Tutar)</span><span style="float: right;"><span><i title="Under Armour - Zorlu Center - 01/12/2020 - 18/12/2020 - Satış.xlsx" class="icon download link"></i></span></span></h4>',
+        #          '(Müşteri Sayısı x Geçirilen Süre)',
+        #          '',]
+
+    def yogunluk_haritasi_final_kisi(self,performans_tablosu_no,ilk_tarih,son_tarih,path,ilk):
+        def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/Area?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0" )
+            sleep ( 3 )
+        def saatlik_sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/PerformanceTable?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
+            sleep ( 3 )
+        def take_screen_shot(xpath, path, isim):
+            element = self.driver.find_element_by_xpath (xpath)
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
+
+        def scroll_until_location(xpath):
+            find_location = self.driver.find_element_by_xpath (xpath )
+            self.driver.execute_script ( "arguments[0].scrollIntoView();", find_location )
+
+        def hangisine_tekabul_ediyor(liste):
+            if "(Müşteri Sayısı x Geçirilen Süre)" in liste:
+                return "yogunluk"
+            if "(Yoğunluk / Metrekare)" in liste:
+                return "Yoğunluk_m2"
+            if "(Ürün Sayısı)" in liste:
+                return "satış_urun_sayisi"
+            if "(Ürün Sayısı / Metrekare)" in liste:
+                return "satıs_tutari_m2"
+            if "(Toplam Tutar)" in liste:
+                return "satis_toplam"
+
+
+
+        sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih)
+
+        content = self.driver.find_element_by_css_selector ( '.person-deselected.icon' )
+        content.click()
+        sleep(3)
+        content = self.driver.find_elements_by_css_selector ( '.areaContainer ' )
+
+        toplam_grafik_sayisi = len(content)
+
+        try:
+            basdaki = self.driver.find_element_by_css_selector ( '.Area__Image.row .col-md-4' )
+            self.driver.execute_script ( "window.scrollBy(0, -65)" )
+            basdaki.screenshot( f"{path}_kisi{ilk}_yogunluk_haritasi_birincisi.png" )
+        except Exception as e:
+            print("erro bastaki kisim yok")
+
+        baslangic_numarasi = 1
+        for element in content:
+            try:
+                yazilar = bot.driver.find_element_by_css_selector (
+                    f'.areaContainer:nth-of-type({baslangic_numarasi}) .page-title :nth-child(1)' ).get_attribute (
+                    'outerHTML' )
+                sonuc_yazisi = hangisine_tekabul_ediyor ( yazilar )
+                print ( sonuc_yazisi )
+                print ( "22" )
+                if sonuc_yazisi is not None:
+                    yogunluk_resim = bot.driver.find_element_by_css_selector (
+                        f'.areaContainer:nth-of-type({baslangic_numarasi}) ' )
+                    self.driver.execute_script ( "arguments[0].scrollIntoView();", yogunluk_resim )
+                    self.driver.execute_script ( "window.scrollBy(0, -65)" )
+                    yogunluk_resim.screenshot ( f"{path}_kisi{ilk}yogunluk_haritasi{sonuc_yazisi}.png" )
+                print ( sonuc_yazisi )
+            except Exception as e:
+                print ( e )
+                print ( "sonra cozucen" )
+            baslangic_numarasi += 1
+
+
+    def yogunluk_haritasi_final_sure(self,performans_tablosu_no,ilk_tarih,son_tarih,path,ilk):
+        def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/Area?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0" )
+            sleep ( 3 )
+        def saatlik_sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/PerformanceTable?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
+            sleep ( 3 )
+        def take_screen_shot(xpath, path, isim):
+            element = self.driver.find_element_by_xpath (xpath)
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
+
+        def scroll_until_location(xpath):
+            find_location = self.driver.find_element_by_xpath (xpath )
+            self.driver.execute_script ( "arguments[0].scrollIntoView();", find_location )
+
+        def hangisine_tekabul_ediyor(liste):
+            if "(Müşteri Sayısı x Geçirilen Süre)" in liste:
+                return "yogunluk"
+            if "(Yoğunluk / Metrekare)" in liste:
+                return "Yoğunluk_m2"
+            if "(Ürün Sayısı)" in liste:
+                return "satış_urun_sayisi"
+            if "(Ürün Sayısı / Metrekare)" in liste:
+                return "satıs_tutari_m2"
+            if "(Toplam Tutar)" in liste:
+                return "satis_toplam"
+
+
+
+        sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih)
+
+        content = bot.driver.find_element_by_css_selector('.time-deselected.icon')
+        content.click()
+        sleep(3)
+        content = bot.driver.find_elements_by_css_selector('.areaMapTypeCircle')
+
+        try:
+            basdaki = self.driver.find_element_by_css_selector ( '.Area__Image.row .col-md-4' )
+            self.driver.execute_script ( "window.scrollBy(0, -65)" )
+            basdaki.screenshot( f"{path}_sure{ilk}_yogunluk_haritasi_birincisi.png" )
+        except Exception as e:
+            print("erro bastaki kisim yok")
+
+        toplam_grafik_sayisi = len(content)
+
+        baslangic_numarasi = 1
+        for element in content:
+            try:
+                yazilar = bot.driver.find_element_by_css_selector (f'.areaContainer:nth-of-type({baslangic_numarasi}) .page-title :nth-child(1)' ).get_attribute ( 'outerHTML' )
+                sonuc_yazisi = hangisine_tekabul_ediyor(yazilar)
+                print(sonuc_yazisi)
+                print("22")
+                if sonuc_yazisi is not None:
+                    yogunluk_resim = bot.driver.find_element_by_css_selector ( f'.areaContainer:nth-of-type({baslangic_numarasi}) ' )
+                    self.driver.execute_script ( "arguments[0].scrollIntoView();", yogunluk_resim )
+                    self.driver.execute_script ( "window.scrollBy(0, -65)" )
+                    yogunluk_resim.screenshot ( f"{path}_sure{ilk}yogunluk_haritasi{sonuc_yazisi}.png" )
+                print(sonuc_yazisi)
+            except Exception as e:
+                print(e)
+                print("sonra cozucen")
+            baslangic_numarasi += 1
+
+    def yogunluk_haritasi_final_yogunluk(self,performans_tablosu_no,ilk_tarih,son_tarih,path,ilk):
+        def sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/Area?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=0" )
+            sleep ( 3 )
+        def saatlik_sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih):
+            self.driver.get ( f"https://app.udentify.co/PerformanceTable?StoreID={performans_tablosu_no}&sDate={ilk_tarih}&eDate={son_tarih}&filterType=1" )
+            sleep ( 3 )
+        def take_screen_shot(xpath, path, isim):
+            element = self.driver.find_element_by_xpath (xpath)
+            element.screenshot ( f"{path}{isim}.png" )
+            print(f"{path}{isim}.png")  #test icin
+
+        def scroll_until_location(xpath):
+            find_location = self.driver.find_element_by_xpath (xpath )
+            self.driver.execute_script ( "arguments[0].scrollIntoView();", find_location )
+
+        def hangisine_tekabul_ediyor(liste):
+            if "(Müşteri Sayısı x Geçirilen Süre)" in liste:
+                return "yogunluk"
+            if "(Yoğunluk / Metrekare)" in liste:
+                return "Yoğunluk_m2"
+            if "(Ürün Sayısı)" in liste:
+                return "satış_urun_sayisi"
+            if "(Ürün Sayısı / Metrekare)" in liste:
+                return "satıs_tutari_m2"
+            if "(Toplam Tutar)" in liste:
+                return "satis_toplam"
+
+
+
+        sayfaya_git(performans_tablosu_no,ilk_tarih,son_tarih)
+
+        # content = bot.driver.find_element_by_css_selector('.density-deselected.icon')
+        # content.click()
+        sleep(3)
+        content = bot.driver.find_elements_by_css_selector('.areaMapTypeCircle')
+
+        try:
+            basdaki = self.driver.find_element_by_css_selector ( '.Area__Image.row .col-md-4' )
+            self.driver.execute_script ( "window.scrollBy(0, -65)" )
+            basdaki.screenshot( f"{path}_yogunluk{ilk}_yogunluk_haritasi_birincisi.png" )
+        except Exception as e:
+            print("erro bastaki kisim yok")
+
+        toplam_grafik_sayisi = len(content)
+
+        baslangic_numarasi = 1
+        for element in content:
+            try:
+                yazilar = bot.driver.find_element_by_css_selector (f'.areaContainer:nth-of-type({baslangic_numarasi}) .page-title :nth-child(1)' ).get_attribute ( 'outerHTML' )
+                sonuc_yazisi = hangisine_tekabul_ediyor(yazilar)
+                print(sonuc_yazisi)
+                print("22")
+                if sonuc_yazisi is not None:
+                    yogunluk_resim = bot.driver.find_element_by_css_selector ( f'.areaContainer:nth-of-type({baslangic_numarasi}) ' )
+                    self.driver.execute_script ( "arguments[0].scrollIntoView();", yogunluk_resim )
+                    self.driver.execute_script ( "window.scrollBy(0, -65)" )
+                    yogunluk_resim.screenshot ( f"{path}_yogunluk{ilk}yogunluk_haritasi{sonuc_yazisi}.png" )
+                print(sonuc_yazisi)
+            except Exception as e:
+                print(e)
+                print("sonra cozucen")
+            baslangic_numarasi += 1
+
 
 
 
@@ -978,7 +1188,7 @@ class udentify_bot():
                 content.send_keys ( Keys.BACKSPACE )
                 print("burasi oldu")
                 sleep ( 2 )
-            
+
             sleep(2)
             content = bot.driver.find_element_by_css_selector ( '.item.col-md-1 .buttontext' )
             content.click ()
@@ -1137,6 +1347,30 @@ magaza_adi_listesi = excel_reader.excel_to_list(f'{BASE_DIR}/bot_udentify/istene
 #                     ["Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],"Viaport"]
 #                      ] #"Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]
 
+def ilk_tarih_end_son_tarih_baslangic(tarih_ilk,tarih_son):
+    def numOfDays(date1, date2):
+        return (date2 - date1).days
+    gun1 = int ( str ( tarih_ilk )[0:2] )
+    ay1 = int ( str ( tarih_ilk )[3:5] )
+    yil1 = int ( str ( tarih_ilk )[6:10] )
+    gun2 = int ( str ( tarih_son )[0:2] )
+    ay2 = int ( str ( tarih_son )[3:5] )
+    yil2 = int ( str ( tarih_son )[6:10] )
+    ilk_tarih_updated = datetime.datetime ( yil1, ay1, gun1 )
+    son_tarih_updated = datetime.datetime ( yil2, ay2, gun2 )
+    # gun_farki = (numOfDays ( ilk_tarih_updated, son_tarih_updated ), "days")[0] + 1
+    gun_farki = 4
+    print( gun_farki )
+    cikarilacak_gun = (numOfDays ( ilk_tarih_updated, son_tarih_updated ), "days")[0]
+    onceki_ay_ilk_tarih = ilk_tarih_updated + datetime.timedelta ( days=gun_farki )
+    onceki_ay_son_tarih = son_tarih_updated - datetime.timedelta ( days=gun_farki )
+    print ( "tarih_kontrolu" )
+    tarih_son_baslangic = str ( onceki_ay_son_tarih.strftime ( '%d/%m/%Y' ) )
+    tarih_ilk_bitis = str ( onceki_ay_ilk_tarih.strftime ( '%d/%m/%Y' ) )
+    print(tarih_ilk_bitis)
+    print(tarih_son_baslangic)
+    return [tarih_ilk_bitis,tarih_son_baslangic]
+
 
 
 if console == True :
@@ -1179,7 +1413,6 @@ else:
             print("bakalim_ayar")
             bot.select_firm ( magaza[0], magaza[7] )
             bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
             bot.performas_tablosu_specific_resim_tek ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
@@ -1192,6 +1425,21 @@ else:
             bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location, magaza[6],
                                            magaza[7] )
+
+            tarihler_listesi = ilk_tarih_end_son_tarih_baslangic ( magaza[3], magaza[4] )
+            bot.yogunluk_haritasi_final_sure ( magaza[2], magaza[3], tarihler_listesi[0], magza_statik_dosya_location,
+                                               0 )
+            bot.yogunluk_haritasi_final_sure ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
+                                               1 )
+            bot.yogunluk_haritasi_final_kisi ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
+                                               0 )
+            bot.yogunluk_haritasi_final_kisi ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
+                                               1 )
+            bot.yogunluk_haritasi_final_yogunluk ( magaza[2], tarihler_listesi[1], magaza[4],
+                                                   magza_statik_dosya_location, 0 )
+            bot.yogunluk_haritasi_final_yogunluk ( magaza[2], tarihler_listesi[1], magaza[4],
+                                                   magza_statik_dosya_location, 1 )
+
             print("kamera_isimleri")
             print(isi_tablosu_liste)
             bot.driver.close ()
