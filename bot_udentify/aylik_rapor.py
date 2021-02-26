@@ -9,7 +9,9 @@ import calendar
 import request1
 from scipy.stats.stats import pearsonr
 import math
-
+import matplotlib.pyplot as plt
+import io
+from PIL import Image
 
 
 
@@ -1025,6 +1027,90 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         f"Kasa kamerasının {hm1} alanınnda, basketball kamerasının {hm1} alanınnda, men’s run kamerasının {hm2} alanınnda, heat gear kamerasının {hm1} alanınnda, FTW kamerasının {hm1} alanınnda, giriş kamerasının {hm1} alanınnda yoğunluğun arttığı görülmektedir.",
         style='List Bullet'
     )
+
+    liste1 = request1.giren_kisi_sayisi_hepsi ( magaza_id_no, ilk_tarih, son_tarih )
+    print ( liste1 )
+
+    liste_saat = liste1[0]["Serial"]
+    print ( liste_saat )
+    for element in range ( 0, len ( liste_saat ) ):
+        liste_saat[element] = str ( liste_saat[element] )[-5:]
+
+    liste_kisi = liste1[1]["Serial"]
+    print ( liste_kisi )
+
+    plt.figure ()
+    # x axis values
+    x = liste_saat
+    # corresponding y axis values
+    y = liste_kisi
+    # plotting the points
+    plt.plot ( x, y )  # ,color='red', lw=2
+    # plt.fill_between(x,y, 0, alpha=0.30)
+    # naming the x axis
+    # naming the y axis
+
+    # giving a title to my graph
+    # plt.title ( 'My first graph!' )
+    plt.gca ().axes.get_yaxis ().set_visible ( False )
+    # function to show the plot
+    buf = io.BytesIO ()
+    plt.savefig ( buf, format='png' )
+    buf.seek ( 0 )
+    # im = Image.open ( buf )
+    document.add_picture ( buf, width=Inches ( 4.5 ),
+                           height=Inches ( 3.37 ) )
+    last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
+    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    # im.show ()
+    #
+    buf.close ()
+
+    plt.figure ()
+
+    liste_ikinci = request1.store_sure_2_2_saatlik ( magaza_id_no, ilk_tarih, son_tarih )
+    saatlik_liste = liste_ikinci[1]["Serial"]
+    sure_liste = liste_ikinci[2]["Serial"]
+    x = saatlik_liste
+    # corresponding y axis values
+    y = sure_liste
+    print ( " x y " )
+    print ( x )
+    print ( y )
+    plt.plot ( x, y )  # ,color='red', lw=2
+    plt.fill_between ( x, y, 0, alpha=0.30 )
+    # naming the x axis
+
+    # naming the y axis
+
+    # # giving a title to my graph
+    # #plt.title ( 'My first graph!' )
+    # plt.gca().axes.get_yaxis().set_visible(False)
+    # #plt.gca().axes.get_xaxis().set_visible(False)
+    # # function to show the plot
+    # elma = plt.show ()
+    # print(plt)
+    # figure = io.BytesIO(elma)
+    # print(figure)
+    buf = io.BytesIO ()
+    plt.savefig ( buf, format='png' )
+    buf.seek ( 0 )
+    # im = Image.open(buf)
+    # im.show()
+    document.add_picture ( buf, width=Inches ( 4.5 ),
+                           height=Inches ( 3.37 ) )
+    last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
+    last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    buf.close ()
+
+
+
+
+
+
+
 
     # ['Ana Giriş', 'Cam 7', 'Cam 8', 'Run', 'Youth', 'Giriş', 'Train', 'Train Ön']
     def isi_haritalarini_yarat(sayi, kamera_adi_isimi, table):

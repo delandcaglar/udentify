@@ -61,6 +61,7 @@ devam = "{}/Rect/9954/CountandSpenttime?sdate=15/11/2020&edate=26/11/2020&stime=
 
 gunluk_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 gunluk_kisi_sure_grafigi_2_8_updated = "{}/Store/{}/LineEntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
+gunluk_kisi_sure_grafigi_2_8_updated_saatlik = "{}/Store/{}/LineEntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
 
 yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
@@ -68,6 +69,9 @@ saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&eda
 edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset={}"  # 3, 10 , 15 sabit
 
 store_sure_api = "{}/Store/{}/CheckoutSummary?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
+
+store_sure_api_saatlik = "{}/Store/{}/CheckoutSummary?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
+
 
 
 # https://api.udentify.co/Store/240/AreaCount?sdate=15/10/2020&edate=30/10/2020&stime=10:00&etime=22:00&tzoffset=0
@@ -1884,6 +1888,23 @@ def main_2_8_ozel_alan(magaza_id, tarih_ilk, tarih_son):
 
     return headersiz_data
 
+def giren_kisi_sayisi_hepsi(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8_updated_saatlik, magaza_id, tarih_ilk,
+                                  tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+    print("satis_miktari_data")
+
+    # list_data = json.loads ( data )
+    headersiz_data = (data["Data"])
+    print ( headersiz_data )
+    print ( "satis_miktari_data" )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data
+
 
 def main_2_8_satis_miktari(magaza_id, tarih_ilk, tarih_son):
     data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8_updated, magaza_id, tarih_ilk,
@@ -2250,8 +2271,8 @@ def store_sure_2_2(magaza_id, tarih_ilk, tarih_son):
         print ( headersiz_data[3]["Serial"] )
         print ( "Over90SecCount- 3 dk aşan kişi" )
         print ( headersiz_data[4]["Serial"] )
-        # print ( "TotalCount" )
-        # print ( headersiz_data[5]["Serial"] )
+        print ( "TotalCount" )
+        print ( headersiz_data[5]["Serial"] )
         print ( "AvgDwell - Ortalama bekleme süresi(sn)" )
         print ( headersiz_data[6]["Serial"] )
         final_list = []
@@ -2279,6 +2300,23 @@ def store_sure_2_2(magaza_id, tarih_ilk, tarih_son):
 
         return data
 
+def store_sure_2_2_saatlik(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( store_sure_api_saatlik, magaza_id, tarih_ilk,
+                                  tarih_son )  ##240 akasyaya baktigimiz icin
+
+    print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    print("saatlik_data")
+    print(headersiz_data)
+
+
+
+    return headersiz_data  # yogunluk_listesi =
+
+
 
 
 def main_2_8_kisi_miktari(magaza_id, tarih_ilk, tarih_son):
@@ -2303,10 +2341,11 @@ if __name__ == "__main__":
     # print(main_2_8_kisi_miktari ( 240, tarih_ilk , tarih_son ))
     # print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
     # boys = (main_2_7_performans_tablosu_double_isim(228, tarih_ilk , tarih_son,"BOYS"))
-    girls = ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "MEN'S RUN" ) )
+    # girls = ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "MEN'S RUN" ) )
 
+    store_sure_2_2 ( 240, tarih_ilk, tarih_son)
     # print(boys)
-    print(girls)
+
     #
     # print(boys[1][10]) #metrekare
     # print ( boys[1][11] ) #metrekareorani
