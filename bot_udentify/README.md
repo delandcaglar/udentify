@@ -73,6 +73,7 @@ Kullanmak için istenen_magazalar.xlsx excel dosyasına gidilip aşağıdaki ör
 - Örnek --> under armour,under armour zorlu center,239, 01/01/2021, 19/01/2021,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],Zorlu Center
 - Excel dosyasının içinde başlıklar görülmektedir.
 
+
 ```
 
 ### 2.2 Script'i çalıştır:

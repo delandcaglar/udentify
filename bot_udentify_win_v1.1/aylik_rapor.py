@@ -1572,13 +1572,13 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         # )
 
         document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/karsilastitilacak_{ikiser_siralamasi}.png" ),
-                               width=Inches ( 6 ), height=Inches ( 0.64 ) )
+                               width=Inches ( 6 ), height=Inches ( 0.35 ) )
         last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
         last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
         document.add_picture ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/karsilastitilacak_{ikiser_siralamasi+1}.png" ),
-                               width=Inches ( 6 ), height=Inches ( 0.64 ) )
+                               width=Inches ( 6 ), height=Inches ( 0.35 ) )
         last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
         last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p = document.add_paragraph ( f"({kategori_karsilasmasi_1.title()} ve {kategori_karsilasmasi_2.title()} Tablosu)" )
@@ -1629,7 +1629,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
 
 
-    print("________Bitti")
+    print("başarılı_")
 
     document.add_page_break()
 
@@ -1675,7 +1675,7 @@ son_tarih = "19/01/2021"
 #start_writing_on_docx("Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 #start_writing_on_docx("Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
 #start_writing_on_docx("Under Armour","Under Armour İstinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-# start_writing_on_docx("Suwen","Suwen Viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
+start_writing_on_docx("suwen","suwen mall of istanbul",306,"20/01/2021","27/01/2021",190,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]])
 
 
 

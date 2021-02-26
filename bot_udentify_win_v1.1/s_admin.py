@@ -1078,10 +1078,11 @@ if console == True :
 else:
     if global_test == True:
         for magaza in magaza_adi_listesi:
-
+            print ( "hadi_yaa" )
             create_folders.dosya_yaratici ( magaza,BASE_DIR )
-            print("BASE_DIR")
+            print("BASE_DIR___")
             print(BASE_DIR)
+        sleep(20)
 
         for magaza in magaza_adi_listesi:
             print("magaza_degerleri")
@@ -1101,22 +1102,31 @@ else:
             print(magza_statik_dosya_location)
             bot = udentify_bot ()
             bot.login ()
-            # bot.driver.set_window_size ( 1500, 1000 )
+            print ( "window_size" )  # {'width': 1200, 'height': 935} normal ayari
+            print ( bot.driver.get_window_size () )
+            bot.driver.set_window_size ( 1200, 935 )
+            # bot.driver.set_window_size ( 1500, 1000 ) #( f"--window-size=2080,{1080}" )
+            print ( "bakalim_ayar" )
             bot.select_firm ( magaza[0], magaza[7] )
             bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.yogunluk_haritasi_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
+            bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
+            bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,
+                                                      magaza[6] )
             bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] , magaza[7] )
+            bot.driver.set_window_size ( 1200, 935 )
             bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.isi_tablosu_topla_final( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.isi_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location, magaza[6],
+                                           magaza[7] )
             bot.driver.close ()
 
-            aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],magaza[6] )
-            print("bu bitti")
+            aylik_rapor.start_writing_on_docx ( magaza[0], magaza[1], magaza[2], magaza[3], magaza[4], magaza[5],
+                                                magaza[6] )
+            print ( "bu bitti" )
 
 
 

@@ -43,15 +43,15 @@ APITOKEN = ""
 
 # tarih_ilk = "16/11/2020"
 # tarih_son = "02/12/2020"
-tarih_ilk = "01/01/2021"
-tarih_son = "19/01/2021"
+tarih_ilk = "05/02/2021"
+tarih_son = "19/02/2021"
 
 url1 = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 url_yogunluk = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 ure_yogunluk_g = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 
 saatlik_kisi_sure_grafigi = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
-yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate=29/10/2020&edate=12/11/2020&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##hatali
+yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##hatali
 performas_tablosu = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##  180 i 0 yaptin duzelt
 
 deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"
@@ -66,6 +66,8 @@ yogunluk_haritasi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&st
 saatlik_kisi_sure_grafigi_2_8 = "{}/SketchRect/{}/CountandSpenttime?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
 
 edinme_hunisi_url = "{}/Rect/{}/Funnel?sdate={}&edate={}&stime=10:00&etime=22:00&funnelthresholds=3,10,15&tzoffset={}"  # 3, 10 , 15 sabit
+
+store_sure_api = "{}/Store/{}/CheckoutSummary?sdate={}&edate={}&stime=10:00&etime=22:00&filter=1&tzoffset={}"
 
 
 # https://api.udentify.co/Store/240/AreaCount?sdate=15/10/2020&edate=30/10/2020&stime=10:00&etime=22:00&tzoffset=0
@@ -86,9 +88,10 @@ def get_performancetable(url1, storeId, start, end):
         "Content-Type": "application/json",
         "Authorization": "Bearer " + APITOKEN,
     }
-
+    print("offset_ayari")
+    print(offser_ayari)
     # url = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=0&layer=1".format ( APIURL,storeId,start,end )
-    url = url1.format ( APIURL, storeId, start, end ,offser_ayari)
+    url = url1.format ( APIURL, storeId, start, end ,0) # ofset ayarini koy buraya
     r = requests.get ( url, headers=headers )
     return r.json ()
 
@@ -220,6 +223,17 @@ def cal_average(num):
         sum_num = sum_num + t
 
     avg = sum_num / len ( num )
+    return avg
+
+def cal_average_bosluklu_data(num):
+    sum_num = 0
+    cikarilacak_sayi = 0
+    for t in num:
+        if t == 0:
+            cikarilacak_sayi +=1
+        sum_num = sum_num + t
+
+    avg = sum_num / (len ( num ) - cikarilacak_sayi)
     return avg
 
 
@@ -394,6 +408,9 @@ yogunluk_toplam_deger = float ( 0 )
 
 def yogunluk_haritasi_hesaplama_degerleri_top_5(data):  ##ayni sayi olursa nasil siraliyoruz platformda diye sor
     global yogunluk_toplam_deger
+    print("api_datasi")
+    print(data)
+
     top_5_area = [1, 2, 3, 4, 5]
     bottom_5_area = [1, 2, 3, 4, 5]
     yogunluk_listesi = []
@@ -401,7 +418,12 @@ def yogunluk_haritasi_hesaplama_degerleri_top_5(data):  ##ayni sayi olursa nasil
     for area in data:
         print ( "Ss" )
         print ( area )
-        yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        try:
+            yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        except Exception as e:
+            log_info = str ( f'eksik data, {data[sayi]["Name"]}, {e}' )
+            app_log.info ( log_info )
+
         sayi = sayi + 1
         print ( sayi )
     print ( yogunluk_listesi )
@@ -422,8 +444,12 @@ def yogunluk_haritasi_hesaplama_degerleri_top_5(data):  ##ayni sayi olursa nasil
         en_buyuk = "s"
         sayi1 = 0
         for area in data:
-            if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
-                en_buyuk = (data[sayi1]["Name"])
+            try:
+                if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
+                    en_buyuk = (data[sayi1]["Name"])
+            except Exception as e:
+                log_info = str ( f'eksik data, {data[sayi1]["Name"]}, {e}' )
+                app_log.info ( log_info )
             sayi1 = sayi1 + 1
         return (en_buyuk)
 
@@ -450,8 +476,14 @@ def yogunluk_haritasi_hesaplama_degerleri_bottom_5(data):  ##ayni sayi olursa na
     sayi = 0
     for area in data:
         print ( "Ss" )
-        print ( area )
-        yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        print ( area)
+
+        try:
+            yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        except Exception as e:
+            log_info = str ( f'eksik data, {data[sayi]["Name"]}, {e}' )
+            app_log.info ( log_info )
+
         sayi = sayi + 1
         print ( sayi )
     print ( yogunluk_listesi )
@@ -472,8 +504,13 @@ def yogunluk_haritasi_hesaplama_degerleri_bottom_5(data):  ##ayni sayi olursa na
         en_buyuk = "s"
         sayi1 = 0
         for area in data:
-            if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
-                en_buyuk = (data[sayi1]["Name"])
+
+            try:
+                if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
+                    en_buyuk = (data[sayi1]["Name"])
+            except Exception as e:
+                log_info = str ( f'eksik data, {data[sayi1]["Name"]}, {e}' )
+                app_log.info ( log_info )
             sayi1 = sayi1 + 1
         return (en_buyuk)
 
@@ -494,7 +531,8 @@ def yogunluk_haritasi_hesaplama_degerleri_bottom_5(data):  ##ayni sayi olursa na
 
 def main_2_3_yogunluk_haritasi_top_5(magaza_id, tarih_ilk, tarih_son):
     data = get_performancetable ( yogunluk_haritasi, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
-    # print ( data )
+    print("hata01")
+    print ( data )
 
     # list_data = json.loads ( data )
 
@@ -545,7 +583,11 @@ def yogunluk_haritasi_hesaplama_degerleri_bottom_5_orani(
     for area in data:
         print ( "Ss" )
         print ( area )
-        yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        try:
+            yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        except Exception as e:
+            log_info = str ( f'eksik data, {data[sayi]["Name"]}, {e}' )
+            app_log.info ( log_info )
         sayi = sayi + 1
         print ( sayi )
     print ( yogunluk_listesi )
@@ -568,8 +610,13 @@ def yogunluk_haritasi_hesaplama_degerleri_bottom_5_orani(
         en_buyuk = "s"
         sayi1 = 0
         for area in data:
-            if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
-                en_buyuk = (data[sayi1]["Name"])
+            try:
+                if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
+                    en_buyuk = (data[sayi1]["Name"])
+            except Exception as e:
+                log_info = str ( f'eksik data, {data[sayi1]["Name"]}, {e}' )
+                app_log.info ( log_info )
+
             sayi1 = sayi1 + 1
         return (en_buyuk)
 
@@ -577,9 +624,14 @@ def yogunluk_haritasi_hesaplama_degerleri_bottom_5_orani(
         sayi1 = 0
         buyuk_mu = False
         for area in data:
-            if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]) and (
-                    ((data[sayi1]["DensityRatio"]) / (yogunluk_toplam_deger)) >= 0.01):
-                buyuk_mu = True
+
+            try:
+                if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]) and (
+                        ((data[sayi1]["DensityRatio"]) / (yogunluk_toplam_deger)) >= 0.01):
+                    buyuk_mu = True
+            except Exception as e:
+                log_info = str ( f'eksik data, {data[sayi1]["Name"]}, {e}' )
+                app_log.info ( log_info )
             sayi1 = sayi1 + 1
         return (buyuk_mu)
 
@@ -630,7 +682,11 @@ def yogunluk_haritasi_hesaplama_degerleri_top_5_orani(data):  ##ayni sayi olursa
     for area in data:
         print ( "Ss" )
         print ( area )
-        yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        try:
+            yogunluk_listesi.append ( data[sayi]["DensityRatio"] )
+        except Exception as e:
+            log_info = str ( f'eksik data, {data[sayi]["Name"]}, {e}' )
+            app_log.info ( log_info )
         sayi = sayi + 1
         print ( sayi )
     print ( yogunluk_listesi )
@@ -653,8 +709,13 @@ def yogunluk_haritasi_hesaplama_degerleri_top_5_orani(data):  ##ayni sayi olursa
         en_buyuk = "s"
         sayi1 = 0
         for area in data:
-            if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
-                en_buyuk = (data[sayi1]["Name"])
+            try:
+                if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]):
+                    en_buyuk = (data[sayi1]["Name"])
+            except Exception as e:
+                log_info = str ( f'eksik data, {data[sayi1]["Name"]}, {e}' )
+                app_log.info ( log_info )
+
             sayi1 = sayi1 + 1
         return (en_buyuk)
 
@@ -662,9 +723,13 @@ def yogunluk_haritasi_hesaplama_degerleri_top_5_orani(data):  ##ayni sayi olursa
         sayi1 = 0
         buyuk_mu = False
         for area in data:
-            if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]) and (
-                    ((data[sayi1]["DensityRatio"]) / (yogunluk_toplam_deger)) >= 0.01):
-                buyuk_mu = True
+            try:
+                if top_5_liste[siralama_sayisi] == (data[sayi1]["DensityRatio"]) and (
+                        ((data[sayi1]["DensityRatio"]) / (yogunluk_toplam_deger)) >= 0.01):
+                    buyuk_mu = True
+            except Exception as e:
+                log_info = str ( f'eksik data, {data[sayi1]["Name"]}, {e}' )
+                app_log.info ( log_info )
             sayi1 = sayi1 + 1
         return (buyuk_mu)
 
@@ -782,12 +847,30 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
         # print(headersiz_data[n])
         # print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
         # print(headersiz_data[n]["Id"])
-        meterSquareTotal = meterSquareTotal + float ( headersiz_data[n]["Metersquare"] )
+
         print ( headersiz_data[n]["Name"] )
-        densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (headersiz_data[n]["Density"]) ), 2 )) ))
+        meterSquareTotal = meterSquareTotal + float ( headersiz_data[n]["Metersquare"] )
+        try:
+            densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (headersiz_data[n]["Density"]) ), 2 )) ))
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
         print ( "guncellendi" )
-        densityPrevTotal = densityPrevTotal + float (
-            ("{:.2f}".format ( float ( (headersiz_data1[n]["Density"]) ), 2 )) )
+        print ( headersiz_data[n]["Name"] )
+
+        print ( "guncellendi" )
+        print ( "guncellendi" )
+        print ( headersiz_data[n]["Name"] )
+        try:
+            densityPrevTotal = densityPrevTotal + float (
+                ("{:.2f}".format ( float ( (headersiz_data1[n]["Density"]) ), 2 )) )
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
+        print ( "guncellendi" )
+
+
+
         try:
             saleQuantityTotal = saleQuantityTotal + float (
                 headersiz_data[n]["AvgSaleQuantity"] )  # eksik data bunu sor
@@ -835,30 +918,69 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
 
     def searching_function(bakilan_alan):
         if bakilan_alan == "PrevCount":
-            a1 = float ( headersiz_data[n]["Count"] )
-            a2 = float ( headersiz_data1[n]["Count"] )
-            return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
+            print ( headersiz_data[n]["Name"] )
+            try:
+                a1 = float ( headersiz_data[n]["Count"] )
+                a2 = float ( headersiz_data1[n]["Count"] )
+                return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                return 0
+
         if bakilan_alan == "PrevDwell":
             print ( "PrevDwell_degeri" )
-            a1 = float ( headersiz_data[n]["Dwell"] )
-            a2 = float ( headersiz_data1[n]["Dwell"] )
-            print ( "PrevDwell_degeri" )
-            print ( float ( math.ceil ( ((a1 - a2) / a2) * 100 ) ) )
-            return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
-        if bakilan_alan == "_15s_Enterance":
-            _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
-            return float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
-        if bakilan_alan == "n_15s_Enterance":
-            _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
+            print ( headersiz_data[n]["Name"] )
             try:
+                a1 = float ( headersiz_data[n]["Dwell"] )
+                a2 = float ( headersiz_data1[n]["Dwell"] )
+                print ( "PrevDwell_degeri" )
+                print ( float ( math.ceil ( ((a1 - a2) / a2) * 100 ) ) )
+                return float ( math.ceil ( ((a1 - a2) / a2) * 100 ) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                return 0
+
+
+        if bakilan_alan == "_15s_Enterance":
+            print ( "_15s_Enterance" )
+            print ( headersiz_data[n]["Name"] )
+            try:
+                _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
+                return float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                return 0
+
+
+
+
+        if bakilan_alan == "n_15s_Enterance":
+            print ( "n_15s_Enterance" )
+            print ( headersiz_data[n]["Name"] )
+            try:
+                _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
                 return 1 / float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
             except:
                 return 1 / 10000
         if bakilan_alan == "Dwell":
-            Dwell = float ( headersiz_data[n]["Dwell"] )
-            return float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
+            print ( "Dwell" )
+            print ( headersiz_data[n]["Name"] )
+            try:
+                Dwell = float ( headersiz_data[n]["Dwell"] )
+                return float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
+            except:
+                return 0
+
         if bakilan_alan == "Count":
-            return float ( headersiz_data[n]["Count"] )
+            try:
+                return float ( headersiz_data[n]["Count"] )
+            except:
+                return 0
+                #bosluk var datada
+
 
 
     TotalCount_final = searching_function ( bakilan_alan )
@@ -958,16 +1080,36 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
             # ilgi orani
             _15s_Enterance = (headersiz_data[n]["CountOver15Sec"]) / (headersiz_data[n]["Count"]) * 100
             _15s_Enterance = float ( ("{:.2f}".format ( float ( (_15s_Enterance) ), 2 )) )
+            print ( "hatali_kisim-1" )
             a1 = float ( headersiz_data[n]["CountOver15Sec"] )
             a2 = float ( headersiz_data[n]["Count"] )
             a3 = float ( headersiz_data1[n]["CountOver15Sec"] )
             a4 = float ( headersiz_data1[n]["Count"] )
-            EntranceChange = (a1 / a2 - a3 / a4) / (a3 / a4) * 100
-            EntranceChange = float ( ("{:.2f}".format ( float ( (EntranceChange) ), 2 )) )
+            print(headersiz_data[n]["Name"])
+            print("hatali_kisim")
+            print(a1)
+            print(a2)
+            print(a3)
+            print(a4)
+            try:
+                EntranceChange = (a1 / a2 - a3 / a4) / (a3 / a4) * 100
+                EntranceChange = float ( ("{:.2f}".format ( float ( (EntranceChange) ), 2 )) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                EntranceChange = 0
+
 
             ## Ortalama sure
-            Dwell = float ( headersiz_data[n]["Dwell"] )
-            Dwell = float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
+
+            try:
+                Dwell = float ( headersiz_data[n]["Dwell"] )
+                Dwell = float ( ("{:.2f}".format ( float ( (Dwell) ), 2 )) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                Dwell = 0
+
 
             # print("DensityChange")
             # DensityChange = (((float(headersiz_data[n]["Count"]) * float(headersiz_data[n]["Dwell"])) - (float(headersiz_data1[n]["Dwell"]) * float(headersiz_data1[n]["Count"]))) / (float(headersiz_data1[n]["Count"]) * float(headersiz_data1[n]["Dwell"]))) * 100
@@ -976,18 +1118,30 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
 
             # _______________ m2
 
-            a1 = float ( headersiz_data[n]["Metersquare"] )
-            a2 = float ( meterSquareTotal )
-            a3 = float ( headersiz_data1[n]["SketchMetersquare"] )
 
-            SketchMetersquare = ((a1 / a2) * a3)
-            SketchMetersquare = float ( ("{:.2f}".format ( float ( (SketchMetersquare) ), 2 )) )
 
-            a1 = float ( headersiz_data[n]["Metersquare"] )
-            a2 = float ( meterSquareTotal )
+            try:
+                a1 = float ( headersiz_data[n]["Metersquare"] )
+                a2 = float ( meterSquareTotal )
+                a3 = float ( headersiz_data1[n]["SketchMetersquare"] )
+                SketchMetersquare = ((a1 / a2) * a3)
+                SketchMetersquare = float ( ("{:.2f}".format ( float ( (SketchMetersquare) ), 2 )) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                SketchMetersquare = 0
 
-            Metersquare = ((a1 * 100) / a2)
-            Metersquare = float ( ("{:.2f}".format ( float ( (Metersquare) ), 2 )) )
+            try:
+                a1 = float ( headersiz_data[n]["Metersquare"] )
+                a2 = float ( meterSquareTotal )
+                Metersquare = ((a1 * 100) / a2)
+                Metersquare = float ( ("{:.2f}".format ( float ( (Metersquare) ), 2 )) )
+            except Exception as e:
+                log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                Metersquare = 0
+
+
 
             print ( "SaleAmount" )
             # SaleAmount = float(headersiz_data[n]["AvgSaleAmount"]) # key error veriyor bunu hallet
@@ -1120,10 +1274,20 @@ def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,
         # print(headersiz_data[n]["Id"])
         meterSquareTotal = meterSquareTotal + float ( headersiz_data[n]["Metersquare"] )
         print ( headersiz_data[n]["Name"] )
-        densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (headersiz_data[n]["Density"]) ), 2 )) ))
+        try:
+            densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (headersiz_data[n]["Density"]) ), 2 )) ))
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
         print ( "guncellendi" )
-        densityPrevTotal = densityPrevTotal + float (
-            ("{:.2f}".format ( float ( (headersiz_data1[n]["Density"]) ), 2 )) )
+        print ( headersiz_data[n]["Name"] )
+        try:
+            densityPrevTotal = densityPrevTotal + float (
+                ("{:.2f}".format ( float ( (headersiz_data1[n]["Density"]) ), 2 )) )
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
+        print ( "guncellendi" )
         try:
             saleQuantityTotal = saleQuantityTotal + float (
                 headersiz_data[n]["AvgSaleQuantity"] )  # eksik data bunu sor
@@ -1194,7 +1358,10 @@ def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,
             if bakilan_alan == "Count":
                 return float ( headersiz_data[n]["Count"] )
             if bakilan_alan == "Density":
-                return float ( ((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )
+                try:
+                    return float ( ((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )
+                except:
+                    return 0
 
         if headersiz_data[n]["Name"] == isim:
             print ( "yojooo" )
@@ -1206,6 +1373,8 @@ def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,
             hesap = 0
             for headers in headersiz_data:
                 if searching_function ( "Density", hesap ) > TotalCount_final:
+                    print("buyuk olan deger")
+                    print(searching_function ( "Density", hesap ))
                     kategori_sirasi += 1
                 hesap += 1
         final_kategori_sirasi1 = kategori_sirasi
@@ -1271,17 +1440,28 @@ def main_2_7_performans_tablosu_double_isim(magaza_id, tarih_ilk, tarih_son,
         # print(headersiz_data[n]["Id"])
         meterSquareTotal = meterSquareTotal + float ( headersiz_data[n]["Metersquare"] )
         print ( headersiz_data[n]["Name"] )
-        densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (headersiz_data[n]["Density"]) ), 2 )) ))
-        print ( "guncellendi" )
-        densityPrevTotal = densityPrevTotal + float (
-            ("{:.2f}".format ( float ( (headersiz_data1[n]["Density"]) ), 2 )) )
+
+
+
+        try:
+            densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (headersiz_data[n]["Density"]) ), 2 )) ))
+            print ( "guncellendi" )
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
+        try:
+            densityPrevTotal = densityPrevTotal + float (
+                ("{:.2f}".format ( float ( (headersiz_data1[n]["Density"]) ), 2 )) )
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
+
         try:
             saleQuantityTotal = saleQuantityTotal + float (
                 headersiz_data[n]["AvgSaleQuantity"] )  # eksik data bunu sor
         except Exception as e:
-            log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
             app_log.info ( log_info )
-
         # try:
         #     densityPrevTotal = densityPrevTotal + float ( headersiz_data1[n]["Density"] ) #AvgSaleAmount
         # except Exception as e:
@@ -1332,11 +1512,19 @@ def main_2_7_performans_tablosu_double_isim(magaza_id, tarih_ilk, tarih_son,
         # print ( headersiz_data[n]["DepartmentRectangles"][0]["Density"])
 
         print ( "TotalCount" )
-        TotalCount_final = float ( headersiz_data[n]["TotalCount"] )
-        print ( TotalCount_final )
+        try:
+            TotalCount_final = float ( headersiz_data[n]["TotalCount"] )
+            print ( TotalCount_final )
+        except Exception as e:
+            log_info = str ( f'eksik data, {headersiz_data[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
 
+        print("niye_erro")
+        print(headersiz_data[n]["Name"])
+        print(alan_ismi)
         if headersiz_data[n]["Name"] == alan_ismi:
-            print ( "son_denemeeeee" )
+            print ( "son_denemeeeee12133" )
+            print(headersiz_data[n])
 
             En_cok_ziyaret_edilen_sayi = TotalCount_final
             En_cok_ziyaret_edilen_ad = headersiz_data[n]["Name"]
@@ -1380,8 +1568,7 @@ def main_2_7_performans_tablosu_double_isim(magaza_id, tarih_ilk, tarih_son,
             print ( DensityChange )
             print ( headersiz_data[n]["Density"] )
             print ( densityTotal )
-            Density = float (
-                ((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )  # ! duzelt math.ceil
+            Density = float (((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )  # ! duzelt math.ceil
             print ( Density )
             print ( "DensityStoreChange" )  # duzelttin
             DensityStoreChange = Density - (
@@ -1426,7 +1613,13 @@ def main_2_7_performans_tablosu_double_isim(magaza_id, tarih_ilk, tarih_son,
 
             a1 = float ( headersiz_data[n]["Metersquare"] )
             a2 = float ( meterSquareTotal )
-            a3 = float ( headersiz_data1[n]["SketchMetersquare"] )
+            try:
+                a3 = float ( headersiz_data1[n]["SketchMetersquare"] )
+            except Exception as e:
+                log_info = str ( f'eksik SketchMetersquare data, {headersiz_data[n]["Name"]}, {e}' )
+                app_log.info ( log_info )
+                a3 = 1
+
 
             SketchMetersquare = ((a1 / a2) * a3)
             SketchMetersquare = float ( ("{:.2f}".format ( float ( (SketchMetersquare) ), 2 )) )
@@ -1549,7 +1742,7 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk, tarih_son):  # ceil gordug
         except Exception as e:
             log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
             app_log.info ( log_info )
-            continue
+
 
         try:
             densityPrevTotal = densityPrevTotal + float (
@@ -1557,7 +1750,6 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk, tarih_son):  # ceil gordug
         except Exception as e:
             log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
             app_log.info ( log_info )
-            continue
         print ( "nassiya" )
 
         try:
@@ -1566,7 +1758,6 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk, tarih_son):  # ceil gordug
         except Exception as e:
             log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
             app_log.info ( log_info )
-            continue
         print ( "nassiya1" )
 
         saleAmountTotal = saleAmountTotal + float ( headersiz_data[n]["AvgSaleAmount"] )
@@ -1619,7 +1810,7 @@ def main_2_7_performans_tablosu(magaza_id, tarih_ilk, tarih_son):  # ceil gordug
             except Exception as e:
                 log_info = str ( f"{e}_ buyuk olasilikla eksik data var burada" )
                 app_log.info ( log_info )
-                continue
+
 
             print ( "En_cok_ziyaret_edilen_ad11" )
             print ( En_cok_ziyaret_edilen_ad )
@@ -1698,10 +1889,12 @@ def main_2_8_satis_miktari(magaza_id, tarih_ilk, tarih_son):
     data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8_updated, magaza_id, tarih_ilk,
                                   tarih_son )  ##240 akasyaya baktigimiz icin
     # print ( data )
+    print("satis_miktari_data")
 
     # list_data = json.loads ( data )
     headersiz_data = (data["Data"])
     print ( headersiz_data )
+    print ( "satis_miktari_data" )
     # print ( "________________________________" )
     # print ( headersiz_data[0]["Name"] )  # Labels tarih
     # print ( headersiz_data[0]["Serial"] )
@@ -2034,16 +2227,86 @@ def main_2_8_edinme_hunisi(huni_id, tarih_ilk, tarih_son):  # degeerleri 3s 10s 
     # print ( headersiz_data[4]["Serial"] )
     return array
 
+def store_sure_2_2(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( store_sure_api, magaza_id, tarih_ilk,
+                                  tarih_son )  ##240 akasyaya baktigimiz icin
+
+    try:
+        print ( data )
+
+        # list_data = json.loads ( data )
+
+        headersiz_data = (data["Data"])
+        # print(headersiz_data)
+        # print("________________________________")
+        # print(headersiz_data[0]["Name"]) # Labels tarih
+        # print ( headersiz_data[0]["Serial"] )
+        # print ( headersiz_data[4]["Name"] )  # Labels tarih
+        print("tarihler")
+        print ( headersiz_data[1]["Serial"] )
+        print ( "Over15SecCount-15 saniyeyi asan" )
+        print ( headersiz_data[2]["Serial"] )
+        print ( "Over15SecDwell- 15 sn üzeri geçiren ortalama süre" )
+        print ( headersiz_data[3]["Serial"] )
+        print ( "Over90SecCount- 3 dk aşan kişi" )
+        print ( headersiz_data[4]["Serial"] )
+        # print ( "TotalCount" )
+        # print ( headersiz_data[5]["Serial"] )
+        print ( "AvgDwell - Ortalama bekleme süresi(sn)" )
+        print ( headersiz_data[6]["Serial"] )
+        final_list = []
+        for element in range(len(headersiz_data[1]["Serial"])):
+            print(element)
+            eklenecek_element = []
+            eklenecek_element.append ( headersiz_data[1]["Serial"][element] )
+            eklenecek_element.append ( str(headersiz_data[2]["Serial"][element]) )
+            eklenecek_element.append ( str(headersiz_data[3]["Serial"][element]) )
+            eklenecek_element.append ( str(headersiz_data[4]["Serial"][element]) )
+            eklenecek_element.append ( str(headersiz_data[6]["Serial"][element]) )
+            final_list.append(eklenecek_element)
+        print("final_list_bu")
+        print(final_list)
+
+
+
+        return final_list  # yogunluk_listesi =
+    except:
+        data = [
+            [1, 'hatali',"hatali","hatali","hatali"],
+            [2, 'Geek 2', "ahha", "lolo", "ortalama"],
+            [2, 'Geek 2', "ahha", "lolo", "ortalama"]
+        ]
+
+        return data
+
+
+
+def main_2_8_kisi_miktari(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( gunluk_kisi_sure_grafigi_2_8_updated, magaza_id, tarih_ilk,
+                                  tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+    print("satis_miktari_data")
+
+    # list_data = json.loads ( data )
+    headersiz_data = (data["Data"])
+    print ( headersiz_data )
+    print ( "satis_miktari_data" )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[1]["Serial"]
 
 if __name__ == "__main__":
     # main ()
-
+    # print(main_2_8_kisi_miktari ( 240, tarih_ilk , tarih_son ))
     # print(main_2_7_performans_tablosu(240, tarih_ilk , tarih_son))
     # boys = (main_2_7_performans_tablosu_double_isim(228, tarih_ilk , tarih_son,"BOYS"))
-    # girls = ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "MEN'S RUN" ) )
+    girls = ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "MEN'S RUN" ) )
 
     # print(boys)
-    # print(girls)
+    print(girls)
     #
     # print(boys[1][10]) #metrekare
     # print ( boys[1][11] ) #metrekareorani
@@ -2052,7 +2315,7 @@ if __name__ == "__main__":
     # print ( girls[1][3] )
     # print ( girls[1][6] )
 
-    ###print(main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "PrevCount" ))
+    #print(main_2_7_performans_tablosu_alansal ( 308, tarih_ilk, tarih_son, "PrevCount" ))
 
     ## 5 INCISI KISI SAYISI DEGISIMI
     ###print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "PrevDwell" ) )
@@ -2067,10 +2330,10 @@ if __name__ == "__main__":
     # print ( main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son, "n_15s_Enterance" ) )
     ## 8 INCISI ILGI ORANNI # EN AZ OLAN
 
-    print ( "s" )
-    magaza_id = 307
-    tarih_ilk = "18/01/2021"  # tariha hatasini coz
-    tarih_son = "27/01/2021"
+    # print ( "s" )
+    # magaza_id = 307
+    # tarih_ilk = "18/01/2021"  # tariha hatasini coz
+    # tarih_son = "27/01/2021"
     #print(main_2_7_performans_tablosu_alansal ( magaza_id, tarih_ilk, tarih_son,"PrevDwell" ))
     # boys = (main_2_7_performans_tablosu_double_isim(228, tarih_ilk , tarih_son,"BOYS"))
     # print(boys)
@@ -2081,14 +2344,16 @@ if __name__ == "__main__":
 
 
 
-    #print ( main_2_7_performans_tablosu_isimsel ( magaza_id, tarih_ilk, tarih_son, "APOLLO" ) )
+    #print ( main_2_7_performans_tablosu_isimsel ( 133, tarih_ilk, tarih_son, "FIRIN" ) )
+
+    #main_2_7_performans_tablosu_alansal ( 308,tarih_ilk, tarih_son, "Count" )
 
     # 3 kisi sayisi
 
     # 6 ortalama sure
-
-    print(main_2_8_edinme_hunisi ( 10324, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
-    print("lalla")
+    #
+    # print(main_2_8_edinme_hunisi ( 10324, tarih_ilk, tarih_son ))#5599 #11162  #9943 #11162 #5605 == > #11151
+    # print("lalla")
 #############______________1.1_sayfa_yogunluk
 # liste = main_1_1_yogunluk_listesi(239, '29/10/2020', '12/11/2020' )
 # print(liste)
