@@ -41,6 +41,9 @@ class udentify_bot():
         height = self.driver.execute_script (
             "return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight )" )
         print ( height )
+        tz_params = {'timezoneId': 'Turkey'}
+        self.driver.execute_cdp_cmd ( 'Emulation.setTimezoneOverride', tz_params )
+
         sleep ( 2+ek_sure )
 
     def login(self):
@@ -1733,7 +1736,7 @@ class udentify_bot():
 
 
 
-        content = self.driver.find_element_by_css_selector ( ".rt-th.rt-resizable-header:nth-of-type(3)" )
+        content = self.driver.find_element_by_css_selector ( ".rt-th.rt-resizable-header:nth-of-type(5)" )
         content.click ()
         content.click ()
 
@@ -1741,7 +1744,7 @@ class udentify_bot():
         content.click ()
 
         # Alanlari sec
-        tiklancaklar_listesi = [1,2,3,4,8]
+        tiklancaklar_listesi = [1,2,3,4,6,8]
         for elements in tiklancaklar_listesi:
             content = self.driver.find_element_by_css_selector ( f'.columnHeader.text-center:nth-of-type({elements}) .switch' )
             content.click ()
@@ -1754,13 +1757,25 @@ class udentify_bot():
         content.click ()
 
         element = self.driver.find_element_by_class_name ( "rt-table" )
+        content = self.driver.find_element_by_css_selector ( ".rt-th.rt-resizable-header:nth-of-type(4)" )
+        content.click ()
+        content.click ()
         aaaa= "performans_tablosu_fiyat_buyukten"
         sleep ( 2 )
         element.screenshot ( f"{path}{aaaa}.png" )
 
-        content = self.driver.find_element_by_css_selector ( ".rt-th.rt-resizable-header:nth-of-type(3)" )
+        content = self.driver.find_element_by_css_selector ( ".rt-th.rt-resizable-header:nth-of-type(4)" )
         content.click ()
-        sleep(10)
+        sleep(3)
+
+
+
+        kaydirilacak_miktar = request1.main_2_7_performans_tablosu_satis_sira(performans_tablosu_no, ilk_tarih,son_tarih)
+        content5 = self.driver.find_element_by_css_selector ( f'.rt-tbody .rt-tr-group:nth-of-type({kaydirilacak_miktar})' )
+
+        self.driver.execute_script ( "arguments[0].scrollIntoView();", content5 )
+        #self.driver.execute_script ( "window.scrollBy(0, -150)" )
+
 
 
         element = self.driver.find_element_by_class_name ( "rt-table" )
@@ -1768,6 +1783,10 @@ class udentify_bot():
         sleep ( 2 )
 
         element.screenshot ( f"{path}{aaaa}.png" )
+        content5 = self.driver.find_element_by_css_selector (
+            f'.rt-tbody .rt-tr-group:nth-of-type({1})' )
+
+        self.driver.execute_script ( "arguments[0].scrollIntoView();", content5 )
 
 
 
@@ -1876,62 +1895,62 @@ else:
             bot = udentify_bot ()
             bot.login ()
             print("window_size")  # {'width': 1200, 'height': 935} normal ayari
-            print(bot.driver.get_window_size())
-            bot.driver.set_window_size(1200, 935)
-            bot.driver.set_window_size ( 1200, 1000 ) #( f"--window-size=2080,{1080}" )
-            print("bakalim_ayar")
+            # print(bot.driver.get_window_size())
+            # bot.driver.set_window_size(1200, 935)
+            # bot.driver.set_window_size ( 1200, 1000 ) #( f"--window-size=2080,{1080}" )
+            # print("bakalim_ayar")
             bot.select_firm ( magaza[0], magaza[7] )
-            bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
-            bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
-
-            bot.yogunluk_haritasi_final (magaza[2], magaza[3], magaza[4], magza_statik_dosya_location  )
-
-
-            bot.performas_tablosu_specific_resim_tek ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
-            bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.driver.set_window_size ( 1200, 935 )
-            bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
-            bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-
+            # bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
+            # bot.magaza_data_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
             #
-            bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
-            bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location, magaza[6],
-                                           magaza[7] )
+            # bot.yogunluk_haritasi_final (magaza[2], magaza[3], magaza[4], magza_statik_dosya_location  )
             #
-            tarihler_listesi = ilk_tarih_end_son_tarih_baslangic ( magaza[3], magaza[4] )
-
-            print ( "kisim_1" )  # return [tarih_ilk_bitis,tarih_son_baslangic]
-            bot.yogunluk_haritasi_final_kisi ( magaza[2], magaza[3], tarihler_listesi[0], magza_statik_dosya_location,
-                                               0 )
-            bot.yogunluk_haritasi_final_kisi ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
-                                               1 )
-
-            bot.yogunluk_haritasi_final_kisi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,
-                                               2 )
-
-
-
-            print ( "kisim_2" )
-            bot.yogunluk_haritasi_final_yogunluk ( magaza[2], magaza[3], tarihler_listesi[0],
-                                                   magza_statik_dosya_location, 0 )
-            bot.yogunluk_haritasi_final_yogunluk ( magaza[2], tarihler_listesi[1], magaza[4],
-                                                   magza_statik_dosya_location, 1 )
-
-            bot.yogunluk_haritasi_final_yogunluk ( magaza[2], magaza[3], magaza[4],
-                                                   magza_statik_dosya_location, 2 )
-
-            print ( "kisim_3" )
-            bot.yogunluk_haritasi_final_sure ( magaza[2], magaza[3], tarihler_listesi[0], magza_statik_dosya_location,
-                                               0 )
-            bot.yogunluk_haritasi_final_sure ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
-                                               1 )
-
-            bot.yogunluk_haritasi_final_sure ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,
-                                               2 )
+            #
+            # bot.performas_tablosu_specific_resim_tek ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.performas_tablosu_specific_resimler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,magaza[6] )
+            # bot.performans_tablosu_topla_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.alansal_performans_tablosu_data_final ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.driver.set_window_size ( 1200, 935 )
+            # bot.driver.set_window_size ( 1700, 1000 )  # ( f"--window-size=2080,{1080}" )
+            # bot.go_trends ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.go_oneriler ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            #
+            # #
+            # bot.magaza_ici_yogunluk_dagilimi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
+            # bot.kategori_karsilastirmasi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location, magaza[6],
+            #                                magaza[7] )
+            # #
+            # tarihler_listesi = ilk_tarih_end_son_tarih_baslangic ( magaza[3], magaza[4] )
+            #
+            # print ( "kisim_1" )  # return [tarih_ilk_bitis,tarih_son_baslangic]
+            # bot.yogunluk_haritasi_final_kisi ( magaza[2], magaza[3], tarihler_listesi[0], magza_statik_dosya_location,
+            #                                    0 )
+            # bot.yogunluk_haritasi_final_kisi ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
+            #                                    1 )
+            #
+            # bot.yogunluk_haritasi_final_kisi ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,
+            #                                    2 )
+            #
+            #
+            #
+            # print ( "kisim_2" )
+            # bot.yogunluk_haritasi_final_yogunluk ( magaza[2], magaza[3], tarihler_listesi[0],
+            #                                        magza_statik_dosya_location, 0 )
+            # bot.yogunluk_haritasi_final_yogunluk ( magaza[2], tarihler_listesi[1], magaza[4],
+            #                                        magza_statik_dosya_location, 1 )
+            #
+            # bot.yogunluk_haritasi_final_yogunluk ( magaza[2], magaza[3], magaza[4],
+            #                                        magza_statik_dosya_location, 2 )
+            #
+            # print ( "kisim_3" )
+            # bot.yogunluk_haritasi_final_sure ( magaza[2], magaza[3], tarihler_listesi[0], magza_statik_dosya_location,
+            #                                    0 )
+            # bot.yogunluk_haritasi_final_sure ( magaza[2], tarihler_listesi[1], magaza[4], magza_statik_dosya_location,
+            #                                    1 )
+            #
+            # bot.yogunluk_haritasi_final_sure ( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location,
+            #                                    2 )
             bot.driver.set_window_size ( 1700, 1000 )
             bot.performans_tablosu_topla_final_fiyat( magaza[2], magaza[3], magaza[4], magza_statik_dosya_location )
             isi_tablosu_liste = bot.isi_tablosu_topla_final ( magaza[2], magaza[3], magaza[4],

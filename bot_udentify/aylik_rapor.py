@@ -1279,8 +1279,8 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında {isimler_listesi_negatif} kategorilerinde sırasıyla yoğunluk değişiminde {oranlari_listesi_negatif} oranlarında düşüş gözlemlenirken {isimler_listesi_pozitif} kategorilerinde ise sırasıyla {oranlari_listesi_pozitif} oranlarında bir artış mevcuttur."
     )
 
-    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, 234, "DwellRatio", True ))
-    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, 234, "DwellRatio", True ))
+    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, magaza_id_yogunluk, "DwellRatio", True ))
+    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, magaza_id_yogunluk, "DwellRatio", True ))
     print ( ilk_hafta_top_5 )
     print ( ikinci_hafta_top_5 )
     eslesen_isimler_listesi = (request1.cakisan_liste_elemanlar_ilk_3 ( ilk_hafta_top_5[1], ikinci_hafta_top_5[1] ))
@@ -1315,7 +1315,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
                                                                      "Count" )
 
     document.add_paragraph (
-        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{magaza_ici_oran} olarak ortaya çıkmıştır.'
+        f'Mağaza içi ortalama temas sayısı bir kategori için {magaza_ici_oran} olarak ortaya çıkmıştır.'
     )
 
     table = document.add_table ( rows=1, cols=2 )
@@ -1364,8 +1364,8 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_paragraph (
         f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında {isimler_listesi_negatif} kategorilerinde sırasıyla yoğunluk değişiminde {oranlari_listesi_negatif} oranlarında düşüş gözlemlenirken {isimler_listesi_pozitif} kategorilerinde ise sırasıyla {oranlari_listesi_pozitif} oranlarında bir artış mevcuttur."
     )
-    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, 234, "CountRatio", True ))
-    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, 234, "CountRatio", True ))
+    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, magaza_id_yogunluk, "CountRatio", True ))
+    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, magaza_id_yogunluk, "CountRatio", True ))
     print ( ilk_hafta_top_5 )
     print ( ikinci_hafta_top_5 )
     eslesen_isimler_listesi = (request1.cakisan_liste_elemanlar_ilk_3 ( ilk_hafta_top_5[1], ikinci_hafta_top_5[1] ))
@@ -1399,7 +1399,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     magaza_ici_oran = request1.main_2_7_performans_tablosu_hesapla(magaza_id_no,tarih_1,tarih_2,tarih_3,tarih_4,"Dwell")
 
     document.add_paragraph (
-        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{magaza_ici_oran} olarak ortaya çıkmıştır.'
+        f'Mağaza içi ortalama süre bir kategori için {magaza_ici_oran} olarak ortaya çıkmıştır.'
     )
 
     table = document.add_table ( rows=1, cols=2 )
@@ -1448,8 +1448,8 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     document.add_paragraph (
         f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında {isimler_listesi_negatif} kategorilerinde sırasıyla yoğunluk değişiminde {oranlari_listesi_negatif} oranlarında düşüş gözlemlenirken {isimler_listesi_pozitif} kategorilerinde ise sırasıyla {oranlari_listesi_pozitif} oranlarında bir artış mevcuttur."
     )
-    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, 234, "DwellRatio", True ))
-    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, 234, "DwellRatio", True ))
+    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, magaza_id_yogunluk, "DwellRatio", True ))
+    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, magaza_id_yogunluk, "DwellRatio", True ))
     print ( ilk_hafta_top_5 )
     print ( ikinci_hafta_top_5 )
     eslesen_isimler_listesi = (request1.cakisan_liste_elemanlar_ilk_3 ( ilk_hafta_top_5[1], ikinci_hafta_top_5[1] ))
@@ -1504,7 +1504,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
     document.add_picture (
-        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/interest_haftalik.png" ),
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/trends_interest_haftalik.png" ),
         width=Inches ( 1.5 ), height=Inches ( 4.35 ) )
     last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -2340,7 +2340,7 @@ son_tarih = "12/02/2021"
 
 # start_writing_on_docx("bizim toptan","bizim toptan Alibeyköy",308,"01/02/2021","12/02/2021",89,[["Kahvaltılık","Çikolata"],["Çay","Cips"]],['Promo Alan','Bakliyat', 'Temel Gıda', 'Atıştırmalık', 'İçecek', 'Gıda dışı', 'Camlı Soğuk Oda', 'Kasa', 'Cam 9', 'Kişisel Bakım', 'Giriş', 'Temizlik', 'Soğuk Dolap'])
 
-start_writing_on_docx("mediamarkt","mediamarkt ankara forum",318,"01/02/2021","12/02/2021",234,[["5 LG TV","5 SAMSUNG TV"],["5 VESTEL TV","36 BOSCH"]],['Cam 1', 'Cam 2', 'Cam 3', 'Cam 4', 'Cam 5', 'Cam 6', 'Cam 7', 'Cam 8', 'Cam 9', 'Cam 10', 'Cam 11', 'Cam 12', 'Cam 13', 'Cam 14', 'Cam 15', 'Cam 16', 'Cam 17', 'Cam 18', 'Cam 19', 'Cam 20', 'Cam 21', 'Cam 22', 'Cam 23', 'Cam 24', 'Cam 25', 'Cam 26', 'Cam 27', 'Cam 28', 'Cam 29', 'Cam 30', 'Cam 31', 'Cam 32', 'Cam 33', 'Cam 34'])
+# start_writing_on_docx("mediamarkt","mediamarkt ankara forum",318,"01/02/2021","12/02/2021",234,[["5 LG TV","5 SAMSUNG TV"],["5 VESTEL TV","36 BOSCH"]],['Cam 1', 'Cam 2', 'Cam 3', 'Cam 4', 'Cam 5', 'Cam 6', 'Cam 7', 'Cam 8', 'Cam 9', 'Cam 10', 'Cam 11', 'Cam 12', 'Cam 13', 'Cam 14', 'Cam 15', 'Cam 16', 'Cam 17', 'Cam 18', 'Cam 19', 'Cam 20', 'Cam 21', 'Cam 22', 'Cam 23', 'Cam 24', 'Cam 25', 'Cam 26', 'Cam 27', 'Cam 28', 'Cam 29', 'Cam 30', 'Cam 31', 'Cam 32', 'Cam 33', 'Cam 34'])
 
 
 
