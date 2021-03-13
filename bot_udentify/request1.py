@@ -52,6 +52,7 @@ ure_yogunluk_g = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=
 
 saatlik_kisi_sure_grafigi = "{}/Store/{}/EntranceCount?sdate={}&edate={}&stime=10:00&etime=22:00&filter=0&tzoffset={}"
 yogunluk_haritasi = "{}/Sketch/{}/Rectangles?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##hatali
+
 performas_tablosu = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"  ##  180 i 0 yaptin duzelt
 
 deneme_performans = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset={}&layer=1"
@@ -95,7 +96,7 @@ def get_performancetable(url1, storeId, start, end):
     print("offset_ayari")
     print(offser_ayari)
     # url = "{}/Store/{}/AreaTable?sdate={}&edate={}&stime=10:00&etime=22:00&tzoffset=0&layer=1".format ( APIURL,storeId,start,end )
-    url = url1.format ( APIURL, storeId, start, end ,0) # ofset ayarini koy buraya
+    url = url1.format ( APIURL, storeId, start, end ,offser_ayari) # ofset ayarini koy buraya
     r = requests.get ( url, headers=headers )
     return r.json ()
 
@@ -121,97 +122,14 @@ def main(url1):
     # print(list_data['fruits'])
 
 
-def main1_1_tarih(magaza_id, tarih_ilk, tarih_son):
-    data = get_performancetable ( url1, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
-    # print ( data )
 
-    # list_data = json.loads ( data )
-
-    headersiz_data = ((data["Data"]))
-    print ( headersiz_data )
-    print ( "________________________________" )
-    # print(headersiz_data[0]["Name"]) # Labels tarih
-    # print ( headersiz_data[0]["Serial"] )
-    # print ( headersiz_data[1]["Name"] ) #Customer
-    # print ( headersiz_data[1]["Serial"] )
-    # print ( headersiz_data[3]["Name"] ) ##eime
-    # print ( headersiz_data[3]["Serial"] )
-
-    return (headersiz_data[0]["Serial"])
+### Udentify Onemli Fonksiyonlar
 
 
-def main1_1_musteri_sayisi(magaza_id, tarih_ilk, tarih_son):
-    data = get_performancetable ( url1, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
-    # print ( data )
-
-    # list_data = json.loads ( data )
-
-    headersiz_data = ((data["Data"]))
-    print ( headersiz_data )
-    print ( "________________________________" )
-    # print(headersiz_data[0]["Name"]) # Labels tarih
-    # print ( headersiz_data[0]["Serial"] )
-    # print ( headersiz_data[1]["Name"] ) #Customer
-    # print ( headersiz_data[1]["Serial"] )
-    # print ( headersiz_data[3]["Name"] ) ##eime
-    # print ( headersiz_data[3]["Serial"] )
-
-    return (headersiz_data[1]["Serial"])
-
-
-def main1_1_musteri_suresi(magaza_id, tarih_ilk, tarih_son):
-    data = get_performancetable ( url1, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
-    # print ( data )
-
-    # list_data = json.loads ( data )
-
-    headersiz_data = ((data["Data"]))
-    print ( headersiz_data )
-    print ( "________________________________" )
-    # print(headersiz_data[0]["Name"]) # Labels tarih
-    # print ( headersiz_data[0]["Serial"] )
-    # print ( headersiz_data[1]["Name"] ) #Customer
-    # print ( headersiz_data[1]["Serial"] )
-    # print ( headersiz_data[3]["Name"] ) ##eime
-    # print ( headersiz_data[3]["Serial"] )
-
-    return (headersiz_data[3]["Serial"])
-
-
-def main_1_1_yogunluk_listesi_tarihler(magaza_id, tarih_ilk, tarih_son):
-    data = get_performancetable ( url_yogunluk, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
-    # print ( data )
-
-    # list_data = json.loads ( data )
-
-    headersiz_data = (data["Data"])
-    # print ( headersiz_data )
-    # print ( "________________________________" )
-    # print ( headersiz_data[0]["Name"] )  # Labels tarih
-    # print ( headersiz_data[0]["Serial"] )
-    # print ( headersiz_data[4]["Name"] )  # Labels tarih
-    # print ( headersiz_data[4]["Serial"] )
-    return headersiz_data[0]["Serial"]
-
-
-def main_1_1_yogunluk_listesi(magaza_id, tarih_ilk, tarih_son):
-    data = get_performancetable ( url_yogunluk, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
-    # print ( data )
-
-    # list_data = json.loads ( data )
-
-    headersiz_data = (data["Data"])
-    print ( headersiz_data )
-    # print("________________________________")
-    # print(headersiz_data[0]["Name"]) # Labels tarih
-    # print ( headersiz_data[0]["Serial"] )
-    # print ( headersiz_data[4]["Name"] )  # Labels tarih
-    # print ( headersiz_data[4]["Serial"] )
-
-    return headersiz_data[4]["Serial"]  # yogunluk_listesi =
 
 
 def list_to_string(s):
+    # Output Ornegi: 5 UHD-LCD TV PALET , 131 YER BAKIM URUNLERI , 142 CAMASIR MAKINELERI, Kasa
     # initialize an empty string
     str1 = " "
 
@@ -219,6 +137,50 @@ def list_to_string(s):
     # print(elma)
     # return string
     return (str1.join ( elma ))
+
+def list_to_string_ve_ile(s):
+    # Output Ornegi: 5 UHD-LCD TV PALET , 131 YER BAKIM URUNLERI , 142 CAMASIR MAKINELERI ve Kasa
+    # initialize an empty string
+    son_part = s[-1:]
+    s = s[:-1]
+    str1 = " "
+    str2 = " "
+    ilk_liste = [x for y in (s[i:i + 1] + [','] * (i < len ( s ) - 1) for i in range ( 0, len ( s ), 1 )) for x in y]
+    ikici_liste = [x for y in (son_part[i:i + 1] + [','] * (i < len ( son_part ) - 1) for i in range ( 0, len ( son_part ), 1 )) for x in y]
+    final_form2 = (str2.join ( ikici_liste ))
+    final_form = (str1.join ( ilk_liste ))
+    final_form1 = f"{final_form} ve {(final_form2)}"
+    if final_form == "":
+        final_form1 = f"{(final_form2)}"
+
+    return final_form1
+
+def cakisan_liste_elemanlar(list_1, list_2):
+    cakisan_elemanlar_listesi = []
+    for element in range(0, len(list_1)):
+        if list_1[element] in list_2:
+            cakisan_elemanlar_listesi.append(list_1[element])
+    return cakisan_elemanlar_listesi
+
+def cakisan_liste_elemanlar_ilk_3(list_1, list_2):
+    cakisan_elemanlar_listesi = []
+    for element in range(0, 3):
+        print(element)
+        if list_1[element] in list_2[0:3]:
+            cakisan_elemanlar_listesi.append(list_1[element])
+    return cakisan_elemanlar_listesi
+
+def listeleri_oranla(liste1,liste2):
+    liste3=[]
+    for element in range(0,len(liste2)):
+        print(element)
+        print(liste2[element])
+        artis = float(liste2[element])/float(liste1[element])
+        son_kisim = artis -1
+
+        liste3.append(float (("{:.2f}".format ( float ( son_kisim )*100, 2 )) ))
+    return liste3
+
 
 
 def cal_average(num):
@@ -314,8 +276,166 @@ def bigger_than_average_arrray(num):  ##sadece deegeri verilen sayilari topluyor
             buyuk_olanlar_listesi.append ( t[0] )
 
     return buyuk_olanlar_listesi
+def BubleSort(sub_li):
+    l = len ( sub_li )
+    for i in range ( 0, l ):
+        for j in range ( 0, l - i - 1 ):
+            if (sub_li[j][2] > sub_li[j + 1][2]):
+                tempo = sub_li[j]
+                sub_li[j] = sub_li[j + 1]
+                sub_li[j + 1] = tempo
+    return sub_li
+def negatifse(liste):
+    numbers = [2,1,0]
+    print('deneme')
+    for element in numbers:
+        print(element)
+        if liste[element][2] < 0:
+            liste_hali = liste[0:(element+1)]
+            for element in range(len(liste_hali)):
+                print(liste_hali)
+                print(element)
+                print(liste_hali[element])
+                liste_hali[element][2] = f"%{-1*liste_hali[element][2]}"
+                listea=[]
+                listeb=[]
+                listec=[]
+                for elements in range(len(liste_hali)):
+                    print ( 'deneme11' )
+                    print(liste_hali)
+                    listea.append(liste_hali[elements][0])
+                    listeb.append(liste_hali[elements][1])
+                    listec.append(liste_hali[elements][2])
+            return [listea,listeb,listec]
+def pozitifse(liste):
+    numbers = [-3, -2, -1]
+    print ( 'denem2e2' )
+    for element in numbers:
+        print ( element )
+        if liste[element][2] > 0:
+            liste_hali = liste[element:]
+            for element in range ( len ( liste_hali ) ):
+                print ( liste_hali )
+                print ( element )
+                print ( liste_hali[element] )
+                liste_hali[element][2] = f"%{ liste_hali[element][2]}"
+
+                listea = []
+                listeb = []
+                listec = []
+                for elements in range ( len ( liste_hali ) ):
+                    print ( 'deneme11' )
+                    print ( liste_hali )
+                    listea.append ( liste_hali[elements][0] )
+                    listeb.append ( liste_hali[elements][1] )
+                    listec.append ( liste_hali[elements][2] )
+            return [listea,listeb,listec]
+def ilk_tarih_end_son_tarih_baslangic(tarih_ilk, tarih_son):
+    def numOfDays(date1, date2):
+        return (date2 - date1).days
+
+    gun1 = int ( str ( tarih_ilk )[0:2] )
+    ay1 = int ( str ( tarih_ilk )[3:5] )
+    yil1 = int ( str ( tarih_ilk )[6:10] )
+    gun2 = int ( str ( tarih_son )[0:2] )
+    ay2 = int ( str ( tarih_son )[3:5] )
+    yil2 = int ( str ( tarih_son )[6:10] )
+    ilk_tarih_updated = datetime.datetime ( yil1, ay1, gun1 )
+    son_tarih_updated = datetime.datetime ( yil2, ay2, gun2 )
+    # gun_farki = (numOfDays ( ilk_tarih_updated, son_tarih_updated ), "days")[0] + 1
+    gun_farki = 4
+    print ( gun_farki )
+    cikarilacak_gun = (numOfDays ( ilk_tarih_updated, son_tarih_updated ), "days")[0]
+    onceki_ay_ilk_tarih = ilk_tarih_updated + datetime.timedelta ( days=gun_farki )
+    onceki_ay_son_tarih = son_tarih_updated - datetime.timedelta ( days=gun_farki )
+    print ( "tarih_kontrolu" )
+    tarih_son_baslangic = str ( onceki_ay_son_tarih.strftime ( '%d/%m/%Y' ) )
+    tarih_ilk_bitis = str ( onceki_ay_ilk_tarih.strftime ( '%d/%m/%Y' ) )
+    print ( tarih_ilk_bitis )
+    print ( tarih_son_baslangic )
+    return [tarih_ilk_bitis, tarih_son_baslangic]
 
 
+def main1_1_tarih(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( url1, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = ((data["Data"]))
+    print ( headersiz_data )
+    print ( "________________________________" )
+    # print(headersiz_data[0]["Name"]) # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[1]["Name"] ) #Customer
+    # print ( headersiz_data[1]["Serial"] )
+    # print ( headersiz_data[3]["Name"] ) ##eime
+    # print ( headersiz_data[3]["Serial"] )
+
+    return (headersiz_data[0]["Serial"])
+def main1_1_musteri_sayisi(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( url1, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = ((data["Data"]))
+    print ( headersiz_data )
+    print ( "________________________________" )
+    # print(headersiz_data[0]["Name"]) # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[1]["Name"] ) #Customer
+    # print ( headersiz_data[1]["Serial"] )
+    # print ( headersiz_data[3]["Name"] ) ##eime
+    # print ( headersiz_data[3]["Serial"] )
+
+    return (headersiz_data[1]["Serial"])
+def main1_1_musteri_suresi(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( url1, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = ((data["Data"]))
+    print ( headersiz_data )
+    print ( "________________________________" )
+    # print(headersiz_data[0]["Name"]) # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[1]["Name"] ) #Customer
+    # print ( headersiz_data[1]["Serial"] )
+    # print ( headersiz_data[3]["Name"] ) ##eime
+    # print ( headersiz_data[3]["Serial"] )
+
+    return (headersiz_data[3]["Serial"])
+def main_1_1_yogunluk_listesi_tarihler(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( url_yogunluk, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    # print ( headersiz_data )
+    # print ( "________________________________" )
+    # print ( headersiz_data[0]["Name"] )  # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+    return headersiz_data[0]["Serial"]
+def main_1_1_yogunluk_listesi(magaza_id, tarih_ilk, tarih_son):
+    data = get_performancetable ( url_yogunluk, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    print ( headersiz_data )
+    # print("________________________________")
+    # print(headersiz_data[0]["Name"]) # Labels tarih
+    # print ( headersiz_data[0]["Serial"] )
+    # print ( headersiz_data[4]["Name"] )  # Labels tarih
+    # print ( headersiz_data[4]["Serial"] )
+
+    return headersiz_data[4]["Serial"]  # yogunluk_listesi =
 def main_2_1_saatler(magaza_id, tarih_ilk, tarih_son):
     data = get_performancetable ( saatlik_kisi_sure_grafigi, magaza_id, tarih_ilk,
                                   tarih_son )  ##240 akasyaya baktigimiz icin
@@ -331,8 +451,6 @@ def main_2_1_saatler(magaza_id, tarih_ilk, tarih_son):
     # print ( headersiz_data[4]["Name"] )  # Labels tarih
     # print ( headersiz_data[4]["Serial"] )
     return headersiz_data[0]["Serial"]
-
-
 def main_2_1_kisi_sure_saatlik(magaza_id, tarih_ilk, tarih_son):
     data = get_performancetable ( saatlik_kisi_sure_grafigi, magaza_id, tarih_ilk,
                                   tarih_son )  ##240 akasyaya baktigimiz icin
@@ -348,8 +466,6 @@ def main_2_1_kisi_sure_saatlik(magaza_id, tarih_ilk, tarih_son):
     # print ( headersiz_data[4]["Name"] )  # Labels tarih
     # print ( headersiz_data[4]["Serial"] )
     return headersiz_data[2]["Serial"]
-
-
 def cal_average_array(num):
     sum_num = 0
     for t in num:
@@ -379,7 +495,6 @@ def ikincisi_dogru_ise_liste_devam_etmesin(num):
 def maximum(a, b, c):
     if (a >= b) and (a >= c):
         largest = a
-
     elif (b >= a) and (b >= c):
         largest = b
     else:
@@ -409,6 +524,38 @@ def max_number_array(num):
 
 yogunluk_toplam_deger = float ( 0 )
 
+def json_isimden_listeye_5(tarih1, tarih2,magaza_no, isim, reverse=True ):
+    json33 = get_performancetable ( yogunluk_haritasi, magaza_no, tarih1, tarih2 )
+    edited_json = ((json33["Data"]))
+    edited_json1 = sorted ( edited_json, key=lambda k: k.get ( isim, 0 ), reverse=reverse )
+    print('kotu siralama')
+    print ( edited_json1 )
+    id_listesi = []
+    isim_listesi = []
+    degerler_listesi = []
+    sayi = 0
+    for area in range ( 0, 5 ):
+        try:
+            print('before')
+            print(edited_json1[sayi][isim])
+            istenen_sayi = float ( ("{:.2f}".format ( float ( (edited_json1[sayi][isim]) )*100, 2 )) )
+            print ( 'After' )
+            print(istenen_sayi)
+
+            degerler_listesi.append ( istenen_sayi )
+            isim_listesi.append ( edited_json1[sayi]["Name"] )
+            id_listesi.append(edited_json1[sayi]['Id'])
+        except Exception as e:
+            print(e)
+            log_info = str ( f'eksik data, {edited_json1[sayi]["Name"]}, {e}' )
+            print ( log_info )
+            degerler_listesi.append ( 0 )
+            isim_listesi.append ( edited_json1[sayi]["Name"] )
+            id_listesi.append ( edited_json1[sayi]['Id'] )
+
+        sayi += 1
+    print('output')
+    return  id_listesi,isim_listesi,degerler_listesi
 
 def yogunluk_haritasi_hesaplama_degerleri_top_5(data):  ##ayni sayi olursa nasil siraliyoruz platformda diye sor
     global yogunluk_toplam_deger
@@ -470,6 +617,23 @@ def yogunluk_haritasi_hesaplama_degerleri_top_5(data):  ##ayni sayi olursa nasil
     bottom_5_liste_adlar.append ( sayilar_listesi ( 4, data, bottom_5_liste ) )
     print ( bottom_5_liste_adlar )
     return top_5_liste_adlar
+
+def yogunluk_haritasi_isimine_gore_yuzde_top_5( magaza_id, tarih_ilk, tarih_son,isim,boolean ):  ##ayni sayi olursa nasil siraliyoruz platformda diye sor
+    data = get_performancetable ( yogunluk_haritasi, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
+    print ( "hata017" )
+    print ( data )
+
+
+    # list_data = json.loads ( data )
+
+    data = (data["Data"])
+    count_ratio = float ( 0 )
+    print("api_datasi")
+    print(data)
+
+    liste =  json_isimden_listeye_5(data,isim,boolean)
+
+    return liste
 
 
 def yogunluk_haritasi_hesaplama_degerleri_bottom_5(data):  ##ayni sayi olursa nasil siraliyoruz platformda diye sor
@@ -1229,8 +1393,7 @@ def main_2_7_performans_tablosu_alansal(magaza_id, tarih_ilk, tarih_son,
     return info_all
 
 
-def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,
-                                        isim):  # ceil gordugun yere round fonksiyonu at
+def main_2_7_performans_tablosu_isimsel(magaza_id, tarih_ilk, tarih_son,isim):  # ceil gordugun yere round fonksiyonu at
     data = get_performancetable ( performas_tablosu, magaza_id, tarih_ilk, tarih_son )  ##240 akasyaya baktigimiz icin
 
     def numOfDays(date1, date2):
@@ -1419,6 +1582,9 @@ def main_2_7_performans_tablosu_double_isim(magaza_id, tarih_ilk, tarih_son,
     print ( onceki_ay_ilk_tarih.strftime ( '%d/%m/%Y' ) )
     tarih_son1 = str ( onceki_ay_son_tarih.strftime ( '%d/%m/%Y' ) )
     tarih_ilk1 = str ( onceki_ay_ilk_tarih.strftime ( '%d/%m/%Y' ) )
+    print("diger_tarihler")
+    print(tarih_ilk1)
+    print(tarih_son1)
 
     data1 = get_performancetable ( performas_tablosu, magaza_id, tarih_ilk1, tarih_son1 )
     # print ( data )
@@ -1573,6 +1739,7 @@ def main_2_7_performans_tablosu_double_isim(magaza_id, tarih_ilk, tarih_son,
             print ( headersiz_data[n]["Density"] )
             print ( densityTotal )
             Density = float (((float ( headersiz_data[n]["Density"] )) * (100)) / (densityTotal) )  # ! duzelt math.ceil
+            Density = float ( ("{:.2f}".format ( float ( (Density) ), 2 )) )
             print ( Density )
             print ( "DensityStoreChange" )  # duzelttin
             DensityStoreChange = Density - (
@@ -2336,6 +2503,267 @@ def main_2_8_kisi_miktari(magaza_id, tarih_ilk, tarih_son):
     # print ( headersiz_data[4]["Serial"] )
     return headersiz_data[1]["Serial"]
 
+def json_id_den_degisim_oranina(tarih1,tarih2,tarih3,tarih4,magaza_no, veri_adi, reverse=True):
+    json33 = get_performancetable ( yogunluk_haritasi, magaza_no, tarih1, tarih2 )
+    edited_json = ((json33["Data"]))
+    edited_json1 = sorted ( edited_json, key=lambda k: k.get ( veri_adi, 0 ), reverse=reverse )
+    print('kotu siralama11')
+    print ( edited_json1 )
+    id_listesi = 0
+    isim_listesi = 0
+    degerler_listesi = 0
+    sayi = 0
+    toplam_degerler = []
+    final_list = []
+
+    json33 = get_performancetable ( yogunluk_haritasi, magaza_no, tarih3, tarih4 )
+    edited_json_2 = ((json33["Data"]))
+
+    edited_json2 = sorted ( edited_json_2, key=lambda k: k.get ( veri_adi, 0 ), reverse=reverse )
+    print ( 'kotu siralama11' )
+    print ( edited_json2 )
+    id_listesi2 = 0
+    isim_listesi2 = 0
+    degerler_listesi2 = 0
+
+    edited_json3 = edited_json1 + edited_json2
+    uzunluk_degerleri = len ( edited_json3 )
+    print("editeddure11")
+    print(edited_json3)
+
+    for area in range ( len(edited_json3) ):
+        try:
+
+            print('before11')
+            print( edited_json3[sayi][veri_adi] )
+            print ( edited_json3[sayi]["Name"] )
+            istenen_sayi = float ( ("{:.2f}".format ( float ( (edited_json3[sayi][veri_adi]) ) * 100, 2 )) )
+            print ( 'After' )
+            print(istenen_sayi)
+            toplam_degerler.append( istenen_sayi )
+        except Exception as e:
+            uzunluk_degerleri -= 1
+            print("error")
+            print(e)
+            log_info = str ( f'eksik data1, {edited_json3[sayi]["Name"]}, {e}' )
+            print ( log_info )
+            toplam_degerler.append( 0 )
+        sayi += 1
+    sayi = 0
+
+    for area in range ( len(edited_json1) ):
+        try:
+            id_no =edited_json1[sayi]['Id']
+            print('before')
+            print( edited_json1[sayi][veri_adi] )
+            istenen_sayi = float ( ("{:.2f}".format ( float ( (edited_json1[sayi][veri_adi]) ) * 100, 2 )) )
+            print ( 'After' )
+            print(istenen_sayi)
+
+            degerler_listesi = ( istenen_sayi )
+            isim_listesi = ( edited_json1[sayi]["Name"] )
+            id_listesi = (edited_json1[sayi]['Id'])
+
+            sayi_2 = 0
+            for area in range ( len ( edited_json2 ) ):
+                try:
+                    if edited_json2[sayi_2]['Id'] == id_no:
+                        print ( 'before' )
+                        print ( edited_json2[sayi_2][veri_adi] )
+                        istenen_sayi = float ( ("{:.2f}".format ( float ( (edited_json2[sayi_2][veri_adi]) ) * 100, 2 )) )
+                        print ( 'After' )
+                        print ( istenen_sayi )
+
+                        degerler_listesi2 = (istenen_sayi)
+                        isim_listesi2 = (edited_json2[sayi_2]["Name"])
+                        id_listesi2 = (edited_json2[sayi_2]['Id'])
+
+                        print('bunu_buna_bod')
+                        print(edited_json2[sayi_2][veri_adi])
+                        print(id_listesi2)
+                        print(isim_listesi2)
+                        print(degerler_listesi2)
+                        print(degerler_listesi)
+
+
+
+                        final_list.append([id_listesi,isim_listesi, float ( ("{:.2f}".format ( float ( degerler_listesi2/degerler_listesi -1 ) * 100, 2 )) )])
+                except ZeroDivisionError as e:
+                    print ( "error_zero_division" )
+                    print ( e )
+                    print(degerler_listesi2,degerler_listesi)
+                    log_info = str ( f'eksik data1, {edited_json2[sayi_2]["Name"]}, {e}' )
+                    print ( log_info )
+                    # degerler_listesi2 = (0)
+                    isim_listesi2 = (edited_json2[sayi_2]["Name"])
+                    id_listesi2 = (edited_json2[sayi_2]['Id'])
+                    final_list.append ( [id_listesi, isim_listesi, float (
+                        ("{:.2f}".format ( float ( degerler_listesi2 / 1 ) * 100, 2 )) )] )
+
+                except Exception as e:
+                    print ( "error1" )
+                    print ( e )
+                    log_info = str ( f'eksik data1, {edited_json2[sayi_2]["Name"]}, {e}' )
+                    print ( log_info )
+                    degerler_listesi2 = (0)
+                    isim_listesi2 = (edited_json2[sayi_2]["Name"])
+                    id_listesi2 = (edited_json2[sayi_2]['Id'])
+                    final_list.append([id_listesi,isim_listesi, float ( ("{:.2f}".format ( float ( degerler_listesi2/degerler_listesi ) * 100, 2 )) )])
+
+                sayi_2 += 1
+
+
+
+        except Exception as e:
+            print("error")
+            print(e)
+            log_info = str ( f'eksik data1, {edited_json1[sayi]["Name"]}, {e}' )
+            print ( log_info )
+            degerler_listesi = ( 0 )
+            isim_listesi = ( edited_json1[sayi]["Name"] )
+            id_listesi = ( edited_json1[sayi]['Id'] )
+
+        sayi += 1
+
+    print('output')
+    print(toplam_degerler)
+    print ( 'yogunluk_ortalamasi' )
+    yogunluk_ortalamasi = (sum(toplam_degerler)/uzunluk_degerleri)
+    print(yogunluk_ortalamasi)
+    print(id_listesi,id_listesi2,isim_listesi,isim_listesi2,degerler_listesi,degerler_listesi2)
+    return  final_list
+
+
+
+def main_2_7_performans_tablosu_hesapla(magaza_id, tarih1,tarih2,tarih3,tarih4,istenen_alan):  # ceil gordugun yere round fonksiyonu at
+    data = get_performancetable ( performas_tablosu, magaza_id, tarih1, tarih2 )  ##240 akasyaya baktigimiz icin
+    transfored_alan = "Dwell"
+    if istenen_alan == "Dwell":
+        transfored_alan = "Dwell"
+    elif istenen_alan == "Count":
+        transfored_alan = "Count"
+    elif istenen_alan == "Density":
+        transfored_alan = "Density"
+
+    data1 = get_performancetable ( performas_tablosu, magaza_id, tarih3, tarih4 )
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+    headersiz_data1 = (data1["Data"])
+
+    edited_json1 = sorted ( headersiz_data, key=lambda k: k.get ( "Density", 0 ), reverse=True )
+    edited_json2 = sorted ( headersiz_data1, key=lambda k: k.get ( "Density", 0 ), reverse=True )
+
+    edited_json3 = edited_json1 + edited_json2
+
+
+    n = 0
+    print ( len ( edited_json3 ) )  # kac tane alan var
+    ici_dolu_data = len ( edited_json3 )
+    meterSquareTotal = float ( 0 )
+    densityTotal = float ( 0 )
+    print('bakalimmm')
+    print(ici_dolu_data)
+    print ( edited_json3 )
+
+
+    for n in range(len(edited_json3)):
+        print("ahhaah")
+        print(n)
+        # print(headersiz_data[n])
+        # print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
+        # print(headersiz_data[n]["Id"])
+
+        print ( edited_json3[n]["Name"] )
+
+        try:
+            densityTotal = (densityTotal + float ( ("{:.2f}".format ( float ( (edited_json3[n][transfored_alan]) ), 2 )) ))
+            print ( "guncellendi" )
+        except Exception as e:
+
+            log_info = str ( f'eksik data, {edited_json3[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
+            ici_dolu_data -=1
+
+
+    # yogunluk_haritasi_hesaplama_degerleri_top_5(headersiz_data)
+
+    # print(headersiz_data)
+    # return headersiz_data
+    print ( "\n______ Yogunluk" )
+    # print("densityTotal _toplam yogunluk")
+    # print(densityTotal)
+    # print ( "densityPrevTotal _toplam_yogunluk_pre" )
+    # print(densityPrevTotal)
+
+    print ( "Density __ total" )
+    print ( densityTotal )
+    print(ici_dolu_data)
+    print(densityTotal/ici_dolu_data)
+    son_yuvarlama = float ( ("{:.2f}".format ( float ( (densityTotal/ici_dolu_data) ), 2 )) )
+
+    if transfored_alan == "Density":
+        son_yuvarlama = float ( ("{:.2f}".format ( float ( (200/ici_dolu_data) ), 2 )) )
+
+    return son_yuvarlama
+
+
+def main_2_7_performans_tablosu_satis_sira(magaza_id, tarih1,tarih2):  # ceil gordugun yere round fonksiyonu at
+    data = get_performancetable ( performas_tablosu, magaza_id, tarih1, tarih2 )  ##240 akasyaya baktigimiz icin
+
+
+    # print ( data )
+
+    # list_data = json.loads ( data )
+
+    headersiz_data = (data["Data"])
+
+
+    edited_json1 = sorted ( headersiz_data, key=lambda k: k.get ( "SaleAmount", 0 ), reverse=False )
+    print("hahageld")
+    print(edited_json1)
+
+
+
+
+    final_list = []
+
+    kucukden_buyuge_sira = -1
+    for n in range(len(edited_json1)):
+        print("ahhaah")
+        print(n)
+        # print(headersiz_data[n])
+        # print(len(headersiz_data[n])) # alanlarin uzunlugu ne kadar
+        # print(headersiz_data[n]["Id"])
+
+        print ( edited_json1[n]["Name"] )
+
+        try:
+            SaleAmount1 = ( float ( ("{:.2f}".format ( float ( (edited_json1[n]["SaleAmount"]) ), 2 )) ))
+
+            print ( "guncellendi" )
+        except Exception as e:
+            SaleAmount1 = 0
+
+            log_info = str ( f'eksik data, {edited_json1[n]["Name"]}, {e}' )
+            app_log.info ( log_info )
+        kucukden_buyuge_sira += 1
+        print("miktari bu kadar")
+        print(SaleAmount1)
+        if SaleAmount1 > 0:
+            break
+
+
+    return kucukden_buyuge_sira
+
+
+
+
+
+
+
 if __name__ == "__main__":
     # main ()
     # print(main_2_8_kisi_miktari ( 240, tarih_ilk , tarih_son ))
@@ -2343,8 +2771,106 @@ if __name__ == "__main__":
     # boys = (main_2_7_performans_tablosu_double_isim(228, tarih_ilk , tarih_son,"BOYS"))
     # girls = ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "MEN'S RUN" ) )
 
-    store_sure_2_2 ( 240, tarih_ilk, tarih_son)
-    # print(boys)
+    tarih_ilk = "01/02/2021"
+    tarih_son = "12/02/2021"
+
+    tarih_1 = tarih_ilk
+    tarih_4 = tarih_son
+    tarig_limitleri = ilk_tarih_end_son_tarih_baslangic ( tarih_1, tarih_4 )
+    tarih_2 = tarig_limitleri[0]
+    tarih_3 = tarig_limitleri[1]
+
+    # json33 = get_performancetable ( performas_tablosu, 240, tarih_1, tarih_2 )
+    # edited_json = ((json33["Data"]))
+
+    # birlesik_liste = (
+    #     json_id_den_degisim_oranina ( tarih_1, tarih_2, tarih_3, tarih_4, 234, "DensityRatio",
+    #                                   reverse=True ))
+    print(main_2_7_performans_tablosu_satis_sira(240, tarih_1,tarih_2))
+
+
+
+
+
+    # print ( birlesik_liste )
+    #
+    # sorted_list = (BubleSort ( birlesik_liste ))
+    # print("listeye_bakalim")
+    # print(sorted_list)
+    # negatif_liste = negatifse ( sorted_list )
+    # pozitif_liste = pozitifse ( sorted_list )
+    # print ( negatif_liste )
+    # print ( pozitif_liste )
+    # isimler_listesi_negatif = list_to_string_ve_ile ( negatif_liste[1] )
+    # print ( isimler_listesi_negatif )
+    # oranlari_listesi_negatif = list_to_string_ve_ile ( negatif_liste[2] )
+    # print ( oranlari_listesi_negatif )
+    # isimler_listesi_pozitif = list_to_string_ve_ile ( pozitif_liste[1] )
+    # print ( isimler_listesi_pozitif  )
+    # oranlari_listesi_pozitif  = list_to_string_ve_ile ( pozitif_liste[2] )
+    # print ( oranlari_listesi_pozitif  )
+    #
+    #
+    #
+    # json33 = get_performancetable ( yogunluk_haritasi, 234, tarih_1, tarih_2 )
+    # edited_json = ((json33["Data"]))
+    # edited_json1 = sorted ( edited_json, key=lambda k: k.get ( "DensityRatio", 0 ), reverse=True )
+    #
+    # id_listesi = 0
+    # isim_listesi = 0
+    # degerler_listesi = 0
+    # sayi = 0
+    # toplam_degerler = []
+    # final_list = []
+    #
+    # json33 = get_performancetable ( yogunluk_haritasi, 234, tarih_3, tarih_4 )
+    # edited_json_2 = ((json33["Data"]))
+    #
+    # edited_json2 = sorted ( edited_json_2, key=lambda k: k.get ( "DensityRatio", 0 ), reverse=True )
+    # id_listesi2 = 0
+    # isim_listesi2 = 0
+    # degerler_listesi2 = 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #store_sure_2_2 ( 240, tarih_ilk, tarih_son)
+    # main_2_3_yogunluk_haritasi_top_5 ( 234, tarih_ilk, tarih_son )
+    # print("son____")
+    # # print(boys) # CountRatio
+    # ilk_liste =(yogunluk_haritasi_isimine_gore_yuzde_top_5( 234, tarih_ilk, tarih_son,"CountRatio",True ))
+    #
+    # tarih_ilk = "22/02/2021"
+    # tarih_son = "26/02/2021"
+    #
+    # ikinci_liste = ( yogunluk_haritasi_isimine_gore_yuzde_top_5 ( 234, tarih_ilk, tarih_son, "CountRatio", True ) )
+    #
+    # print(ilk_liste)
+    # print(ikinci_liste)
+    # cakisanlar = (cakisan_liste_elemanlar_ilk_3(ilk_liste[0],ikinci_liste[0]))
+    # print(list_to_string_ve_ile(cakisanlar))
+    #
+    # tarih_ilk = "15/02/2021"
+    # tarih_son = "19/02/2021"
+
+    # print ( main_2_7_performans_tablosu_double_isim ( 240, tarih_ilk, tarih_son, "BOYS" ) )
 
     #
     # print(boys[1][10]) #metrekare
@@ -2383,7 +2909,7 @@ if __name__ == "__main__":
 
 
 
-    #print ( main_2_7_performans_tablosu_isimsel ( 133, tarih_ilk, tarih_son, "FIRIN" ) )
+
 
     #main_2_7_performans_tablosu_alansal ( 308,tarih_ilk, tarih_son, "Count" )
 

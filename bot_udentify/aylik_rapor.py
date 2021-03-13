@@ -1011,22 +1011,8 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         f'Kasada bekleme süresi arttıkça müşterinin ürünü almama ihtimali artmaktadır, bu nedenle 180 saniye üzeri bekleme yapan müşteri sayısı ile fiş sayısı kıyaslandığında kaç kişilik kayıp olduğu anlaşılır ve mağaza sepet ortalamasına bakılarak satış kaybı miktarı belirlenebilir.'
     )
 
-    # yogunluk_temas_sure
-    document.add_page_break ()
-    document.add_heading ( '2.3 Isı Haritası', level=1 )
+    document.add_paragraph ( f"Kasada bekleme süresi arttıkça müşterinin ürünü almama ihtimali artmaktadır, bu nedenle 120 saniye üzeri bekleme yapan müşteri sayısı ile fiş sayısı kıyaslandığında kaç kişilik kayıp olduğu anlaşılır ve mağaza sepet ortalamasına bakılarak satış kaybı miktarı belirlenebilir." )
 
-    p = document.add_paragraph ( f"Kırmızı: Çok yoğun Sarı: Orta yoğun Yeşil: Az yoğun" )
-    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    document.add_paragraph (
-        'Isı haritaları incelendiğinde, mağaza içerisinde yoğunluğu daha az ve daha fazla olan alanlar görülmektedir.',
-        style='List Bullet'
-    )
-
-    document.add_paragraph (
-        f"Kasa kamerasının {hm1} alanınnda, basketball kamerasının {hm1} alanınnda, men’s run kamerasının {hm2} alanınnda, heat gear kamerasının {hm1} alanınnda, FTW kamerasının {hm1} alanınnda, giriş kamerasının {hm1} alanınnda yoğunluğun arttığı görülmektedir.",
-        style='List Bullet'
-    )
 
     liste1 = request1.giren_kisi_sayisi_hepsi ( magaza_id_no, ilk_tarih, son_tarih )
     print ( liste1 )
@@ -1062,6 +1048,8 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
                            height=Inches ( 3.37 ) )
     last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p = document.add_paragraph ( f"(Kasa Saatlik Yoğunluk)" )
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     # im.show ()
     #
@@ -1086,8 +1074,8 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 
     # # giving a title to my graph
     # #plt.title ( 'My first graph!' )
-    # plt.gca().axes.get_yaxis().set_visible(False)
-    # #plt.gca().axes.get_xaxis().set_visible(False)
+    plt.gca().axes.get_yaxis().set_visible(False)
+    plt.gca().axes.get_xaxis().set_visible(False)
     # # function to show the plot
     # elma = plt.show ()
     # print(plt)
@@ -1102,8 +1090,35 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
                            height=Inches ( 3.37 ) )
     last_paragraph = document.paragraphs[-1]  # resimleri ortalamak icin
     last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p = document.add_paragraph ( f"(Kasa Saatlik Giren Temas)" )
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
     buf.close ()
+
+
+    p = document.add_paragraph ( f"Kasa alanının saatlik yoğunluğu ve giren temas sayısı incelendiğinde saat 15-16 ve 17-18 aralıklarında temasta ve yoğunlukta en yüksek değerlere ulaşılmıştır. Saat 16-17 aralığından itibaren temas düşme eğilimine girmişken yoğunluk aynı seviyede azalmamıştır. Yoğunluğun nedeni süredir. Bu nedenle, bekleme süresini azaltmak ve müşteri memnuniyetini en üst seviyede tutabilmek için belirtilen saat aralıklarında kasaya personel eklenmelidir." )
+
+
+
+
+
+    # yogunluk_temas_sure
+    document.add_page_break ()
+    document.add_heading ( '2.3 Isı Haritası', level=1 )
+
+    p = document.add_paragraph ( f"Kırmızı: Çok yoğun Sarı: Orta yoğun Yeşil: Az yoğun" )
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    document.add_paragraph (
+        'Isı haritaları incelendiğinde, mağaza içerisinde yoğunluğu daha az ve daha fazla olan alanlar görülmektedir.',
+        style='List Bullet'
+    )
+
+    document.add_paragraph (
+        f"Kasa kamerasının {hm1} alanınnda, basketball kamerasının {hm1} alanınnda, men’s run kamerasının {hm2} alanınnda, heat gear kamerasının {hm1} alanınnda, FTW kamerasının {hm1} alanınnda, giriş kamerasının {hm1} alanınnda yoğunluğun arttığı görülmektedir.",
+        style='List Bullet'
+    )
+
 
 
 
@@ -1135,10 +1150,10 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         # document.add_picture(os.path.join(BASE_DIR, f'{magza_statik_dosya_location}/isi_haritasi{sayi}.png'), width=Inches(2.25) , height=Inches(1.9))
         # last_paragraph = document.paragraphs[-1]#resimleri ortalamak icin
         # last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        document.add_paragraph (
-            f"{kamera_adi_isimi} kamerasının....",
-            style='List Bullet'
-        )
+        # document.add_paragraph (
+        #     f"{kamera_adi_isimi} kamerasının....",
+        #     style='List Bullet'
+        # )
 
     tablo_satir_sayisi = (
                 math.ceil ( (len ( isi_tablosu_liste ) + 1.001) / 2 ) - 1)  # math.ceil kullanmamak icin 0.51 yaptim
@@ -1173,120 +1188,10 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     p.add_run ( f"A. Yoğunluk" ).bold = True
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
-    document.add_paragraph (
-        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{"AYARLANACAK"}’tir.'
-    )
-
-    table = document.add_table ( rows=1, cols=2 )
-    # table.columns[0].width = Inches ( 5 )
-    # table.rows[0].cells[0].height = Inches ( 5 )
-    for row in table.rows:
-        row.height = Inches ( 2.25 )
-        row.width = Inches ( 1.9 )
-
-    row_cells1 = table.cell ( 0, 0 )
-    paragraph = row_cells1.paragraphs[0]
-    run = paragraph.add_run ()
-    run.add_picture (
-        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_kisi0_yogunluk_haritasi_birincisi.png" ),
-        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
-    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    row_cells1 = table.cell ( 0, 1 )
-    paragraph = row_cells1.paragraphs[0]
-    run = paragraph.add_run ()
-    run.add_picture (
-        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_kisi1_yogunluk_haritasi_birincisi.png" ),
-        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
-    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    #degistirilecek
-    # liste_yogunluk_top_5 = request1.main_2_3_yogunluk_haritasi_top_5 ( magaza_id_yogunluk, ilk_tarih, son_tarih )
-    # print ( "lolall" )
-    # print ( liste_yogunluk_top_5 )
-    #
-    # liste_yogunluk_bottom_5 = request1.main_2_3_yogunluk_haritasi_bottom_5 ( magaza_id_yogunluk, ilk_tarih, son_tarih )
-    # print ( liste_yogunluk_bottom_5 )
-    #
-    # # sayfa-2.5
-    # yogunlugu_1_in_ustundekiler = request1.main_2_5_yogunluk_haritasi_orani_top_5_orani ( magaza_id_yogunluk, ilk_tarih,
-    #                                                                                       son_tarih )
-    # print ( "top_5" )
-    # print ( yogunlugu_1_in_ustundekiler )
-    # yogunlugu_1_in_altindakiler = request1.main_2_5_yogunluk_haritasi_orani_bottom_5_orani ( magaza_id_yogunluk,
-    #                                                                                          ilk_tarih, son_tarih )
-    # print ( "bot_5" )
-    # print ( yogunlugu_1_in_altindakiler )
-    #
-    #
-    # # onemlı unutma
-    # document.add_paragraph (
-    #     f'Yukarıdaki yoğunluk haritası incelendiğinde, mağazanın en yoğun alanlarının {liste_yogunluk_top_5[0].title ()}, {liste_yogunluk_top_5[1].title ()} ve {liste_yogunluk_top_5[2].title ()} alanları olduğu görülür.',
-    #     style='List Bullet'
-    # )
-    #
-    # document.add_paragraph (
-    #     f'Yoğunluğun en az olduğu alanlar ise; {liste_yogunluk_bottom_5[0].title ()}, {liste_yogunluk_bottom_5[1].title ()}, {liste_yogunluk_bottom_5[2].title ()}, {liste_yogunluk_bottom_5[3].title ()}, ve {liste_yogunluk_bottom_5[4].title ()} alanlarıdır.',
-    #     style='List Bullet'
-    # )
-
+    magaza_ici_oran = request1.main_2_7_performans_tablosu_hesapla(magaza_id_no,tarih_1,tarih_2,tarih_3,tarih_4,"Density")
 
     document.add_paragraph (
-        f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında ‘Girls’, ‘Women’s Armour Fleece’ ve ‘Women’s Unstoppable’ kategorilerinde sırasıyla yoğunluk değişiminde %31, %15 ve %10’luk bir düşüş gözlemlenirken ‘Golf’, ‘MEN' S VANISH & RUSH’ ve ‘Men’s Recovery’ kategorilerinde ise sırasıyla %93, %58 ve %49’luk bir artış mevcuttur."
-    )
-    document.add_paragraph (
-        f"‘MAN’S THE ROCK’ ve ‘FTW’ kategorileri belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
-    )
-
-    # Trendler_Temas
-    document.add_page_break ()
-    p = document.add_paragraph ( f"" )
-    p.add_run ( f"A. Temas" ).bold = True
-    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-
-    document.add_paragraph (
-        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{"AYARLANACAK"}’tir.'
-    )
-
-    table = document.add_table ( rows=1, cols=2 )
-    # table.columns[0].width = Inches ( 5 )
-    # table.rows[0].cells[0].height = Inches ( 5 )
-    for row in table.rows:
-        row.height = Inches ( 2.25 )
-        row.width = Inches ( 1.9 )
-
-    row_cells1 = table.cell ( 0, 0 )
-    paragraph = row_cells1.paragraphs[0]
-    run = paragraph.add_run ()
-    run.add_picture (
-        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_sure0_yogunluk_haritasi_birincisi.png" ),
-        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
-    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    row_cells1 = table.cell ( 0, 1 )
-    paragraph = row_cells1.paragraphs[0]
-    run = paragraph.add_run ()
-    run.add_picture (
-        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_sure1_yogunluk_haritasi_birincisi.png" ),
-        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
-    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-
-    document.add_paragraph (
-        f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında ‘Girls’, ‘Women’s Armour Fleece’ ve ‘Women’s Unstoppable’ kategorilerinde sırasıyla yoğunluk değişiminde %31, %15 ve %10’luk bir düşüş gözlemlenirken ‘Golf’, ‘MEN' S VANISH & RUSH’ ve ‘Men’s Recovery’ kategorilerinde ise sırasıyla %93, %58 ve %49’luk bir artış mevcuttur."
-    )
-    document.add_paragraph (
-        f"‘MAN’S THE ROCK’ ve ‘FTW’ kategorileri belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
-    )
-
-    # Trendler_Sure
-
-    document.add_page_break ()
-    p = document.add_paragraph ( f"" )
-    p.add_run ( f"A. Süre" ).bold = True
-    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-
-    document.add_paragraph (
-        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{"AYARLANACAK"}’tir.'
+        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{magaza_ici_oran} olarak ortaya çıkmıştır.'
     )
 
     table = document.add_table ( rows=1, cols=2 )
@@ -1312,12 +1217,261 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
+    #degistirilecek
+    liste_yogunluk_top_5_ilk_hafta = request1.main_2_3_yogunluk_haritasi_top_5 ( magaza_id_yogunluk, tarih_1, tarih_2 )
+    liste_yogunluk_top_5_ikinci_hafta = request1.main_2_3_yogunluk_haritasi_top_5 ( magaza_id_yogunluk, tarih_3, tarih_4 )
+    print ( "lolall_basladik_____" )
+    print ( liste_yogunluk_top_5_ilk_hafta )
+    print(liste_yogunluk_top_5_ikinci_hafta)
+
+    ilk_5_de_yenini_koruyanlar = request1.cakisan_liste_elemanlar(liste_yogunluk_top_5_ilk_hafta,liste_yogunluk_top_5_ikinci_hafta)
+
+
+
+
+
+
+    liste_yogunluk_bottom_5 = request1.main_2_3_yogunluk_haritasi_bottom_5 ( magaza_id_yogunluk, tarih_1, tarih_2 )
+    print ( liste_yogunluk_bottom_5 )
+
+    # sayfa-2.5
+    yogunlugu_1_in_ustundekiler = request1.main_2_5_yogunluk_haritasi_orani_top_5_orani ( magaza_id_yogunluk, tarih_1, tarih_2 )
+    print ( "top_5" )
+    print ( yogunlugu_1_in_ustundekiler )
+    yogunlugu_1_in_altindakiler = request1.main_2_5_yogunluk_haritasi_orani_bottom_5_orani ( magaza_id_yogunluk,
+                                                                                             tarih_1, tarih_2 )
+    print ( "bot_5" )
+    print ( yogunlugu_1_in_altindakiler )
+
+
+    # onemlı unutma
+    # document.add_paragraph (
+    #     f'Yukarıdaki yoğunluk haritası incelendiğinde, mağazanın en yoğun alanlarının {liste_yogunluk_top_5[0].title ()}, {liste_yogunluk_top_5[1].title ()} ve {liste_yogunluk_top_5[2].title ()} alanları olduğu görülür.',
+    #     style='List Bullet'
+    # )
+    #
+    # document.add_paragraph (
+    #     f'Yoğunluğun en az olduğu alanlar ise; {liste_yogunluk_bottom_5[0].title ()}, {liste_yogunluk_bottom_5[1].title ()}, {liste_yogunluk_bottom_5[2].title ()}, {liste_yogunluk_bottom_5[3].title ()}, ve {liste_yogunluk_bottom_5[4].title ()} alanlarıdır.',
+    #     style='List Bullet'
+    # )
+
+    birlesik_liste = (
+        request1.json_id_den_degisim_oranina ( tarih_1, tarih_2, tarih_3, tarih_4, magaza_id_yogunluk, "DensityRatio",
+                                      reverse=True ))
+
+    print ( birlesik_liste )
+
+    sorted_list = (request1.BubleSort ( birlesik_liste ))
+    negatif_liste = request1.negatifse ( sorted_list )
+    pozitif_liste = request1.pozitifse ( sorted_list )
+    print ( negatif_liste )
+    print ( pozitif_liste )
+    isimler_listesi_negatif = request1.list_to_string_ve_ile ( negatif_liste[1] )
+    print ( isimler_listesi_negatif )
+    oranlari_listesi_negatif = request1.list_to_string_ve_ile ( negatif_liste[2] )
+    print ( oranlari_listesi_negatif )
+    isimler_listesi_pozitif = request1.list_to_string_ve_ile ( pozitif_liste[1] )
+    print ( isimler_listesi_pozitif )
+    oranlari_listesi_pozitif = request1.list_to_string_ve_ile ( pozitif_liste[2] )
+    print ( oranlari_listesi_pozitif )
+
     document.add_paragraph (
-        f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında ‘Girls’, ‘Women’s Armour Fleece’ ve ‘Women’s Unstoppable’ kategorilerinde sırasıyla yoğunluk değişiminde %31, %15 ve %10’luk bir düşüş gözlemlenirken ‘Golf’, ‘MEN' S VANISH & RUSH’ ve ‘Men’s Recovery’ kategorilerinde ise sırasıyla %93, %58 ve %49’luk bir artış mevcuttur."
+        f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında {isimler_listesi_negatif} kategorilerinde sırasıyla yoğunluk değişiminde {oranlari_listesi_negatif} oranlarında düşüş gözlemlenirken {isimler_listesi_pozitif} kategorilerinde ise sırasıyla {oranlari_listesi_pozitif} oranlarında bir artış mevcuttur."
     )
+
+    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, 234, "DwellRatio", True ))
+    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, 234, "DwellRatio", True ))
+    print ( ilk_hafta_top_5 )
+    print ( ikinci_hafta_top_5 )
+    eslesen_isimler_listesi = (request1.cakisan_liste_elemanlar_ilk_3 ( ilk_hafta_top_5[1], ikinci_hafta_top_5[1] ))
+    print ( eslesen_isimler_listesi )
+    eslesen_isimler_listesi_str = request1.list_to_string_ve_ile ( eslesen_isimler_listesi )
+    ek_kelime = "kategorileri"
+    if eslesen_isimler_listesi ==0:
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} kategori belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumamıştır."
+        )
+    elif len(eslesen_isimler_listesi)>1:
+        ek_kelime = "kategorileri"
+        print ( eslesen_isimler_listesi_str )
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} {ek_kelime} belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        )
+    else:
+        ek_kelime = "kategorisi"
+        print ( eslesen_isimler_listesi_str )
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} {ek_kelime} belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        )
+
+
+    # Trendler_Temas
+    document.add_page_break ()
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"A. Temas" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+    magaza_ici_oran = request1.main_2_7_performans_tablosu_hesapla ( magaza_id_no, tarih_1, tarih_2, tarih_3, tarih_4,
+                                                                     "Count" )
+
     document.add_paragraph (
-        f"‘MAN’S THE ROCK’ ve ‘FTW’ kategorileri belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{magaza_ici_oran} olarak ortaya çıkmıştır.'
     )
+
+    table = document.add_table ( rows=1, cols=2 )
+    # table.columns[0].width = Inches ( 5 )
+    # table.rows[0].cells[0].height = Inches ( 5 )
+    for row in table.rows:
+        row.height = Inches ( 2.25 )
+        row.width = Inches ( 1.9 )
+
+    row_cells1 = table.cell ( 0, 0 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_kisi0_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    row_cells1 = table.cell ( 0, 1 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_kisi1_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    birlesik_liste = (
+        request1.json_id_den_degisim_oranina ( tarih_1, tarih_2, tarih_3, tarih_4, magaza_id_yogunluk, "CountRatio",
+                                               reverse=True ))
+
+    print ( birlesik_liste )
+
+    sorted_list = (request1.BubleSort ( birlesik_liste ))
+    negatif_liste = request1.negatifse ( sorted_list )
+    pozitif_liste = request1.pozitifse ( sorted_list )
+    print ( negatif_liste )
+    print ( pozitif_liste )
+    isimler_listesi_negatif = request1.list_to_string_ve_ile ( negatif_liste[1] )
+    print ( isimler_listesi_negatif )
+    oranlari_listesi_negatif = request1.list_to_string_ve_ile ( negatif_liste[2] )
+    print ( oranlari_listesi_negatif )
+    isimler_listesi_pozitif = request1.list_to_string_ve_ile ( pozitif_liste[1] )
+    print ( isimler_listesi_pozitif )
+    oranlari_listesi_pozitif = request1.list_to_string_ve_ile ( pozitif_liste[2] )
+    print ( oranlari_listesi_pozitif )
+
+    document.add_paragraph (
+        f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında {isimler_listesi_negatif} kategorilerinde sırasıyla yoğunluk değişiminde {oranlari_listesi_negatif} oranlarında düşüş gözlemlenirken {isimler_listesi_pozitif} kategorilerinde ise sırasıyla {oranlari_listesi_pozitif} oranlarında bir artış mevcuttur."
+    )
+    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, 234, "CountRatio", True ))
+    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, 234, "CountRatio", True ))
+    print ( ilk_hafta_top_5 )
+    print ( ikinci_hafta_top_5 )
+    eslesen_isimler_listesi = (request1.cakisan_liste_elemanlar_ilk_3 ( ilk_hafta_top_5[1], ikinci_hafta_top_5[1] ))
+    print ( eslesen_isimler_listesi )
+    eslesen_isimler_listesi_str = request1.list_to_string_ve_ile ( eslesen_isimler_listesi )
+    ek_kelime = "kategorileri"
+    if eslesen_isimler_listesi == 0:
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} kategori belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumamıştır."
+        )
+    elif len ( eslesen_isimler_listesi ) > 1:
+        ek_kelime = "kategorileri"
+        print ( eslesen_isimler_listesi_str )
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} {ek_kelime} belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        )
+    else:
+        ek_kelime = "kategorisi"
+        print ( eslesen_isimler_listesi_str )
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} {ek_kelime} belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        )
+
+    # Trendler_Sure
+
+    document.add_page_break ()
+    p = document.add_paragraph ( f"" )
+    p.add_run ( f"A. Süre" ).bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+
+    magaza_ici_oran = request1.main_2_7_performans_tablosu_hesapla(magaza_id_no,tarih_1,tarih_2,tarih_3,tarih_4,"Dwell")
+
+    document.add_paragraph (
+        f'Mağaza içi ortalama yoğunluk oranı bir kategori için %{magaza_ici_oran} olarak ortaya çıkmıştır.'
+    )
+
+    table = document.add_table ( rows=1, cols=2 )
+    # table.columns[0].width = Inches ( 5 )
+    # table.rows[0].cells[0].height = Inches ( 5 )
+    for row in table.rows:
+        row.height = Inches ( 2.25 )
+        row.width = Inches ( 1.9 )
+
+    row_cells1 = table.cell ( 0, 0 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_sure0_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    row_cells1 = table.cell ( 0, 1 )
+    paragraph = row_cells1.paragraphs[0]
+    run = paragraph.add_run ()
+    run.add_picture (
+        os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/_sure1_yogunluk_haritasi_birincisi.png" ),
+        width=Inches ( 2.2 ), height=Inches ( 4.25 ) )
+    paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+
+    birlesik_liste = (
+        request1.json_id_den_degisim_oranina ( tarih_1, tarih_2, tarih_3, tarih_4, magaza_id_yogunluk, "DwellRatio",
+                                               reverse=True ))
+
+    print ( birlesik_liste )
+
+    sorted_list = (request1.BubleSort ( birlesik_liste ))
+    negatif_liste = request1.negatifse ( sorted_list )
+    pozitif_liste = request1.pozitifse ( sorted_list )
+    print ( negatif_liste )
+    print ( pozitif_liste )
+    isimler_listesi_negatif = request1.list_to_string_ve_ile ( negatif_liste[1] )
+    print ( isimler_listesi_negatif )
+    oranlari_listesi_negatif = request1.list_to_string_ve_ile ( negatif_liste[2] )
+    print ( oranlari_listesi_negatif )
+    isimler_listesi_pozitif = request1.list_to_string_ve_ile ( pozitif_liste[1] )
+    print ( isimler_listesi_pozitif )
+    oranlari_listesi_pozitif = request1.list_to_string_ve_ile ( pozitif_liste[2] )
+    print ( oranlari_listesi_pozitif )
+
+    document.add_paragraph (
+        f"({tarih_3}-{tarih_4}) bir önceki hafta içi olan ({tarih_1}-{tarih_2}) tarih aralığıyla karşılaştırıldığında {isimler_listesi_negatif} kategorilerinde sırasıyla yoğunluk değişiminde {oranlari_listesi_negatif} oranlarında düşüş gözlemlenirken {isimler_listesi_pozitif} kategorilerinde ise sırasıyla {oranlari_listesi_pozitif} oranlarında bir artış mevcuttur."
+    )
+    ilk_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_1, tarih_2, 234, "DwellRatio", True ))
+    ikinci_hafta_top_5 = (request1.json_isimden_listeye_5 ( tarih_3, tarih_4, 234, "DwellRatio", True ))
+    print ( ilk_hafta_top_5 )
+    print ( ikinci_hafta_top_5 )
+    eslesen_isimler_listesi = (request1.cakisan_liste_elemanlar_ilk_3 ( ilk_hafta_top_5[1], ikinci_hafta_top_5[1] ))
+    print ( eslesen_isimler_listesi )
+    eslesen_isimler_listesi_str = request1.list_to_string_ve_ile ( eslesen_isimler_listesi )
+    ek_kelime = "kategorileri"
+    if eslesen_isimler_listesi == 0:
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} kategori belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumamıştır."
+        )
+    elif len ( eslesen_isimler_listesi ) > 1:
+        ek_kelime = "kategorileri"
+        print ( eslesen_isimler_listesi_str )
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} {ek_kelime} belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        )
+    else:
+        ek_kelime = "kategorisi"
+        print ( eslesen_isimler_listesi_str )
+        document.add_paragraph (
+            f"{eslesen_isimler_listesi_str} {ek_kelime} belirtilen tüm tarih aralıklarında yoğunluk oranı açısından ilk üç sıradaki yerlerini korumuştur."
+        )
 
     document.add_page_break ()
     document.add_heading ( '2.5 Trendler', level=1 )
