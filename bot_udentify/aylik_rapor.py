@@ -712,26 +712,6 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
     print(performans_tablosu_listesi[0][3])
 
 
-    # isi haritasi
-
-    hm1 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
-    print ( 'hadi bakalim' )
-    print ( hm1 )
-    hm2 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
-    print ( 'hadi bakalim' )
-    print ( hm2 )
-    hm3 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
-    print ( 'hadi bakalim' )
-    print ( hm3 )
-    hm4 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
-    print ( 'hadi bakalim' )
-    print ( hm4 )
-    hm5 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
-    print ( 'hadi bakalim' )
-    print ( hm5 )
-    hm6 = heatmap.find_where_is_everyone ( os.path.join ( BASE_DIR, f"{magza_statik_dosya_location}/isi1_deneme.png" ) )
-    print ( 'hadi bakalim' )
-    print ( hm6 )
 
 
 
@@ -1114,10 +1094,7 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
         style='List Bullet'
     )
 
-    document.add_paragraph (
-        f"Kasa kamerasının {hm1} alanınnda, basketball kamerasının {hm1} alanınnda, men’s run kamerasının {hm2} alanınnda, heat gear kamerasının {hm1} alanınnda, FTW kamerasının {hm1} alanınnda, giriş kamerasının {hm1} alanınnda yoğunluğun arttığı görülmektedir.",
-        style='List Bullet'
-    )
+
 
 
 
@@ -2305,44 +2282,45 @@ def start_writing_on_docx(firma,magza_statik_dosya_location_ismi,magaza_id_no,il
 #global_test =  True
 #
 
-#Calismayan
-ilk_tarih = "01/02/2021"
-son_tarih = "12/02/2021"
+if __name__ == "__main__":
+    #Calismayan
+    ilk_tarih = "01/02/2021"
+    son_tarih = "12/02/2021"
 
-#Calisan
-# ilk_tarih = "05/01/2021"
-# son_tarih = "19/01/2021"
-#
+    #Calisan
+    # ilk_tarih = "05/01/2021"
+    # son_tarih = "19/01/2021"
+    #
 
-# yeni_liste =[["Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Istinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]]]
-#
-# for liste in yeni_liste:
-#     start_writing_on_docx ( liste[0], liste[1], liste[2], liste[3], liste[4], liste[5],
-#                             liste[6] )
-
-
-#start_writing_on_docx("under armour","under armour zorlu center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],['Kasa', 'Cam 2', 'Train', 'Cam 4', 'Giriş'])
-#start_writing_on_docx("under armour","under armour akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],['Ana Giriş', 'Cam 7', 'Cam 8', 'Run', 'Youth', 'Giriş', 'Train', 'Train Ön' ])
-# start_writing_on_docx("under armour","under armour istinye park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
-# start_writing_on_docx("suwen","suwen viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],['Ön', 'Arka', 'Giriş', 'Cam 4'])
-#start_writing_on_docx("suwen","suwen mall of istanbul",306,"20/01/2021","27/01/2021",189,[["LOHUSA","ÇORAP"],["KORSE","TRENDY"]],['Giriş', 'Sol', 'Sağ', 'Cam 4'])
-
-# suwen	suwen viaport	307	01/02/2021	12/02/2021	189	[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]	Viaport
-#
+    # yeni_liste =[["Under Armour","Under Armour Zorlu Center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]],["Under Armour","Under Armour Istinye Park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]]]]
+    #
+    # for liste in yeni_liste:
+    #     start_writing_on_docx ( liste[0], liste[1], liste[2], liste[3], liste[4], liste[5],
+    #                             liste[6] )
 
 
-#start_writing_on_docx("Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]) #density kisimlari error veriyo cikarmadinn daha
+    #start_writing_on_docx("under armour","under armour zorlu center",239,ilk_tarih,son_tarih,160,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],['Kasa', 'Cam 2', 'Train', 'Cam 4', 'Giriş'])
+    #start_writing_on_docx("under armour","under armour akasya",240,ilk_tarih,son_tarih,161,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]],['Ana Giriş', 'Cam 7', 'Cam 8', 'Run', 'Youth', 'Giriş', 'Train', 'Train Ön' ])
+    # start_writing_on_docx("under armour","under armour istinye park",228,ilk_tarih,son_tarih,149,[["BOYS","GIRLS"],["WOMEN'S RUN","MEN'S RUN"]])
+    # start_writing_on_docx("suwen","suwen viaport",307,"01/01/2021","19/01/2021",189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]],['Ön', 'Arka', 'Giriş', 'Cam 4'])
+    #start_writing_on_docx("suwen","suwen mall of istanbul",306,"20/01/2021","27/01/2021",189,[["LOHUSA","ÇORAP"],["KORSE","TRENDY"]],['Giriş', 'Sol', 'Sağ', 'Cam 4'])
+
+    # suwen	suwen viaport	307	01/02/2021	12/02/2021	189	[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]	Viaport
+    #
+
+
+    #start_writing_on_docx("Suwen","Suwen Viaport",307,ilk_tarih,son_tarih,189,[["TAYT","ÇORAP"],["ATLET","ERKEK REYONU"]]) #density kisimlari error veriyo cikarmadinn daha
 
 
 
-# start_writing_on_docx("arçelik","arçelik ada",133,"01/02/2021","12/02/2021",99,[["TELEVIZYON","FIRIN"],["SÜPÜRGE","ÜTÜ"]],['KASA','MUTFAK GERECLERI', 'GİRİŞ SAĞ', 'GİRİŞ SOL', 'TELEVIZYON', 'KLIMA', 'DONDURUCU', 'ÇAMAŞIR MAKINESI', 'ÇAMASIR KURUTMA MAKINESI', 'PISIRICI CIHAZLAR'])
+    # start_writing_on_docx("arçelik","arçelik ada",133,"01/02/2021","12/02/2021",99,[["TELEVIZYON","FIRIN"],["SÜPÜRGE","ÜTÜ"]],['KASA','MUTFAK GERECLERI', 'GİRİŞ SAĞ', 'GİRİŞ SOL', 'TELEVIZYON', 'KLIMA', 'DONDURUCU', 'ÇAMAŞIR MAKINESI', 'ÇAMASIR KURUTMA MAKINESI', 'PISIRICI CIHAZLAR'])
 
 
-# start_writing_on_docx("bizim toptan","bizim toptan Alibeyköy",308,"01/02/2021","12/02/2021",89,[["Kahvaltılık","Çikolata"],["Çay","Cips"]],['Promo Alan','Bakliyat', 'Temel Gıda', 'Atıştırmalık', 'İçecek', 'Gıda dışı', 'Camlı Soğuk Oda', 'Kasa', 'Cam 9', 'Kişisel Bakım', 'Giriş', 'Temizlik', 'Soğuk Dolap'])
+    start_writing_on_docx("bizim toptan","bizim toptan Alibeyköy",308,"01/02/2021","12/02/2021",89,[["Kahvaltılık","Çikolata"],["Çay","Cips"]],['Promo Alan','Bakliyat', 'Temel Gıda', 'Atıştırmalık', 'İçecek', 'Gıda dışı', 'Camlı Soğuk Oda', 'Kasa', 'Cam 9', 'Kişisel Bakım', 'Giriş', 'Temizlik', 'Soğuk Dolap'])
 
-# start_writing_on_docx("mediamarkt","mediamarkt ankara forum",318,"01/02/2021","12/02/2021",234,[["5 LG TV","5 SAMSUNG TV"],["5 VESTEL TV","36 BOSCH"]],['Cam 1', 'Cam 2', 'Cam 3', 'Cam 4', 'Cam 5', 'Cam 6', 'Cam 7', 'Cam 8', 'Cam 9', 'Cam 10', 'Cam 11', 'Cam 12', 'Cam 13', 'Cam 14', 'Cam 15', 'Cam 16', 'Cam 17', 'Cam 18', 'Cam 19', 'Cam 20', 'Cam 21', 'Cam 22', 'Cam 23', 'Cam 24', 'Cam 25', 'Cam 26', 'Cam 27', 'Cam 28', 'Cam 29', 'Cam 30', 'Cam 31', 'Cam 32', 'Cam 33', 'Cam 34'])
-
-
+    # start_writing_on_docx("mediamarkt","mediamarkt ankara forum",318,"01/02/2021","12/02/2021",234,[["5 LG TV","5 SAMSUNG TV"],["5 VESTEL TV","36 BOSCH"]],['Cam 1', 'Cam 2', 'Cam 3', 'Cam 4', 'Cam 5', 'Cam 6', 'Cam 7', 'Cam 8', 'Cam 9', 'Cam 10', 'Cam 11', 'Cam 12', 'Cam 13', 'Cam 14', 'Cam 15', 'Cam 16', 'Cam 17', 'Cam 18', 'Cam 19', 'Cam 20', 'Cam 21', 'Cam 22', 'Cam 23', 'Cam 24', 'Cam 25', 'Cam 26', 'Cam 27', 'Cam 28', 'Cam 29', 'Cam 30', 'Cam 31', 'Cam 32', 'Cam 33', 'Cam 34'])
+    #
+    #
 
 
 
